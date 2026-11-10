@@ -1,114 +1,3122 @@
-\documentclass[11pt, dvipdfmx]{article}
-
-\usepackage[utf8]{inputenc}
-\usepackage[margin=35truemm]{geometry} % 余白を35mmに設定
-\usepackage{tikz-feynhand}
-% --- 数学関連のパッケージ ---
-\usepackage{amsmath}      % 様々な数式環境
-\usepackage{amsthm}       % 定理環境
-\usepackage{amsfonts}     % 数学用フォント
-\usepackage{physics}      % 物理学の数式用マクロ (bra, ket, dvなど)
-\usepackage{bm}           % 太字の数式 \bm{}
-\usepackage{showkeys}
-% --- 図や色、レイアウト関連のパッケージ ---
-\usepackage{graphicx, color} % 図の挿入や色の利用
-\usepackage{tikz}         % 図形描画
-\usetikzlibrary{intersections,calc,arrows.meta}
-\usepackage{float}        % 図表の位置を調整 [H]など
-\usepackage{siunitx}      % 単位をきれいに表示 \SI{100}{\kilo\gram}など
-\usepackage{ascmac}       % itemboxなどの囲み枠
-\usepackage{amsmath}
-\usepackage{amssymb}      % 数学記号 (\becauseなど)
-\numberwithin{equation}{section}
-% --- その他 ---
-\parindent = 0pt % 全体の段落開始時のインデントをなくす
-\newcommand{\intinf}{\int_{-\infty}^\infty}
-\newcommand{\pathint}{\int \mathcal{D}\varphi}
-\newenvironment{note}{
-    \vspace{1ex} % 上部の余白（お好みで調整）
-    \par\footnotesize\noindent\textbf{【注】}
-}{
-    \par\vspace{1ex} % 下部の余白
-}
-% --- ハイパーリンク関連 (できるだけ最後に読み込む) ---
-\usepackage[
-    dvipdfmx,
-    bookmarks=true,
-    bookmarksnumbered=true,
-    bookmarkstype=toc,
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue
-]{hyperref}
-\usepackage{pxjahyper} % hyperrefの日本語文字化け対策
-\usepackage{amsmath, amssymb}
-\usepackage[many]{tcolorbox} % manyオプションでskinsやtheoremsなどを一括読み込み
-
-% tcolorboxを用いた新しい定理環境の定義
+\documentclass[uplatex,dvipdfmx,a4paper,11pt,openany]{jsbook}
+%================================================
+% Packages
+%================================================
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{physics}
+\usepackage{mathrsfs}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+% --- 定理系ボックスの共通スタイル ---
 \tcbset{
     myboxstyle/.style={
         enhanced,
-        colback=white,           % メインボックスの背景色（白）
-        boxrule=0.8pt,           % 枠線の太さ
-        arc=1.5mm,               % 角の丸み
-        coltitle=white,          % タイトル文字の色（白）
-        attach boxed title to top left={xshift=5mm, yshift=-\tcboxedtitleheight/2},
-        description font=\normalfont,
-        separator sign={:}       % 番号の後のコロン
+        breakable,
+        colback=white,
+        coltitle=white,
+        fonttitle=\bfseries,
+        boxrule=0.8pt,
+        arc=1.5mm,
+        attach boxed title to top left={xshift=3mm, yshift=-2mm},
+        top=3mm,
+        before skip=3mm, after skip=3mm
     }
 }
-
-% ==========================================
-% 2. 各環境の定義（色のみ個別設定）
-% ==========================================
-
-% --- 定理 (Theorem) : グレー系 ---
-\newtcbtheorem[number within=section]{mythm}{Theorem}{
+% --- 定理 (Theorem) : レッド系 ---
+\newtcbtheorem[number within=section]{mythm}{定理}{
     myboxstyle,
-    colframe=red!75!black,           % 枠線の色（赤系に合わせて変更）
+    colframe=red!75!black,
     boxed title style={
-        colback=red!50,              % タイトル背景色をグレーから赤に変更
-        colframe=red!75!black,       % タイトル枠線の色（赤系に合わせて変更）
+        colback=red!50,
+        colframe=red!75!black,
         boxrule=0.8pt,
         arc=1.5mm
     }
 }{thm}
-
 % --- 定義 (Definition) : ブルー系 ---
-\newtcbtheorem[number within=section]{mydef}{Definition}{
+\newtcbtheorem[use counter from=mythm]{mydef}{定義}{
     myboxstyle,
-    colframe=blue!70!black,      % 枠線の色（青70% + 黒30%）
+    colframe=blue!70!black,
     boxed title style={
-        colback=blue!60!gray!80, % タイトル背景色（少しグレーを混ぜた落ち着いた青）
+        colback=blue!60!gray!80,
         colframe=blue!70!black,
         boxrule=0.8pt,
         arc=1.5mm
     }
 }{def}
-
 % --- 補題 (Lemma) : グリーン系 ---
-\newtcbtheorem[number within=section]{mylem}{Lemma}{
+\newtcbtheorem[use counter from=mythm]{mylem}{補題}{
     myboxstyle,
-    colframe=green!50!black,     % 枠線の色（緑50% + 黒50%）
+    colframe=green!50!black,
     boxed title style={
-        colback=green!50!gray,   % タイトル背景色（渋めの緑）
+        colback=green!50!gray,
         colframe=green!50!black,
         boxrule=0.8pt,
         arc=1.5mm
     }
 }{lem}
+% --- 命題 (Proposition) : オレンジ系 ---
+\newtcbtheorem[use counter from=mythm]{myprop}{命題}{
+    myboxstyle,
+    colframe=orange!80!black,
+    boxed title style={
+        colback=orange!80!black,
+        colframe=orange!80!black,
+        boxrule=0.8pt,
+        arc=1.5mm
+    }
+}{prop}
+% --- 例 (Example) : グレー系 ---
+\newtcbtheorem[use counter from=mythm]{myex}{例}{
+    myboxstyle,
+    colframe=gray!70!black,
+    boxed title style={
+        colback=gray!70!black,
+        colframe=gray!70!black,
+        boxrule=0.8pt,
+        arc=1.5mm
+    }
+}{ex}
+% 用語：日本語と英語を併記（英語版では \renewcommand で切り替える）
+%   \term{日本語}{English} … 初出の用語（太字＋英語）
+%   \en{English}          … 英語表記のみ括弧で添える
+\newcommand{\term}[2]{\textbf{#1}（#2）}
+\newcommand{\en}[1]{（#1）}
+% 計算過程などを書く注釈環境
+\newenvironment{note}{\vspace{1ex}\par\footnotesize\noindent\textbf{【注】}}{\par\vspace{1ex}}
 
-\begin{document}
+\geometry{margin=25mm}
+\setlength{\parskip}{0.3em}
+\setlength{\parindent}{1em}
+\raggedbottom  % ページ下端を揃えるための余分な縦の伸びを防ぐ
+\setlist{itemsep=0.15em, topsep=0.4em, parsep=0pt, partopsep=0pt}
+\numberwithin{equation}{chapter}
+%================================================
+% Theorem environments
+%================================================
+\theoremstyle{definition}
+\newtheorem{definition}{定義}[chapter]
+\newtheorem{example}{例}[chapter]
 
-\title{テスト文書}
-\author{小武}
+\theoremstyle{plain}
+\newtheorem{theorem}{定理}[chapter]
+\newtheorem{proposition}{命題}[chapter]
+
+\theoremstyle{remark}
+\newtheorem{remark}{注意}[chapter]
+%================================================
+% Commands
+%================================================
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\SM}{\mathrm{SM}}
+\newcommand{\SU}{\mathrm{SU}}
+\newcommand{\U}{\mathrm{U}}
+\newcommand{\SO}{\mathrm{SO}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\hc}{\mathrm{h.c.}}
+\newcommand{\PL}{P_{\mathrm{L}}}
+\newcommand{\PR}{P_{\mathrm{R}}}
+
+\title{
+標準模型講義ノート\\
+\large Standard Model of Particle Physics
+}
+\author{}
 \date{\today}
+\begin{document}
 \maketitle
-\section{はじめに}
+\tableofcontents
+%================================================
+% Part I
+%================================================
+\part{標準模型の全体像とゲージ理論}
+%================================================
+\chapter{標準模型の概要}
+%================================================
+本章では、後の章で詳しく導出する内容を先取りして、
+標準模型（Standard Model, SM）の全体像を概観する。
+ここで現れる式の多くは「結果」として提示し、
+その導出は第2章以降で行う。
+本章の目的は、標準模型が
+「どのような場から成り」「どのような対称性を持ち」
+「何個のパラメータで決まるか」を一望することにある。
+\paragraph{記法の規約}
+本ノートでは以下の規約を用いる。
+\begin{itemize}
+    \item \term{自然単位系}{natural units} $\hbar=c=1$ を用いる。換算には $\hbar c\simeq0.1973\ \mathrm{GeV\,fm}$ を使う。
+    \item 計量\en{metric}は $\eta_{\mu\nu}=\diag(+1,-1,-1,-1)$ とする。
+    \item $\gamma^5=i\gamma^0\gamma^1\gamma^2\gamma^3$、$\{\gamma^5,\gamma^\mu\}=0$、$(\gamma^5)^2=1$、$(\gamma^5)^\dagger=\gamma^5$。
+    \item $\epsilon^{0123}=-\epsilon_{0123}=+1$ とする。
+    \item ゲージ場の共変微分は $D_\mu=\partial_\mu-igA_\mu^aT^a$ の符号で定義する。
+    \item 弱超電荷は $Q=T_3+Y/2$ となるように規格化する。
+    \item 繰り返された添字については和をとる（ゲージ群の添字も含む）。
+\end{itemize}
+%------------------------------------------------
+\section{標準模型とは何か}
+%------------------------------------------------
+\subsection{標準模型が記述するもの}
+標準模型は、現在知られている素粒子と、
+重力を除く3つの基本相互作用
+\begin{itemize}
+    \item 強い相互作用\en{strong interaction}：原子核を束縛し、クォークをハドロンに閉じ込める
+    \item 弱い相互作用\en{weak interaction}：$\beta$崩壊を引き起こし、フレーバーを変える
+    \item 電磁相互作用\en{electromagnetic interaction}：原子・分子・化学を支配する
+\end{itemize}
+を統一的に記述する、相対論的な量子場の理論\en{quantum field theory, QFT}である。
 
-\bibliographystyle{unsrturl}
+標準模型は、加速器実験の到達エネルギー
+（現在 LHC で $\sqrt s=13.6\ \mathrm{TeV}$）までの範囲で、
+ほぼすべての実験結果を説明する。
+例えば電子の異常磁気能率\en{anomalous magnetic moment} $a_e=(g-2)/2$ は
+理論と実験が10桁以上の精度で一致しており、
+これは物理学全体の中でも最も精密に検証された予言の一つである。
+\subsection{3つの構成原理（building principles）}
+標準模型は次の3つの原理（仮定）からほぼ一意に構成される。
+\begin{enumerate}
+    \item \term{ゲージ対称性}{gauge symmetry}：
+    理論はゲージ群
+    \begin{equation}
+    G_{\SM}=\SU(3)_C\times\SU(2)_L\times\U(1)_Y
+    \end{equation}
+    の下での局所変換\en{local transformation}に対して不変である。
+    \item \term{場の内容}{field content}：
+    フェルミオンは3世代あり、各世代は同一のゲージ量子数を持つ。
+    スカラー場としては $\SU(2)_L$ 二重項\en{doublet}のヒッグス場\en{Higgs field}を1つだけ含む。
+    \item \term{繰り込み可能性}{renormalizability}：
+    ラグランジアンには質量次元\en{mass dimension}4以下の演算子のみを含める。
+\end{enumerate}
+これらを与えると、ラグランジアンに現れ得る項は有限個に限られ、
+理論は有限個（19個）のパラメータで完全に指定される（\S\ref{sec:SM-parameters}）。
+\paragraph{なぜゲージ対称性か}
+ゲージ原理\en{gauge principle}の最も簡単な例は量子電磁力学\en{quantum electrodynamics, QED}である。
+自由な Dirac 場のラグランジアン $\bar\psi(i\gamma^\mu\partial_\mu-m)\psi$ は
+大域的な\en{global}位相変換 $\psi\to e^{i\alpha}\psi$ で不変であるが、
+$\alpha=\alpha(x)$ とすると $\partial_\mu\alpha$ に比例する項が生じて不変性が失われる。
+これを回復するには、変換
+\begin{equation}
+A_\mu\to A_\mu+\frac1e\partial_\mu\alpha
+\end{equation}
+に従うベクトル場 $A_\mu$ を導入し、微分を共変微分 $D_\mu=\partial_\mu-ieA_\mu$ に置き換えればよい。
+このとき相互作用項 $e\bar\psi\gamma^\mu\psi A_\mu$ の形が
+\textbf{対称性によって一意に決まる}。
+\begin{note}
+$\psi\to e^{i\alpha(x)}\psi$ のとき
+$\partial_\mu\psi\to e^{i\alpha}\left(\partial_\mu\psi+i(\partial_\mu\alpha)\psi\right)$ なので
+\[
+\bar\psi i\gamma^\mu\partial_\mu\psi
+\to
+\bar\psi i\gamma^\mu\partial_\mu\psi-(\partial_\mu\alpha)\bar\psi\gamma^\mu\psi
+\]
+と余分な項が出る。一方、共変微分は
+\[
+D_\mu\psi
+\to
+e^{i\alpha}\Bigl(
+\partial_\mu\psi+i(\partial_\mu\alpha)\psi
+-ieA_\mu\psi-ie\cdot\frac1e(\partial_\mu\alpha)\psi
+\Bigr)
+=e^{i\alpha}D_\mu\psi
+\]
+と場と同じように変換するので、$\bar\psi i\gamma^\mu D_\mu\psi$ は不変である。
+展開すると $\bar\psi i\gamma^\mu D_\mu\psi=\bar\psi i\gamma^\mu\partial_\mu\psi+e\bar\psi\gamma^\mu\psi A_\mu$。
+非可換群への拡張は第2章で行う。
+\end{note}
+標準模型はこの考え方を非可換群 $\SU(3)$, $\SU(2)$ に拡張したものであり、
+フェルミオンとゲージボソンの相互作用はすべてゲージ原理から導かれる。
+\paragraph{なぜ繰り込み可能性か}
+繰り込み可能な理論では、有限個のパラメータを実験で決めれば
+すべての物理量を任意の精度で（摂動論の範囲で）予言できる。
+現代的な見方では、標準模型はあるエネルギースケール $\Lambda$ 以下で有効な
+\term{有効場の理論}{effective field theory, EFT}であり、
+次元 $d>4$ の演算子は $(E/\Lambda)^{d-4}$ で suppress されるため、
+低エネルギーでは自動的に繰り込み可能な項だけが残ると理解される。
+したがって「繰り込み可能性」は、
+標準模型が $\Lambda$ よりはるかに低いエネルギーで実験されていることの帰結とみなせる。
+\subsection{標準模型の特徴的な性質}
+\paragraph{カイラルなゲージ理論（chiral gauge theory）}
+弱い相互作用は左巻きのフェルミオンにのみ作用する。
+すなわち、左巻き成分と右巻き成分は
+異なるゲージ表現に属する（\S\ref{sec:chirality}）。
+このためパリティ\en{parity} $P$ と荷電共役\en{charge conjugation} $C$ は弱い相互作用で最大限に破れている\en{maximally violated}。
+これは 1956年の Lee--Yang による提唱と、
+1957年の Wu らによる ${}^{60}$Co の $\beta$崩壊実験で確立された事実である。
+\paragraph{自発的対称性の破れ（spontaneous symmetry breaking, SSB）}
+ゲージ対称性はフェルミオンやゲージボソンに裸の質量項\en{bare mass term}を許さない。
+しかし、弱い相互作用が短距離力であることは
+それを媒介するボソンが massive であることを意味する。
+質量 $M$ の粒子の交換は湯川ポテンシャル\en{Yukawa potential}
+\begin{equation}
+V(r)\propto\frac{e^{-Mr}}{r}
+\end{equation}
+を与え、その到達距離\en{range}は $1/M$ である。
+$M_W\simeq80\ \mathrm{GeV}$ に対しては
+\begin{equation}
+\frac{1}{M_W}=\frac{\hbar c}{M_Wc^2}
+\simeq\frac{0.197\ \mathrm{GeV\,fm}}{80\ \mathrm{GeV}}
+\simeq2.5\times10^{-3}\ \mathrm{fm}
+\end{equation}
+となり、陽子の大きさ（$\sim1\ \mathrm{fm}$）よりはるかに小さい。
 
-% Zoteroから出力した .bib ファイルの名前（拡張子 .bib は不要）
-\bibliography{マイライブラリ}
+この矛盾は、ヒッグス場が真空期待値\en{vacuum expectation value, VEV}
+\begin{equation}
+\langle H\rangle=\frac{1}{\sqrt2}\begin{pmatrix}0\\ v\end{pmatrix},
+\qquad v\simeq 246\ \mathrm{GeV}
+\end{equation}
+を持つことで解決される。これにより
+\begin{equation}
+\SU(2)_L\times\U(1)_Y\longrightarrow\U(1)_{\mathrm{EM}}
+\end{equation}
+と電弱対称性\en{electroweak symmetry}が自発的に破れ、
+$W^\pm$, $Z^0$ ボソンとフェルミオンが質量を獲得する（第II部）。
+ラグランジアンは対称性を保ったまま、真空\en{vacuum}だけが対称性を破るため、
+理論の繰り込み可能性は保たれる（'t Hooft, 1971）。
+\paragraph{閉じ込めと漸近的自由性（confinement and asymptotic freedom）}
+$\SU(3)_C$ の結合定数\en{coupling constant}は高エネルギーで小さく（漸近的自由性）、
+低エネルギー $\Lambda_{\mathrm{QCD}}\sim200$--$300\ \mathrm{MeV}$ 付近で強くなる。
+その結果、クォークとグルーオンは単独では観測されず、
+カラー一重項\en{color singlet}のハドロン（陽子・中性子・中間子など）に閉じ込められる。
+陽子の質量 $938\ \mathrm{MeV}$ の大部分は、
+$u,d$ クォークの質量（数 MeV）ではなく QCD の束縛エネルギー\en{binding energy}に由来する。
+\subsection{エネルギースケールと相互作用の強さ（energy scales and interaction strengths）}
+標準模型にはいくつかの特徴的なエネルギースケールがある。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcl}
+\toprule
+scale & 値 & 意味\\
+\midrule
+$\Lambda_{\mathrm{QCD}}$ & $\sim0.2\ \mathrm{GeV}$ & QCD が強結合になるスケール\\
+$M_W,\ M_Z$ & $80,\ 91\ \mathrm{GeV}$ & 弱ボソンの質量\\
+$v$ & $246\ \mathrm{GeV}$ & 電弱対称性の破れのスケール\\
+$m_t$ & $173\ \mathrm{GeV}$ & 最も重い素粒子\\
+$M_{\mathrm{Pl}}$ & $1.2\times10^{19}\ \mathrm{GeV}$ & 重力が強くなるスケール（標準模型の外）\\
+\bottomrule
+\end{tabular}
+\end{center}
+$Z$ ボソンの質量付近での各相互作用の強さは、おおよそ
+\begin{equation}
+\alpha_s(M_Z)\simeq0.118,\qquad
+\alpha(M_Z)\simeq\frac{1}{128},\qquad
+\alpha_W\equiv\frac{g^2}{4\pi}\simeq\frac{1}{30}
+\end{equation}
+である。弱い相互作用が低エネルギーで「弱い」のは
+結合定数 $g$ が小さいからではなく（実際 $g>e$ である）、
+$W$ ボソンの伝播関数\en{propagator}が
+\begin{equation}
+\frac{1}{q^2-M_W^2}\xrightarrow{|q^2|\ll M_W^2}-\frac{1}{M_W^2}
+\end{equation}
+によって suppress されるからである。
+この suppression は Fermi 定数\en{Fermi constant}
+\begin{equation}
+\frac{G_F}{\sqrt2}=\frac{g^2}{8M_W^2}=\frac{1}{2v^2},
+\qquad
+G_F\simeq1.166\times10^{-5}\ \mathrm{GeV}^{-2}
+\label{eq:GF-preview}
+\end{equation}
+にまとめられる（Fermi 理論との対応は第8章で導出する）。
+\begin{note}
+ここでは $M_W=gv/2$（第6章で導出）を認めて代入するだけである：
+$\dfrac{g^2}{8M_W^2}=\dfrac{g^2}{8\cdot g^2v^2/4}=\dfrac{1}{2v^2}$。
+したがって $G_F=\dfrac{1}{\sqrt2v^2}$。
+数値的には $\sqrt2G_F=1.650\times10^{-5}\ \mathrm{GeV}^{-2}$ より
+$v=(1.650\times10^{-5})^{-1/2}\ \mathrm{GeV}\simeq246.2\ \mathrm{GeV}$。
+\end{note}
+逆に解けば
+\begin{equation}
+v=(\sqrt2G_F)^{-1/2}\simeq246\ \mathrm{GeV}
+\end{equation}
+となり、ミューオンの寿命\en{muon lifetime}の測定から電弱スケール\en{electroweak scale}が決まる。
+\begin{remark}
+標準模型は 1960--70年代に
+Glashow (1961), Weinberg (1967), Salam (1968) による電弱理論と、
+Gross--Wilczek, Politzer (1973) による QCD の漸近的自由性の発見を経て確立された。
+小林・益川 (1973) は CP の破れ\en{CP violation}を説明するために第3世代の存在を予言した。
+その後、中性カレント\en{neutral current}の発見（1973年）、
+$W^\pm$, $Z^0$ の発見（1983年）、
+トップクォークの発見（1995年）、
+タウニュートリノの直接観測（2000年）、
+ヒッグス粒子の発見（2012年）により、
+理論が予言する粒子はすべて観測されている。
+\end{remark}
+\subsection{標準模型が説明しないもの（beyond the SM）}
+標準模型は極めて成功した理論であるが、次のような現象は説明できない（第14章）。
+\begin{itemize}
+    \item 重力\en{gravity}（一般相対論との統合）
+    \item ニュートリノ質量\en{neutrino mass}（振動実験により確立）
+    \item 暗黒物質と暗黒エネルギー\en{dark matter, dark energy}
+    \item 宇宙のバリオン数非対称性\en{baryon asymmetry of the universe}
+    \item フェルミオン質量の階層性と世代数が3である理由
+    \item ヒッグス質量の微調整問題\en{fine-tuning}（階層性問題\en{hierarchy problem}）と強い CP 問題
+\end{itemize}
+%------------------------------------------------
+\section{素粒子の分類：フェルミオンとボソン}
+%------------------------------------------------
+\subsection{スピンと統計（spin and statistics）}
+スピン統計定理\en{spin-statistics theorem}により、粒子は
+\begin{itemize}
+    \item 半整数スピンを持ち Fermi--Dirac 統計に従う\textbf{フェルミオン}
+    \item 整数スピンを持ち Bose--Einstein 統計に従う\textbf{ボソン}
+\end{itemize}
+に分類される。
+場の理論では、フェルミオン場は反交換関係\en{anticommutation relation}で、
+ボソン場は交換関係で量子化される。
+フェルミオンは Pauli の排他原理\en{Pauli exclusion principle}に従うため同じ状態に1つしか入れず、
+これが原子の殻構造や物質の安定性を支えている。
+標準模型において、フェルミオンは物質を構成し、
+ボソンは相互作用を媒介する（あるいは質量を与える）役割を担う。
+
+すべての粒子には、質量とスピンが同じで
+すべての内部量子数（電荷・カラー・フレーバー）が反対の\term{反粒子}{antiparticle}が存在する。
+光子、$Z^0$、ヒッグス粒子は自分自身が反粒子である。
+\subsection{フェルミオン}
+標準模型のフェルミオンはすべてスピン $1/2$ であり、
+強い相互作用を受ける\term{クォーク}{quark}と、
+受けない\term{レプトン}{lepton}に分けられる。
+これらは同じゲージ量子数を持つ3つの\term{世代}{generation}を構成し、
+世代間の違いは質量（Yukawa 結合\en{Yukawa coupling}）のみである。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccccc}
+\toprule
+ & $Q$ & $i=1$ & $i=2$ & $i=3$\\
+\midrule
+$u_i$ (up-type) & $+2/3$ & $u$ \ ($2.2$ MeV) & $c$ \ ($1.27$ GeV) & $t$ \ ($173$ GeV)\\
+$d_i$ (down-type) & $-1/3$ & $d$ \ ($4.7$ MeV) & $s$ \ ($93$ MeV) & $b$ \ ($4.18$ GeV)\\
+\midrule
+$e_i$ (charged lepton) & $-1$ & $e$ \ ($0.511$ MeV) & $\mu$ \ ($106$ MeV) & $\tau$ \ ($1.78$ GeV)\\
+$\nu_i$ (neutrino) & $0$ & $\nu_e$ & $\nu_\mu$ & $\nu_\tau$\\
+\bottomrule
+\end{tabular}
+\end{center}
+ここで $i=1,2,3$ は世代の添字であり、
+$u_i=(u,c,t)$, $d_i=(d,s,b)$, $e_i=(e,\mu,\tau)$, $\nu_i=(\nu_e,\nu_\mu,\nu_\tau)$ と書く
+（荷電レプトンを $\ell_i$ と書くことも多い）。
+括弧内は質量の概算値である
+（軽いクォークの質量は $\overline{\mathrm{MS}}$ スキームでの値であり、
+クォークは閉じ込められているため直接測定できない）。
+\paragraph{質量の階層（mass hierarchy）}
+質量は電子の $0.5\ \mathrm{MeV}$ からトップの $173\ \mathrm{GeV}$ まで
+5桁以上にわたって分布する。
+後で見るように、フェルミオン質量は Yukawa 結合 $y_f$ によって
+$m_f=y_fv/\sqrt2$ と与えられるので、
+\begin{equation}
+y_t=\frac{\sqrt2m_t}{v}\simeq0.99,
+\qquad
+y_e=\frac{\sqrt2m_e}{v}\simeq2.9\times10^{-6}
+\end{equation}
+となる。
+\begin{note}
+$y_t=\sqrt2\times173/246\simeq1.414\times0.703\simeq0.99$、
+$y_e=\sqrt2\times0.000511/246\simeq2.94\times10^{-6}$。
+$m_f=y_fv/\sqrt2$ の導出は \S\ref{sec:SM-lagrangian} の Yukawa 項の節と第7章で行う。
+\end{note}
+トップクォークだけが $O(1)$ の結合を持ち、
+他はすべて小さい。この階層構造は標準模型の中では説明されない
+（\term{フレーバー問題}{flavor problem}）。
+ニュートリノの質量は $\lesssim0.1\ \mathrm{eV}$ とさらに小さく、
+最小標準模型\en{minimal SM}では massless である。
+\paragraph{クォーク}
+クォークはさらに3つの\term{カラー}{color}自由度（red, green, blue）を持つ。
+カラーの数 $N_c=3$ は、例えば
+\begin{equation}
+R\equiv\frac{\sigma(e^+e^-\to\text{ハドロン})}{\sigma(e^+e^-\to\mu^+\mu^-)}
+\simeq N_c\sum_qQ_q^2
+\end{equation}
+の測定によって確かめられる。
+$u,d,s,c,b$ が寄与するエネルギー領域では
+$N_c\sum_qQ_q^2=3\times(4/9+1/9+1/9+4/9+1/9)=11/3$ となり、
+実験値とよく一致する（$N_c=1$ では合わない）。
+
+クォークは閉じ込めにより単独では現れず、
+クォーク・反クォーク対からなる\term{中間子}{meson}（$\pi^+=u\bar d$ など）や、
+3つのクォークからなる\term{バリオン}{baryon}（$p=uud$, $n=udd$ など）として観測される。
+ただしトップクォークは寿命（$\sim5\times10^{-25}\ \mathrm{s}$）が
+ハドロン化\en{hadronization}の時間スケール $1/\Lambda_{\mathrm{QCD}}$ より短いため、
+ハドロンを作る前に崩壊する。
+\paragraph{レプトン}
+荷電レプトン $e,\mu,\tau$ は電磁相互作用と弱い相互作用を受け、
+ニュートリノは弱い相互作用のみを受ける。
+ニュートリノの世代数は、$Z$ ボソンの崩壊幅\en{decay width}のうち
+観測されない部分（invisible width, $Z\to\nu\bar\nu$）から
+\begin{equation}
+N_\nu=2.984\pm0.008
+\end{equation}
+と決定されている（LEP）。
+したがって、$m_\nu<M_Z/2$ の軽い\en{light}ニュートリノを持つ世代は
+ちょうど3つである。
+\paragraph{1世代の自由度}
+各世代はクォーク $(u,d)\times3$ カラーとレプトン $(\nu,e)$ からなる。
+後で見るように、これはちょうど15個の Weyl スピノルに相当する（\S\ref{sec:chirality}）。
+\subsection{ボソン}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccccc}
+\toprule
+ & spin & $Q$ & mass & 役割\\
+\midrule
+$g$ (gluon) & 1 & 0 & 0 & 強い相互作用（8種類）\\
+$\gamma$ (photon) & 1 & 0 & 0 & 電磁相互作用\\
+$W^\pm$ & 1 & $\pm1$ & $80.4$ GeV & 弱い相互作用（charged current）\\
+$Z^0$ & 1 & 0 & $91.2$ GeV & 弱い相互作用（neutral current）\\
+$h$ (Higgs) & 0 & 0 & $125$ GeV & 質量の生成\\
+\bottomrule
+\end{tabular}
+\end{center}
+スピン1のボソンは\term{ゲージボソン}{gauge boson}であり、
+ゲージ対称性からその存在と相互作用の形が決まる。
+対称性の破れの前のゲージ場
+\begin{equation}
+G_\mu^a\ (a=1,\dots,8),\qquad
+W_\mu^i\ (i=1,2,3),\qquad
+B_\mu
+\end{equation}
+のうち、$W_\mu^i$ と $B_\mu$ は電弱対称性の破れによって
+物理的な場 $W_\mu^\pm$, $Z_\mu$, $A_\mu$（光子）に再編成される（第6章）：
+\begin{equation}
+W_\mu^\pm=\frac{1}{\sqrt2}\left(W_\mu^1\mp iW_\mu^2\right),
+\qquad
+\begin{pmatrix}Z_\mu\\ A_\mu\end{pmatrix}
+=
+\begin{pmatrix}
+\cos\theta_W & -\sin\theta_W\\
+\sin\theta_W & \cos\theta_W
+\end{pmatrix}
+\begin{pmatrix}W_\mu^3\\ B_\mu\end{pmatrix}.
+\label{eq:ZA-preview}
+\end{equation}
+ここで $\theta_W$ は Weinberg 角\en{weak mixing angle}であり、
+\begin{equation}
+\cos\theta_W=\frac{g}{\sqrt{g^2+g'^2}},\qquad
+\sin\theta_W=\frac{g'}{\sqrt{g^2+g'^2}},\qquad
+\sin^2\theta_W\simeq0.23
+\end{equation}
+で与えられる。
+\paragraph{ゲージボソンの偏極自由度（polarization degrees of freedom）}
+massless なスピン1粒子は横波\en{transverse}の2つの偏極（ヘリシティ $\pm1$）しか持たないが、
+massive なスピン1粒子は縦波\en{longitudinal}を含む3つの偏極を持つ。
+対称性の破れによって $W^\pm$, $Z^0$ が massive になると、
+各ボソンにつき1つの自由度が増える。
+この増えた3つの自由度は、ヒッグス二重項の4つの実自由度のうちの3つ
+（Nambu--Goldstone ボソン）が「食べられた」\en{eaten}ものである。
+自由度の数え上げは
+\begin{equation}
+\underbrace{4\times2}_{W^i,B\ \text{(massless)}}
++\underbrace{4}_{H}
+=12
+=
+\underbrace{3\times3}_{W^\pm,Z\ \text{(massive)}}
++\underbrace{2}_{\gamma}
++\underbrace{1}_{h}
+\end{equation}
+となり、対称性の破れの前後で一致する。
+残った1つの実自由度が、物理的なスピン0粒子であるヒッグス粒子 $h$ である。
+\subsection{相互作用の一覧（list of interactions）}
+どの粒子がどのボソンと結合するかを、まとめておく。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcccc}
+\toprule
+ & $g$ & $\gamma$ & $W^\pm$ & $Z^0$\\
+\midrule
+$u_L,\ d_L$ & ○ & ○ & ○ & ○\\
+$u_R,\ d_R$ & ○ & ○ & × & ○\\
+$e_L$ & × & ○ & ○ & ○\\
+$e_R$ & × & ○ & × & ○\\
+$\nu_L$ & × & × & ○ & ○\\
+\bottomrule
+\end{tabular}
+\end{center}
+$W^\pm$ は左巻きフェルミオンのみと結合し、
+二重項の上成分と下成分を入れ替える（$e^-\leftrightarrow\nu_e$, $d\leftrightarrow u$ など）。
+これがフレーバーを変える\en{flavor-changing}唯一の相互作用である。
+$Z^0$ と光子はフレーバーを変えない（第10章）。
+またヒッグス粒子は質量に比例する強さでフェルミオンや弱ボソンと結合する。
+
+非可換ゲージ理論であるため、ゲージボソン同士も結合する。
+グルーオンは $ggg$, $gggg$ の自己相互作用\en{self-interaction}を持ち、
+電弱部分には $WW\gamma$, $WWZ$ および4点結合が存在する。
+光子同士は直接結合しない。
+%------------------------------------------------
+\section{標準模型のゲージ群}
+%------------------------------------------------
+標準模型のゲージ群は
+\begin{equation}
+\boxed{
+G_{\SM}=\SU(3)_C\times\SU(2)_L\times\U(1)_Y
+}
+\end{equation}
+である。
+各因子はそれぞれ独立な結合定数
+\begin{equation}
+g_s,\qquad g,\qquad g'
+\end{equation}
+を持つ。ゲージ場の数は各群の次元（生成子の数）に等しい。
+\subsection{Lie 群の基礎事項（basics of Lie groups）}
+\begin{mydef}{特殊ユニタリ群 $\SU(N)$}{SUN}
+\begin{equation}
+\SU(N)=\{U\in\mathrm{GL}(N,\mathbb{C})\mid U^\dagger U=1,\ \det U=1\}.
+\end{equation}
+単位元の近くの元は、エルミートかつトレースレスな生成子 $T^a$ を用いて
+\begin{equation}
+U=\exp\left(i\alpha^aT^a\right),\qquad \alpha^a\in\mathbb{R}
+\end{equation}
+と書ける。
+\end{mydef}
+\begin{note}
+$U=e^{iX}$（$X=\alpha^aT^a$）とすると $U^\dagger=e^{-iX^\dagger}$ なので、
+$U^\dagger U=1$ が任意の $\alpha^a$ で成り立つには $X^\dagger=X$、すなわち $T^a$ がエルミート。
+また $\det e^{iX}=e^{i\tr X}$ なので、$\det U=1$ には $\tr T^a=0$ が必要。
+\end{note}
+$N\times N$ のエルミートかつトレースレスな行列の実自由度は $N^2-1$ なので
+\begin{equation}
+\dim\SU(N)=N^2-1
+\end{equation}
+である。生成子は Lie 代数
+\begin{equation}
+[T^a,T^b]=if^{abc}T^c
+\end{equation}
+を満たし、$f^{abc}$ を\term{構造定数}{structure constant}と呼ぶ。
+規格化を $\tr(T^aT^b)=\frac12\delta^{ab}$（基本表現）とすると $f^{abc}$ は完全反対称になる。
+
+標準模型で現れる表現は次の3種類である。
+\begin{itemize}
+    \item \term{自明表現}{trivial representation} $\mathbf{1}$：$T^a=0$。場は変換しない。
+    \item \term{基本表現}{fundamental representation} $\mathbf{N}$：$N$ 成分の列ベクトルに $U$ が作用する。
+    \item \term{随伴表現}{adjoint representation}：$(T^a_{\mathrm{adj}})^{bc}=-if^{abc}$。$N^2-1$ 次元で、ゲージ場が属する。
+\end{itemize}
+表現 $R$ の2次 Casimir 演算子\en{quadratic Casimir} $C_2(R)$ と Dynkin 指数\en{Dynkin index} $T(R)$ を
+\begin{equation}
+T^a_RT^a_R=C_2(R)\,\mathbf{1},\qquad
+\tr(T^a_RT^b_R)=T(R)\,\delta^{ab}
+\end{equation}
+で定義すると、$\SU(N)$ では
+\begin{equation}
+C_2(\mathbf{N})=\frac{N^2-1}{2N},\qquad
+C_2(\mathrm{adj})=N,\qquad
+T(\mathbf{N})=\frac12,\qquad
+T(\mathrm{adj})=N
+\end{equation}
+である。QCD では $C_F\equiv C_2(\mathbf{3})=4/3$, $C_A\equiv C_2(\mathbf{8})=3$ となる。
+\begin{note}
+$\sum_a\tr(T^a_RT^a_R)$ を2通りに計算する。
+左の定義から $\tr(C_2(R)\mathbf 1)=C_2(R)\dim R$、
+右の定義から $\sum_aT(R)\delta^{aa}=T(R)\dim G$。よって
+\[
+C_2(R)=\frac{T(R)\dim G}{\dim R}.
+\]
+基本表現では $T=1/2$, $\dim G=N^2-1$, $\dim R=N$ より $C_2(\mathbf N)=\frac{N^2-1}{2N}$。
+$\SU(2)$ では $C_2(\mathbf2)=3/4=j(j+1)|_{j=1/2}$ となり、角運動量の結果と一致する。
+随伴表現では $\dim R=\dim G$ なので $C_2(\mathrm{adj})=T(\mathrm{adj})=N$
+（$T(\mathrm{adj})=N$ は $f^{acd}f^{bcd}=N\delta^{ab}$ による）。
+\end{note}
+これらはループ計算で頻繁に現れる（付録A）。
+\subsection{$\SU(3)_C$：強い相互作用}
+$\dim\SU(3)=8$ であり、生成子は Gell-Mann 行列 $\lambda^a$ を用いて $T^a=\lambda^a/2$ と書かれる：
+\begin{gather}
+\lambda^1=\begin{pmatrix}0&1&0\\1&0&0\\0&0&0\end{pmatrix},\quad
+\lambda^2=\begin{pmatrix}0&-i&0\\i&0&0\\0&0&0\end{pmatrix},\quad
+\lambda^3=\begin{pmatrix}1&0&0\\0&-1&0\\0&0&0\end{pmatrix},\quad
+\lambda^4=\begin{pmatrix}0&0&1\\0&0&0\\1&0&0\end{pmatrix},\\
+\lambda^5=\begin{pmatrix}0&0&-i\\0&0&0\\i&0&0\end{pmatrix},\quad
+\lambda^6=\begin{pmatrix}0&0&0\\0&0&1\\0&1&0\end{pmatrix},\quad
+\lambda^7=\begin{pmatrix}0&0&0\\0&0&-i\\0&i&0\end{pmatrix},\quad
+\lambda^8=\frac{1}{\sqrt3}\begin{pmatrix}1&0&0\\0&1&0\\0&0&-2\end{pmatrix}.
+\end{gather}
+これらは $\tr(\lambda^a\lambda^b)=2\delta^{ab}$ を満たす。
+$\lambda^3$ と $\lambda^8$ は対角的で互いに可換であり、
+$\SU(3)$ の Cartan 部分代数\en{Cartan subalgebra}（階数\en{rank}2）を張る。
+構造定数の非ゼロ成分は（添字の置換を除いて）
+\begin{equation}
+f^{123}=1,\quad
+f^{147}=f^{246}=f^{257}=f^{345}=\frac12,\quad
+f^{156}=f^{367}=-\frac12,\quad
+f^{458}=f^{678}=\frac{\sqrt3}{2}
+\end{equation}
+である。
+
+8個のゲージ場がグルーオンであり、
+この部分の理論が量子色力学（Quantum Chromodynamics, QCD）である。
+クォークは基本表現 $\mathbf{3}$（反クォークは $\bar{\mathbf{3}}$）に、
+レプトンは自明表現 $\mathbf{1}$ に属する。
+$\SU(3)_C$ は対称性の破れを起こさず\en{unbroken}、グルーオンは massless のままである。
+
+カラーの観点では、ハドロンがカラー一重項であることは
+\begin{equation}
+\mathbf{3}\otimes\bar{\mathbf{3}}=\mathbf{1}\oplus\mathbf{8},
+\qquad
+\mathbf{3}\otimes\mathbf{3}\otimes\mathbf{3}=\mathbf{1}\oplus\mathbf{8}\oplus\mathbf{8}\oplus\mathbf{10}
+\end{equation}
+にそれぞれ一重項 $\mathbf{1}$ が含まれることに対応する。
+中間子 $q\bar q$ とバリオン $qqq$ はこの一重項の状態である。
+\subsection{$\SU(2)_L$：弱アイソスピン}
+$\SU(2)_L$ の生成子は Pauli 行列
+\begin{equation}
+\sigma^1=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+\sigma^2=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\qquad
+\sigma^3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+\end{equation}
+を用いて
+\begin{equation}
+T^i=\frac{\sigma^i}{2},
+\qquad
+[T^i,T^j]=i\epsilon^{ijk}T^k
+\qquad(i,j,k=1,2,3)
+\end{equation}
+と表される。$\dim\SU(2)=3$ なので3個のゲージ場 $W_\mu^i$ が存在する。
+この群の量子数を\term{弱アイソスピン}{weak isospin}と呼び、
+二重項 $\mathbf{2}$ の上成分は $T_3=+1/2$、下成分は $T_3=-1/2$ を持つ。
+
+昇降演算子\en{raising/lowering operator} $T^\pm=T^1\pm iT^2$ は
+\begin{equation}
+T^+=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad
+T^-=\begin{pmatrix}0&0\\1&0\end{pmatrix}
+\end{equation}
+であり、二重項の成分を入れ替える。
+\begin{equation}
+W_\mu^1T^1+W_\mu^2T^2
+=\frac{1}{\sqrt2}\left(W_\mu^+T^++W_\mu^-T^-\right)
+\end{equation}
+が成り立つ。
+\begin{note}
+$W^\pm=(W^1\mp iW^2)/\sqrt2$ と $T^\pm=T^1\pm iT^2$ を代入すると
+\[
+W^+T^++W^-T^-
+=\tfrac{1}{\sqrt2}\left[(W^1-iW^2)(T^1+iT^2)+(W^1+iW^2)(T^1-iT^2)\right]
+=\sqrt2\left(W^1T^1+W^2T^2\right).
+\]
+交差項 $\pm i(W^1T^2-W^2T^1)$ は打ち消し合う。
+\end{note}
+したがって $W^\pm$ ボソンとの結合は $T^\pm$ を通じて
+二重項の上下を入れ替える。これが荷電カレント\en{charged current, CC}相互作用である（第8章）。
+
+添字 $L$ は、この群が\textbf{左巻き}フェルミオンにのみ作用することを表す。
+左巻きフェルミオンは二重項 $\mathbf{2}$ に、
+右巻きフェルミオンは一重項 $\mathbf{1}$ に属する。
+\begin{myprop}{$\SU(2)$ の基本表現の擬実性}{pseudoreal}
+Pauli 行列は
+\begin{equation}
+\sigma^2(\sigma^i)^*\sigma^2=-\sigma^i
+\label{eq:pseudoreal}
+\end{equation}
+を満たす。したがって $\psi\to U\psi$（$U\in\SU(2)$）のとき
+\begin{equation}
+i\sigma^2\psi^*\to U\,(i\sigma^2\psi^*)
+\end{equation}
+となり、$\mathbf{2}$ とその複素共役表現 $\bar{\mathbf{2}}$ は同値である（$\mathbf{2}$ は\term{擬実}{pseudoreal}表現）。
+\end{myprop}
+\begin{note}
+$\sigma^1,\sigma^3$ は実なので $\sigma^2\sigma^{1,3}\sigma^2=-\sigma^{1,3}$（$\sigma^2$ と反可換）。
+$\sigma^2$ は純虚なので $\sigma^2(\sigma^2)^*\sigma^2=-\sigma^2\sigma^2\sigma^2=-\sigma^2$。
+
+次に $U=e^{i\beta^i\sigma^i/2}$ に対して
+\[
+\sigma^2U^*\sigma^2
+=\sigma^2e^{-i\beta^i(\sigma^i)^*/2}\sigma^2
+=e^{-i\beta^i\sigma^2(\sigma^i)^*\sigma^2/2}
+=e^{i\beta^i\sigma^i/2}=U .
+\]
+$(\sigma^2)^2=1$ を挟むと
+$i\sigma^2(U\psi)^*=i\sigma^2U^*\sigma^2\sigma^2\psi^*=U(i\sigma^2\psi^*)$。
+\end{note}
+これは後でヒッグス場の共役 $\tilde H=i\sigma^2H^*$ を作るときに用いる。
+\subsection{$\U(1)_Y$：弱超電荷}
+$\U(1)_Y$ は可換群であり、ゲージ場は $B_\mu$ の1つである。
+対応する量子数 $Y$ を\term{弱超電荷}{weak hypercharge}と呼ぶ。
+$\U(1)$ の既約表現はすべて1次元であり、
+超電荷 $Y$ の場は $\psi\to e^{i\theta Y/2}\psi$ と変換する。
+
+電荷 $Q$ は弱アイソスピンの第3成分 $T_3$ と $Y$ によって
+\begin{equation}
+\boxed{
+Q=T_3+\frac{Y}{2}
+}
+\label{eq:GNN}
+\end{equation}
+と表される（Gell-Mann--西島--中野の関係式）。
+これは、電弱対称性の破れの後に残る $\U(1)_{\mathrm{EM}}$ の生成子が
+$\SU(2)_L$ と $\U(1)_Y$ の生成子の線形結合であることを意味する。
+実際、\eqref{eq:ZA-preview} を共変微分に代入すると、
+光子 $A_\mu$ との結合は
+\begin{equation}
+g\sin\theta_W\,T_3+g'\cos\theta_W\frac{Y}{2}
+=e\left(T_3+\frac Y2\right)=eQ
+\end{equation}
+となる。ここで電気素量\en{elementary charge}は
+\begin{equation}
+e=g\sin\theta_W=g'\cos\theta_W
+=\frac{gg'}{\sqrt{g^2+g'^2}}
+\label{eq:e-preview}
+\end{equation}
+で与えられる（第6章）。
+\begin{note}
+\eqref{eq:ZA-preview} を逆に解くと
+$W^3_\mu=\cos\theta_WZ_\mu+\sin\theta_WA_\mu$,
+$B_\mu=-\sin\theta_WZ_\mu+\cos\theta_WA_\mu$。
+これを共変微分の中性部分 $gW^3_\mu T_3+g'B_\mu\frac Y2$ に代入して $A_\mu$ の係数を取り出すと
+\[
+g\sin\theta_W\,T_3+g'\cos\theta_W\,\frac Y2
+=\frac{gg'}{\sqrt{g^2+g'^2}}\left(T_3+\frac Y2\right).
+\]
+$T_3$ と $Y/2$ の係数が等しくなるのは、
+$\theta_W$ が $\tan\theta_W=g'/g$ で定まっているからである。
+$Z_\mu$ の係数については第6章・第8章で扱う。
+\end{note}
+可換群の電荷の規格化は群論からは決まらないので、
+$Y$ の値は理論の入力である。
+ただし、後で見るゲージ異常の相殺条件（第3章）により、
+1世代内の超電荷の比はほぼ一意に決まる。
+その結果、電荷の量子化\en{charge quantization}（陽子と電子の電荷が厳密に逆符号で等しいこと）が説明される。
+\subsection{ゲージ変換（gauge transformations）}
+ゲージ群の元を
+\begin{equation}
+U(x)=
+\exp\left(i\alpha^a(x)T^a\right)
+\exp\left(i\beta^i(x)\frac{\sigma^i}{2}\right)
+\exp\left(i\theta(x)\frac{Y}{2}\right)
+\end{equation}
+と書くと、物質場は $\psi\to U\psi$（ただし $\psi$ の表現に応じた部分だけが作用する）と変換する。
+例えば
+\begin{align}
+Q_L&\to
+e^{i\alpha^aT^a}\,e^{i\beta^i\sigma^i/2}\,e^{i\theta/6}\,Q_L,\\
+u_R&\to e^{i\alpha^aT^a}\,e^{2i\theta/3}\,u_R,\\
+L_L&\to e^{i\beta^i\sigma^i/2}\,e^{-i\theta/2}\,L_L,\\
+e_R&\to e^{-i\theta}\,e_R
+\end{align}
+である。ゲージ場は、各群について
+\begin{equation}
+A_\mu\equiv A_\mu^aT^a\to
+UA_\mu U^{-1}-\frac ig(\partial_\mu U)U^{-1}
+\end{equation}
+と変換する。$\U(1)_Y$ に対しては
+$B_\mu\to B_\mu+\frac{1}{g'}\partial_\mu\theta$ である。
+これにより $D_\mu\psi\to UD_\mu\psi$ が成り立つ（非可換の場合の証明は第2章）。
+\begin{note}
+例えば $L_L$ の $\U(1)_Y$ 部分を確かめる。$L_L\to e^{-i\theta/2}L_L$,
+$B_\mu\to B_\mu+\frac{1}{g'}\partial_\mu\theta$ のとき
+\[
+\Bigl(\partial_\mu+\tfrac i2g'B_\mu\Bigr)L_L
+\to
+e^{-i\theta/2}\Bigl(
+\partial_\mu L_L-\tfrac i2(\partial_\mu\theta)L_L
++\tfrac i2g'B_\mu L_L+\tfrac i2(\partial_\mu\theta)L_L
+\Bigr)
+=e^{-i\theta/2}\Bigl(\partial_\mu+\tfrac i2g'B_\mu\Bigr)L_L .
+\]
+超電荷 $Y$ の場に対しても、$\partial_\mu\theta$ の項は常に $\pm\frac{iY}{2}\partial_\mu\theta$ の形で打ち消す。
+\end{note}
+\subsection{ゲージ結合定数のランニング（running couplings）}
+量子補正\en{quantum correction}により、結合定数はエネルギースケール $\mu$ に依存する（繰り込み群\en{renormalization group}）。
+1ループでは
+\begin{equation}
+\mu\frac{dg_i}{d\mu}=\frac{b_i}{16\pi^2}g_i^3,
+\qquad\text{すなわち}\qquad
+\frac{1}{\alpha_i(\mu)}=\frac{1}{\alpha_i(\mu_0)}-\frac{b_i}{2\pi}\ln\frac{\mu}{\mu_0}
+\end{equation}
+であり、$\SU(N)$ ゲージ理論で $n_f$ 個の Dirac フェルミオン（基本表現）と
+$n_s$ 個の複素スカラー（基本表現）がある場合
+\begin{equation}
+b=-\frac{11}{3}N+\frac23n_f+\frac16n_s
+\end{equation}
+となる（$n_f$ は Weyl フェルミオンでは $1/2$ ずつ数える）。
+標準模型では
+\begin{equation}
+b_3=-11+\frac23\times6=-7,\qquad
+b_2=-\frac{22}{3}+\frac43n_g+\frac16=-\frac{19}{6},\qquad
+b_Y=+\frac{41}{6}
+\end{equation}
+である（$n_g=3$ は世代数、$b_Y$ は $Q=T_3+Y/2$ の $g'$ に対する値）。
+$\beta$ 関数の導出は1ループの真空偏極の計算を要するので本ノートでは扱わず、結果のみ用いる。
+\begin{note}
+\textbf{$b_3$}：クォークは6フレーバーの Dirac 場（各々 $\mathbf 3$）なので $n_f=6$。
+
+\textbf{$b_2$}：1世代あたりの $\SU(2)_L$ 二重項の Weyl 場は $Q_L$（3カラー）と $L_L$ の4個で、
+Dirac 換算で $n_f=2$。3世代で $n_f=6$、すなわち $\frac23\times6=4=\frac43n_g$。
+ヒッグス二重項は複素スカラー1個で $\frac16$。
+
+\textbf{$b_Y$}：$\U(1)$ では $T(R)$ の代わりに電荷の2乗 $(Y/2)^2$ を用い、
+Weyl 場1個あたり $\frac23(Y/2)^2$、複素スカラー1個あたり $\frac13(Y/2)^2$ が寄与する。
+1世代の Weyl 場について
+\[
+\sum\left(\frac Y2\right)^2
+=6\cdot\frac1{36}+3\cdot\frac49+3\cdot\frac19+2\cdot\frac14+1\cdot1
+=\frac16+\frac43+\frac13+\frac12+1=\frac{10}{3}.
+\]
+したがって $b_Y=\frac23\cdot\frac{10}{3}\cdot3+\frac13\cdot2\cdot\frac14=\frac{20}{3}+\frac16=\frac{41}{6}$。
+大統一理論の規格化 $g_1=\sqrt{5/3}\,g'$ では $b_1=\frac35b_Y=\frac{41}{10}$ となる。
+\end{note}
+$b_3<0$ は\term{漸近的自由性}{asymptotic freedom}を意味する。
+非可換ゲージ場の自己相互作用に由来する $-\frac{11}{3}N$ が
+フェルミオンの寄与に勝るためである。
+一方 $\U(1)_Y$ の結合は高エネルギーで大きくなる。
+3つの結合定数が高エネルギーで近づくことは
+大統一理論\en{grand unified theory, GUT}の動機となる（第14章）。
+\begin{remark}
+ゲージ場の総数は $8+3+1=12$ である。
+対称性の破れの後、そのうち3個（$W^\pm$, $Z^0$）が massive になり、
+9個（グルーオン8個と光子）が massless のまま残る。
+\end{remark}
+\begin{remark}
+厳密には、標準模型の全ての場に自明に作用する
+離散部分群 $\mathbb{Z}_6$ が存在するため、
+ゲージ群の大域的構造は
+$(\SU(3)\times\SU(2)\times\U(1))/\mathbb{Z}_6$
+とも書ける。摂動論\en{perturbation theory}の範囲ではこの違いは現れない。
+\end{remark}
+%------------------------------------------------
+\section{粒子の表現と量子数}
+%------------------------------------------------
+\subsection{1世代の量子数（quantum numbers of one generation）}
+標準模型の各場は、ゲージ群の各因子の表現の組
+\begin{equation}
+(R_3,\ R_2)_Y
+\end{equation}
+で指定される。
+ここで $R_3$ は $\SU(3)_C$ の表現（$\mathbf{3}$ または $\mathbf{1}$）、
+$R_2$ は $\SU(2)_L$ の表現（$\mathbf{2}$ または $\mathbf{1}$）、
+$Y$ は弱超電荷である。
+
+1世代分の場の量子数を以下にまとめる。
+左巻き二重項を
+\begin{equation}
+Q_L=\begin{pmatrix}u_L\\ d_L\end{pmatrix},
+\qquad
+L_L=\begin{pmatrix}\nu_L\\ e_L\end{pmatrix}
+\end{equation}
+と書く。
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{cccccc}
+\toprule
+場 & $\SU(3)_C$ & $\SU(2)_L$ & $Y$ & $T_3$ & $Q=T_3+Y/2$\\
+\midrule
+$Q_L$ & $\mathbf{3}$ & $\mathbf{2}$ & $+1/3$ &
+$\begin{matrix}+1/2\\ -1/2\end{matrix}$ &
+$\begin{matrix}+2/3\ (u_L)\\ -1/3\ (d_L)\end{matrix}$\\
+$u_R$ & $\mathbf{3}$ & $\mathbf{1}$ & $+4/3$ & $0$ & $+2/3$\\
+$d_R$ & $\mathbf{3}$ & $\mathbf{1}$ & $-2/3$ & $0$ & $-1/3$\\
+\midrule
+$L_L$ & $\mathbf{1}$ & $\mathbf{2}$ & $-1$ &
+$\begin{matrix}+1/2\\ -1/2\end{matrix}$ &
+$\begin{matrix}0\ (\nu_L)\\ -1\ (e_L)\end{matrix}$\\
+$e_R$ & $\mathbf{1}$ & $\mathbf{1}$ & $-2$ & $0$ & $-1$\\
+\midrule
+$H$ & $\mathbf{1}$ & $\mathbf{2}$ & $+1$ &
+$\begin{matrix}+1/2\\ -1/2\end{matrix}$ &
+$\begin{matrix}+1\ (H^+)\\ 0\ (H^0)\end{matrix}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+第2・第3世代は、$(u,d,\nu_e,e)$ を
+$(c,s,\nu_\mu,\mu)$, $(t,b,\nu_\tau,\tau)$ に置き換えたものである。
+\begin{myex}{$u$ クォークの電荷}{u-charge}
+$Q_L$ の上成分 $u_L$ については $T_3=+1/2$, $Y=1/3$ なので
+\begin{equation}
+Q=\frac12+\frac16=\frac23
+\end{equation}
+となり、$u$ クォークの電荷を正しく与える。
+右巻きの $u_R$ は $T_3=0$ なので $Q=Y/2=2/3$ であり、
+左巻き成分と右巻き成分の電荷は一致する。
+これは電磁相互作用がパリティを保存することと整合している。
+\end{myex}
+\subsection{表から読み取れること}
+\begin{itemize}
+    \item 同じ粒子の左巻き成分と右巻き成分は、
+    異なる $\SU(2)_L$ 表現と異なる $Y$ を持つが、
+    同じ電荷 $Q$ を持つ。
+    \item 二重項の上成分と下成分の電荷の差は常に $1$ であり、
+    $W^\pm$ ボソンの電荷 $\pm1$ に対応する。
+    \item 二重項の超電荷は、その平均電荷の2倍に等しい：
+    $Y(Q_L)=2\times\frac12(\frac23-\frac13)=\frac13$,
+    $Y(L_L)=2\times\frac12(0-1)=-1$。
+    一重項の超電荷は電荷の2倍である。
+    \item 最小標準模型には右巻きニュートリノ $\nu_R$ は含まれない。
+    仮に導入すると $(\mathbf{1},\mathbf{1})_0$ であり、
+    いかなるゲージ相互作用も受けない（\term{ステライル}{sterile}）。
+    \item ヒッグス二重項の下成分 $H^0$ は電気的に中性であり、
+    これが真空期待値を持っても $\U(1)_{\mathrm{EM}}$ は破れない。
+\end{itemize}
+\subsection{ヒッグス場の共役（conjugate Higgs field）}
+$H\sim(\mathbf{1},\mathbf{2})_{+1}$ に対し、
+複素共役 $H^*$ は $(\mathbf{1},\bar{\mathbf{2}})_{-1}$ に属する。
+\eqref{eq:pseudoreal} を用いると
+\begin{equation}
+\tilde H\equiv i\sigma^2H^*
+=\begin{pmatrix}0&1\\-1&0\end{pmatrix}
+\begin{pmatrix}H^{+*}\\ H^{0*}\end{pmatrix}
+=\begin{pmatrix}H^{0*}\\ -H^-\end{pmatrix}
+\end{equation}
+は $(\mathbf{1},\mathbf{2})_{-1}$ の二重項として変換する（$H^-\equiv H^{+*}$）。
+$\tilde H$ の上成分は中性、下成分は電荷 $-1$ である。
+$H$ と $\tilde H$ の両方を用いることで、
+上型クォークと下型クォークの両方に質量を与えることができる。
+\subsection{すべて左巻きで書く表示（all left-handed notation）}
+右巻きの Weyl 場の荷電共役\en{charge conjugate}は左巻きの Weyl 場になる。
+$(\psi_R)^c$ は $\psi_R$ の複素共役表現に属するので、
+すべてのフェルミオンを左巻き場で表すと次のようになる。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccccc}
+\toprule
+場 & $\SU(3)_C$ & $\SU(2)_L$ & $Y$ & Weyl 成分数\\
+\midrule
+$Q$ & $\mathbf{3}$ & $\mathbf{2}$ & $+1/3$ & 6\\
+$u^c$ & $\bar{\mathbf{3}}$ & $\mathbf{1}$ & $-4/3$ & 3\\
+$d^c$ & $\bar{\mathbf{3}}$ & $\mathbf{1}$ & $+2/3$ & 3\\
+$L$ & $\mathbf{1}$ & $\mathbf{2}$ & $-1$ & 2\\
+$e^c$ & $\mathbf{1}$ & $\mathbf{1}$ & $+2$ & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+この表示はゲージ異常の計算や大統一理論（$\SU(5)$ では
+$\bar{\mathbf{5}}=d^c\oplus L$, $\mathbf{10}=Q\oplus u^c\oplus e^c$ にまとまる）で便利である。
+\subsection{異常相殺の予告（preview of anomaly cancellation）}
+カイラルなゲージ理論では、量子効果によってゲージ対称性が破れる
+\term{ゲージ異常}{gauge anomaly}が生じ得る。異常が相殺するための条件の一部は、
+左巻き表示の Weyl フェルミオンについての和
+\begin{equation}
+\sum Y=0,\qquad\sum Y^3=0
+\end{equation}
+である（なぜこの条件が必要かは第3章で説明する。ここでは数値だけ確かめる）。1世代について確かめると
+\begin{align}
+\sum Y&=
+6\cdot\frac13+3\cdot\left(-\frac43\right)+3\cdot\frac23+2\cdot(-1)+1\cdot2
+=2-4+2-2+2=0,\\
+\sum Y^3&=
+6\cdot\frac{1}{27}+3\cdot\left(-\frac{64}{27}\right)+3\cdot\frac{8}{27}+2\cdot(-1)+1\cdot8
+=-6-2+8=0
+\end{align}
+となる。
+\begin{note}
+$\sum Y^3$ の各項：
+$Q$：$6\times\frac1{27}=\frac29$、
+$u^c$：$3\times(-\frac{64}{27})=-\frac{64}{9}$、
+$d^c$：$3\times\frac8{27}=\frac89$。
+クォークの和は $\frac{2-64+8}{9}=-6$。
+レプトンは $L$：$2\times(-1)=-2$、$e^c$：$1\times8=8$ で和は $+6$。
+クォーク部分とレプトン部分がそれぞれ $\mp6$ で打ち消している。
+\end{note}
+クォークとレプトンの寄与が絶妙に打ち消し合っており、
+\textbf{1世代はクォークとレプトンが揃って初めて矛盾のない理論になる}。
+これは「クォークとレプトンの間に何らかの関係がある」ことを強く示唆している。
+\subsection{大域的対称性：バリオン数とレプトン数（global symmetries: $B$ and $L$）}
+標準模型のラグランジアンは、ゲージ対称性の他に、
+課さなくても自動的に現れる\term{偶然的対称性}{accidental symmetry}を持つ。
+\begin{itemize}
+    \item \term{バリオン数}{baryon number} $B$：すべてのクォークに $B=1/3$、レプトンに $B=0$。
+    \item \term{レプトン数}{lepton number} $L$：すべてのレプトンに $L=1$、クォークに $L=0$。
+    ニュートリノが massless なら、各世代のレプトン数 $L_e$, $L_\mu$, $L_\tau$ が別々に保存する。
+\end{itemize}
+これらは繰り込み可能な項だけを許したことの帰結であり、
+陽子が（摂動論の範囲で）安定である\en{proton stability}ことを説明する。
+ただし $B$ と $L$ は量子異常により非摂動的に\en{non-perturbatively}破れ、$B-L$ のみが厳密に保存する。
+%------------------------------------------------
+\section{左巻き・右巻きフェルミオン}
+\label{sec:chirality}
+%------------------------------------------------
+\subsection{カイラル射影（chiral projection）}
+\begin{mydef}{カイラル射影とカイラリティ}{chirality}
+Dirac スピノル $\psi$ に対して、カイラル射影演算子を
+\begin{equation}
+\PL=\frac{1-\gamma^5}{2},
+\qquad
+\PR=\frac{1+\gamma^5}{2}
+\end{equation}
+で定義し、左巻き\en{left-handed}・右巻き\en{right-handed}成分を
+\begin{equation}
+\psi_L=\PL\psi,\qquad \psi_R=\PR\psi,
+\qquad
+\psi=\psi_L+\psi_R
+\end{equation}
+と定義する。$\gamma^5\psi_L=-\psi_L$, $\gamma^5\psi_R=+\psi_R$ であり、
+$\gamma^5$ の固有値 $\mp1$ を\term{カイラリティ}{chirality}と呼ぶ。
+\end{mydef}
+$(\gamma^5)^2=1$ から
+\begin{equation}
+\PL^2=\PL,\qquad \PR^2=\PR,\qquad
+\PL\PR=\PR\PL=0,\qquad
+\PL+\PR=1
+\end{equation}
+が成り立ち、これらは射影演算子\en{projection operator}である。
+\begin{note}
+$\PL^2=\frac14(1-2\gamma^5+(\gamma^5)^2)=\frac14(2-2\gamma^5)=\PL$。
+$\PL\PR=\frac14(1-(\gamma^5)^2)=0$。
+$\gamma^5\PL=\frac12(\gamma^5-1)=-\PL$ より $\gamma^5\psi_L=-\psi_L$。
+\end{note}
+Dirac 共役 $\bar\psi=\psi^\dagger\gamma^0$ については、
+$\gamma^5$ がエルミートで $\gamma^0$ と反可換であることから
+\begin{equation}
+\overline{\psi_L}
+=(\PL\psi)^\dagger\gamma^0
+=\psi^\dagger\PL\gamma^0
+=\psi^\dagger\gamma^0\PR
+=\bar\psi\PR
+\end{equation}
+となる。同様に $\overline{\psi_R}=\bar\psi\PL$ である。
+また $\gamma^\mu$ と $\gamma^5$ の反可換性から
+\begin{equation}
+\PR\gamma^\mu=\gamma^\mu\PL,\qquad
+\PL\gamma^\mu=\gamma^\mu\PR
+\end{equation}
+が成り立つ。
+\subsection{Weyl 表示（Weyl / chiral representation）}
+カイラリティの構造は、$\gamma^5$ を対角にする Weyl（カイラル）表示で最も見やすい：
+\begin{equation}
+\gamma^\mu=\begin{pmatrix}0&\sigma^\mu\\ \bar\sigma^\mu&0\end{pmatrix},
+\qquad
+\gamma^5=\begin{pmatrix}-1&0\\0&1\end{pmatrix},
+\qquad
+\sigma^\mu=(1,\bm\sigma),\quad
+\bar\sigma^\mu=(1,-\bm\sigma).
+\end{equation}
+このとき Dirac スピノルは2成分スピノルの組
+\begin{equation}
+\psi=\begin{pmatrix}\psi_L\\ \psi_R\end{pmatrix}
+\end{equation}
+に分かれ、$\psi_L$, $\psi_R$ はそれぞれ Lorentz 群の
+$(\frac12,0)$, $(0,\frac12)$ 表現に属する。
+これらは Lorentz 変換で混ざらないので、
+\textbf{別々の場として独立に扱うことができる}。
+
+Dirac ラグランジアンは
+\begin{equation}
+\Lag
+=\bar\psi(i\gamma^\mu\partial_\mu-m)\psi
+=
+\psi_L^\dagger i\bar\sigma^\mu\partial_\mu\psi_L
++\psi_R^\dagger i\sigma^\mu\partial_\mu\psi_R
+-m\left(\psi_L^\dagger\psi_R+\psi_R^\dagger\psi_L\right)
+\end{equation}
+となる。質量項だけが $\psi_L$ と $\psi_R$ を結びつけていることが明らかである。
+\begin{note}
+$\gamma^0=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ なので
+$\bar\psi=\psi^\dagger\gamma^0=(\psi_R^\dagger,\ \psi_L^\dagger)$。また
+$\gamma^\mu\partial_\mu\psi=\begin{pmatrix}\sigma^\mu\partial_\mu\psi_R\\ \bar\sigma^\mu\partial_\mu\psi_L\end{pmatrix}$。
+よって
+\[
+\bar\psi\gamma^\mu\partial_\mu\psi
+=\psi_R^\dagger\sigma^\mu\partial_\mu\psi_R+\psi_L^\dagger\bar\sigma^\mu\partial_\mu\psi_L,
+\qquad
+\bar\psi\psi=\psi_R^\dagger\psi_L+\psi_L^\dagger\psi_R .
+\]
+$\gamma^5=\diag(-1,1)$ が $\gamma^5=i\gamma^0\gamma^1\gamma^2\gamma^3$ と一致することは、
+$\gamma^0\gamma^i=\diag(-\sigma^i,\sigma^i)$ を用いて直接確かめられる。
+\end{note}
+\subsection{運動項と質量項（kinetic and mass terms）}
+一般の表示で同じことを確かめよう。運動項は
+\begin{equation}
+\bar\psi i\gamma^\mu\partial_\mu\psi
+=
+\overline{\psi_L}i\gamma^\mu\partial_\mu\psi_L
++
+\overline{\psi_R}i\gamma^\mu\partial_\mu\psi_R
+\end{equation}
+と左右に\textbf{分離}\en{decouple}する。
+実際、交差項は
+$\overline{\psi_L}\gamma^\mu\psi_R=\bar\psi\PR\gamma^\mu\PR\psi=\bar\psi\gamma^\mu\PL\PR\psi=0$
+となる。
+同様にゲージ場との結合 $\bar\psi\gamma^\mu A_\mu\psi$ も左右に分離するので、
+$\psi_L$ と $\psi_R$ に異なるゲージ変換性を与えても
+運動項のゲージ不変性は損なわれない。
+
+一方、質量項は
+\begin{equation}
+m\bar\psi\psi
+=
+m\left(\overline{\psi_L}\psi_R+\overline{\psi_R}\psi_L\right)
+\end{equation}
+となり、左右を\textbf{混合}\en{mix}する
+（$\overline{\psi_L}\psi_L=\bar\psi\PR\PL\psi=0$ に注意）。
+標準模型では $\psi_L$ と $\psi_R$ が異なるゲージ表現に属するため、
+この項はゲージ不変ではない。例えば電子の場合
+\begin{equation}
+\overline{e_L}e_R:\quad
+e_L\ \text{は}\ \SU(2)_L\ \text{二重項の成分},\quad
+e_R\ \text{は一重項},\quad
+Y:\ +1-2=-1\neq0
+\end{equation}
+であり、$\SU(2)_L$ と $\U(1)_Y$ の両方で不変ではない。
+したがって、この項をラグランジアンに直接書き込むことはできない。
+これがフェルミオンの質量をヒッグス機構によって生成する必要がある理由である（第3章、第7章）。
+\subsection{双線形形式と V$-$A 構造（bilinears and V$-$A structure）}
+Dirac 双線形形式\en{bilinear}を左右の成分で書くと
+\begin{align}
+\bar\psi\gamma^\mu\psi&=\overline{\psi_L}\gamma^\mu\psi_L+\overline{\psi_R}\gamma^\mu\psi_R,\\
+\bar\psi\gamma^\mu\gamma^5\psi&=-\overline{\psi_L}\gamma^\mu\psi_L+\overline{\psi_R}\gamma^\mu\psi_R
+\end{align}
+となる。
+\begin{note}
+$\gamma^5\psi=-\psi_L+\psi_R$ なので
+$\bar\psi\gamma^\mu\gamma^5\psi=\bar\psi\gamma^\mu(-\psi_L+\psi_R)$。
+$\bar\psi\gamma^\mu\psi_L=\overline{\psi_L}\gamma^\mu\psi_L$
+（$\overline{\psi_R}\gamma^\mu\psi_L=\bar\psi\PL\gamma^\mu\PL\psi=\bar\psi\gamma^\mu\PR\PL\psi=0$ による）を用いればよい。
+また $1-\gamma^5=2\PL$ から直接
+$\bar\psi\gamma^\mu(1-\gamma^5)\psi=2\bar\psi\gamma^\mu\PL\psi=2\bar\psi\PR\gamma^\mu\PL\psi=2\overline{\psi_L}\gamma^\mu\psi_L$
+（$\PL^2=\PL$ を用いて $\PL$ を2つに分けた）。
+\end{note}
+したがって
+\begin{equation}
+\bar\psi\gamma^\mu(1-\gamma^5)\psi=2\,\overline{\psi_L}\gamma^\mu\psi_L
+\end{equation}
+であり、左巻き成分のみが現れる。
+ベクトル（vector, V）カレントから軸性ベクトル（axial vector, A）カレントを引いた
+この形を \term{V$-$A 構造}{V$-$A structure} と呼ぶ。
+$W$ ボソンとの結合はすべてこの形をとる（導出は第8章。ここでは結果のみ示す）：
+\begin{equation}
+\Lag_{\mathrm{CC}}=\frac{g}{\sqrt2}\,
+\overline{\nu_L}\gamma^\mu e_L\,W_\mu^++\hc
+=\frac{g}{2\sqrt2}\,
+\bar\nu\gamma^\mu(1-\gamma^5)e\,W_\mu^++\hc
+\end{equation}
+\subsection{カイラリティとヘリシティ（chirality vs.\ helicity）}
+カイラリティ（$\gamma^5$ の固有値）は Lorentz 不変な概念であるが、
+質量があると運動方程式で保存しない。
+これに対しヘリシティ\en{helicity}
+\begin{equation}
+h=\frac{\bm{S}\cdot\bm{p}}{|\bm{p}|}
+\end{equation}
+は自由粒子で保存するが、massive な粒子では
+粒子を追い越す Lorentz 系で符号が反転するため、Lorentz 不変ではない。
+
+massless の場合、Weyl 表示で $\psi_L\propto u\,e^{-ip\cdot x}$ とおくと
+運動方程式 $i\bar\sigma^\mu\partial_\mu\psi_L=0$ は
+\begin{equation}
+(E+\bm\sigma\cdot\bm p)u=0
+\quad\Longrightarrow\quad
+\frac{\bm\sigma\cdot\bm p}{|\bm p|}u=-u
+\end{equation}
+となり（$E=|\bm p|$）、左巻きの粒子はヘリシティ $-1/2$ を持つ。
+\begin{note}
+$i\bar\sigma^\mu\partial_\mu(u\,e^{-ip\cdot x})=\bar\sigma^\mu p_\mu u\,e^{-ip\cdot x}$。
+$\bar\sigma^\mu=(1,-\sigma^i)$、共変成分 $p_\mu=(E,-p^i)$ なので
+$\bar\sigma^\mu p_\mu=E+(-\sigma^i)(-p^i)=E+\bm\sigma\cdot\bm p$ となる。
+スピン演算子は $\bm S=\bm\sigma/2$ なので $h=-1/2$。
+同様に $\psi_R$ は $(E-\bm\sigma\cdot\bm p)u=0$ からヘリシティ $+1/2$ を持つ。
+\end{note}
+同様に、左巻きの場が生成する反粒子はヘリシティ $+1/2$ を持つ。
+したがってニュートリノは常にヘリシティ $-1/2$、
+反ニュートリノは常にヘリシティ $+1/2$ で観測される（Goldhaber らの実験, 1958）。
+
+massive な粒子（質量 $m$、エネルギー $E$）では、
+左巻きカイラリティの状態がヘリシティ $+1/2$ の成分を含む振幅は
+$O(m/E)$ である。
+\begin{myex}{荷電パイ中間子の崩壊とヘリシティ抑制（helicity suppression）}{pion}
+$\pi^-\to\ell^-\bar\nu_\ell$（$\ell=e,\mu$）を考える。
+$\pi^-$ はスピン0なので、静止系で背中合わせに出る
+$\ell^-$ と $\bar\nu_\ell$ のスピンは逆向き、
+すなわち両者のヘリシティは等しくなければならない。
+$\bar\nu_\ell$ はヘリシティ $+1/2$ なので $\ell^-$ もヘリシティ $+1/2$ でなければならないが、
+V$-$A 結合は左巻きの $\ell^-$ しか生成しないので、
+この振幅は $m_\ell/E$ に比例して suppress される。
+その結果、崩壊幅の比は
+\begin{equation}
+R_\pi=\frac{\Gamma(\pi\to e\bar\nu)}{\Gamma(\pi\to\mu\bar\nu)}
+=\frac{m_e^2}{m_\mu^2}
+\left(\frac{m_\pi^2-m_e^2}{m_\pi^2-m_\mu^2}\right)^2
+\simeq1.28\times10^{-4}
+\end{equation}
+となる。位相空間\en{phase space}だけを考えると軽い電子への崩壊の方が有利なのにもかかわらず、
+実際には電子への崩壊は1万分の1程度しか起こらない。
+放射補正\en{radiative correction}を含めた理論値 $1.235\times10^{-4}$ は実験値とよく一致し、
+V$-$A 構造の強力な証拠となっている。
+（崩壊幅の具体的な計算は第12章で行う。）
+\end{myex}
+\begin{note}
+崩壊幅は $\Gamma(\pi\to\ell\bar\nu)\propto m_\ell^2\,(m_\pi^2-m_\ell^2)^2/m_\pi^3$ の形をとる。
+$m_\ell^2$ が helicity suppression、$(m_\pi^2-m_\ell^2)^2$ が位相空間と行列要素の運動学的因子である。
+数値は $m_e=0.511$, $m_\mu=105.66$, $m_\pi=139.57$（MeV）を用いて
+\[
+\frac{m_e^2}{m_\mu^2}=2.34\times10^{-5},
+\qquad
+\frac{m_\pi^2-m_e^2}{m_\pi^2-m_\mu^2}=\frac{19480}{8316}=2.343,
+\qquad
+R_\pi=2.34\times10^{-5}\times(2.343)^2\simeq1.28\times10^{-4}.
+\]
+\end{note}
+\subsection{離散対称性 $C$, $P$, $CP$（discrete symmetries）}
+パリティ $P$ は空間反転\en{spatial inversion} $\bm x\to-\bm x$ であり、運動量を反転しスピンを変えないので
+ヘリシティを反転する。Dirac 場に対しては $\psi\to\gamma^0\psi$ と作用し、
+$\psi_L\leftrightarrow\psi_R$ を入れ替える。
+荷電共役 $C$ は粒子と反粒子を入れ替え、ヘリシティは変えない。
+
+左巻きのニュートリノ $\nu_L$ に対して
+\begin{equation}
+\nu_L\ (h=-\tfrac12)
+\xrightarrow{\ P\ }
+\nu\ (h=+\tfrac12)\ \text{（存在しない）},
+\qquad
+\nu_L\ (h=-\tfrac12)
+\xrightarrow{\ C\ }
+\bar\nu\ (h=-\tfrac12)\ \text{（存在しない）}
+\end{equation}
+となり、$P$ と $C$ はそれぞれ最大限に破れている。
+一方、$CP$ は $\nu\ (h=-\frac12)$ を存在する状態 $\bar\nu\ (h=+\frac12)$ に移すので、
+ゲージ相互作用は $CP$ を保存する。
+標準模型で $CP$ を破るのは Yukawa 結合に含まれる複素位相
+（CKM 位相、第9章）と QCD の $\theta$ 項のみである。
+\subsection{1世代の自由度（degrees of freedom per generation）}
+各 Dirac 場 $\psi$ は2つの Weyl スピノル $\psi_L$, $\psi_R$ からなる。
+標準模型の1世代に含まれる Weyl スピノルの数は
+\begin{equation}
+\underbrace{3\times2}_{Q_L}
++\underbrace{3}_{u_R}
++\underbrace{3}_{d_R}
++\underbrace{2}_{L_L}
++\underbrace{1}_{e_R}
+=15
+\end{equation}
+である。3世代で45個となる。
+右巻きニュートリノを加えると1世代16個となり、
+これは $\mathrm{SO}(10)$ 大統一理論のスピノル表現 $\mathbf{16}$ にちょうど収まる。
+%------------------------------------------------
+\section{標準模型のラグランジアンの全体構造}
+\label{sec:SM-lagrangian}
+%------------------------------------------------
+標準模型のラグランジアンは
+\begin{equation}
+\boxed{
+\Lag_{\SM}
+=
+\Lag_{\mathrm{gauge}}
++\Lag_{\mathrm{fermion}}
++\Lag_{\mathrm{Higgs}}
++\Lag_{\mathrm{Yukawa}}
+\ (+\Lag_\theta)
+}
+\end{equation}
+と分解できる（量子化の際にはこれにゲージ固定項\en{gauge-fixing term}とゴースト項\en{ghost term}が加わる。付録E）。
+以下に各項の具体形を示す。導出と物理的意味は後の章で詳しく扱う。
+\subsection{共変微分（covariant derivative）}
+\begin{equation}
+D_\mu
+=
+\partial_\mu
+-ig_sG_\mu^aT^a
+-igW_\mu^i\frac{\sigma^i}{2}
+-ig'\frac{Y}{2}B_\mu .
+\end{equation}
+各項は、その場が非自明な表現に属する場合にのみ作用する。各場に対して具体的に書くと
+\begin{align}
+D_\mu Q_L&=\left(\partial_\mu-ig_sG_\mu^aT^a-igW_\mu^i\frac{\sigma^i}{2}-\frac{i}{6}g'B_\mu\right)Q_L,\\
+D_\mu u_R&=\left(\partial_\mu-ig_sG_\mu^aT^a-\frac{2i}{3}g'B_\mu\right)u_R,\\
+D_\mu d_R&=\left(\partial_\mu-ig_sG_\mu^aT^a+\frac{i}{3}g'B_\mu\right)d_R,\\
+D_\mu L_L&=\left(\partial_\mu-igW_\mu^i\frac{\sigma^i}{2}+\frac{i}{2}g'B_\mu\right)L_L,\\
+D_\mu e_R&=\left(\partial_\mu+ig'B_\mu\right)e_R,\\
+D_\mu H&=\left(\partial_\mu-igW_\mu^i\frac{\sigma^i}{2}-\frac{i}{2}g'B_\mu\right)H
+\end{align}
+である。
+\subsection{ゲージ場の運動項（gauge kinetic terms）}
+\begin{equation}
+\Lag_{\mathrm{gauge}}
+=
+-\frac14G_{\mu\nu}^aG^{a\mu\nu}
+-\frac14W_{\mu\nu}^iW^{i\mu\nu}
+-\frac14B_{\mu\nu}B^{\mu\nu},
+\end{equation}
+\begin{align}
+G_{\mu\nu}^a&=\partial_\mu G_\nu^a-\partial_\nu G_\mu^a+g_sf^{abc}G_\mu^bG_\nu^c,\\
+W_{\mu\nu}^i&=\partial_\mu W_\nu^i-\partial_\nu W_\mu^i+g\epsilon^{ijk}W_\mu^jW_\nu^k,\\
+B_{\mu\nu}&=\partial_\mu B_\nu-\partial_\nu B_\mu .
+\end{align}
+場の強さ\en{field strength}は $[D_\mu,D_\nu]=-igF_{\mu\nu}^aT^a$ から得られる（詳しくは第2章）。
+\begin{note}
+$D_\mu=\partial_\mu-igA_\mu$（$A_\mu=A_\mu^aT^a$）とすると、試験関数に作用させて
+\[
+[D_\mu,D_\nu]
+=-ig(\partial_\mu A_\nu-\partial_\nu A_\mu)+(-ig)^2[A_\mu,A_\nu].
+\]
+$[A_\mu,A_\nu]=A_\mu^bA_\nu^c[T^b,T^c]=if^{abc}A_\mu^bA_\nu^cT^a$ を代入すると
+\[
+[D_\mu,D_\nu]=-ig\left(\partial_\mu A_\nu^a-\partial_\nu A_\mu^a+gf^{abc}A_\mu^bA_\nu^c\right)T^a
+=-igF^a_{\mu\nu}T^a .
+\]
+\end{note}
+非可換ゲージ場の場の強さに含まれる2次の項により、
+$-\frac14F^2$ を展開すると
+\begin{equation}
+-\frac14F^a_{\mu\nu}F^{a\mu\nu}
+\supset
+-gf^{abc}(\partial_\mu A_\nu^a)A^{b\mu}A^{c\nu}
+-\frac{g^2}{4}f^{abe}f^{cde}A_\mu^aA_\nu^bA^{c\mu}A^{d\nu}
+\end{equation}
+が現れ、グルーオンや $W$ ボソンは3点・4点の自己相互作用を持つ。
+\begin{note}
+$F^a_{\mu\nu}=f^a_{\mu\nu}+gf^{abc}A^b_\mu A^c_\nu$（$f^a_{\mu\nu}=\partial_\mu A_\nu^a-\partial_\nu A_\mu^a$）とおくと
+\[
+-\tfrac14F^aF^a
+=-\tfrac14f^af^a
+-\tfrac12gf^{abc}f^a_{\mu\nu}A^{b\mu}A^{c\nu}
+-\tfrac14g^2f^{abe}f^{cde}A^a_\mu A^b_\nu A^{c\mu}A^{d\nu}.
+\]
+2項目で $f^a_{\mu\nu}$ の2つの項は、$f^{abc}$ の $b\leftrightarrow c$ 反対称性と $\mu\leftrightarrow\nu$ の入れ替えにより等しい寄与を与えるので、
+$-gf^{abc}(\partial_\mu A^a_\nu)A^{b\mu}A^{c\nu}$ となる。
+\end{note}
+ゲージ場の質量項 $\frac12M^2A_\mu A^\mu$ はゲージ不変\en{gauge invariant}でないため含まれない。
+\subsection{フェルミオンの運動項（fermion kinetic terms）}
+\begin{equation}
+\Lag_{\mathrm{fermion}}
+=
+\sum_{\text{世代}}
+\left(
+\overline{Q_L}i\gamma^\mu D_\mu Q_L
++\overline{u_R}i\gamma^\mu D_\mu u_R
++\overline{d_R}i\gamma^\mu D_\mu d_R
++\overline{L_L}i\gamma^\mu D_\mu L_L
++\overline{e_R}i\gamma^\mu D_\mu e_R
+\right).
+\end{equation}
+この項がフェルミオンとゲージボソンの相互作用をすべて含む。
+共変微分を展開すると、相互作用は
+\begin{equation}
+\Lag_{\mathrm{fermion}}\supset
+g_s\,\bar q\gamma^\mu T^aq\,G_\mu^a
++g\,\overline{\Psi_L}\gamma^\mu\frac{\sigma^i}{2}\Psi_L\,W_\mu^i
++g'\,\bar\psi\gamma^\mu\frac{Y}{2}\psi\,B_\mu
+\end{equation}
+の形をとる（$\Psi_L$ は左巻き二重項）。
+すなわち各ゲージ場は、対応する対称性の\term{保存カレント}{conserved current}と結合する。
+ゲージ対称性のため、1つのゲージ群に属するすべての場は
+\textbf{同じ}結合定数で結合する（ゲージ結合の普遍性\en{universality}）。
+例えば $W$ ボソンとレプトンの結合と、$W$ ボソンとクォークの結合は同じ $g$ で与えられる。
+\subsection{ヒッグス部分（Higgs sector）}
+\begin{equation}
+\Lag_{\mathrm{Higgs}}
+=
+(D_\mu H)^\dagger(D^\mu H)-V(H),
+\qquad
+V(H)=-\mu^2H^\dagger H+\lambda(H^\dagger H)^2 .
+\end{equation}
+$\SU(2)_L\times\U(1)_Y$ 不変かつ次元4以下のスカラーポテンシャルは $H^\dagger H$ の2次式に限られる
+（$H^3$ のような奇数次の項は $Y$ の保存則から禁止される）。
+真空の安定性\en{vacuum stability}から $\lambda>0$ が必要である。
+
+$\mu^2>0$ のとき $V$ の最小値は
+\begin{equation}
+H^\dagger H=\frac{v^2}{2},\qquad v=\frac{\mu}{\sqrt\lambda}
+\end{equation}
+にあり、電弱対称性が自発的に破れる。
+ユニタリーゲージ\en{unitary gauge}で $H=\frac{1}{\sqrt2}(0,\ v+h)^T$ とおくと、
+\begin{itemize}
+    \item 運動項 $(D_\mu H)^\dagger(D^\mu H)$ から $W^\pm$, $Z^0$ の質量項
+    \begin{equation}
+    M_W=\frac{gv}{2},\qquad
+    M_Z=\frac{\sqrt{g^2+g'^2}\,v}{2}=\frac{M_W}{\cos\theta_W}
+    \end{equation}
+    および $hWW$, $hZZ$ 結合が現れる。
+    \item ポテンシャルから、ヒッグス粒子の質量と自己結合\en{self-coupling}
+    \begin{equation}
+    m_h=\sqrt{2\lambda}\,v=\sqrt2\mu,\qquad
+    V\supset\lambda vh^3+\frac\lambda4h^4
+    \end{equation}
+    が得られる。
+\end{itemize}
+（ゲージボソンの質量の導出は第6章で行う。）
+\begin{note}
+ポテンシャル部分だけ確かめておく。$H^\dagger H=\frac12(v+h)^2$ を代入し $\mu^2=\lambda v^2$ を用いると
+\[
+V=-\frac{\lambda v^2}{2}(v+h)^2+\frac\lambda4(v+h)^4 .
+\]
+$h^2$ の係数：$-\frac{\lambda v^2}{2}+\frac\lambda4\cdot6v^2=\lambda v^2$。
+これを $\frac12m_h^2h^2$ と比べて $m_h^2=2\lambda v^2$。
+$h^3$ の係数：$\frac\lambda4\cdot4v=\lambda v$。$h^4$ の係数：$\frac\lambda4$。
+$h$ の1次の係数は $-\lambda v^3+\lambda v^3=0$ となり、$h=0$ が極値であることと整合する。
+\end{note}
+観測値 $m_h\simeq125\ \mathrm{GeV}$ から
+$\lambda=m_h^2/(2v^2)=125^2/(2\times246^2)\simeq0.13$,
+$\mu=m_h/\sqrt2\simeq88\ \mathrm{GeV}$ と決まる。
+$M_W/M_Z=\cos\theta_W$ の関係は $\rho$ パラメータ\en{$\rho$ parameter}
+\begin{equation}
+\rho\equiv\frac{M_W^2}{M_Z^2\cos^2\theta_W}=1
+\end{equation}
+として表され、ヒッグス場が二重項であることの帰結である（第6章および第12章の電弱精密測定）。
+\subsection{Yukawa 相互作用（Yukawa interactions）}
+\begin{equation}
+\Lag_{\mathrm{Yukawa}}
+=
+-y^d_{ij}\,\overline{Q_{Li}}\,H\,d_{Rj}
+-y^u_{ij}\,\overline{Q_{Li}}\,\tilde H\,u_{Rj}
+-y^e_{ij}\,\overline{L_{Li}}\,H\,e_{Rj}
++\hc
+\end{equation}
+ここで $i,j=1,2,3$ は世代の添字、$y^{u,d,e}$ は一般の $3\times3$ 複素行列である。
+
+各項のゲージ不変性を確かめる。$\SU(3)_C$ については $\bar q\,q$ の形で縮約され、
+$\SU(2)_L$ については $\overline{\Psi_L}\,\Phi$ が二重項同士の内積をなす。
+超電荷の和は（$\bar\psi$ は $-Y$ を持つことに注意して）
+\begin{align}
+\overline{Q_L}Hd_R&:\quad -\tfrac13+1-\tfrac23=0,\\
+\overline{Q_L}\tilde Hu_R&:\quad -\tfrac13-1+\tfrac43=0,\\
+\overline{L_L}He_R&:\quad +1+1-2=0
+\end{align}
+となり、すべてゲージ不変である。
+
+ヒッグス場が真空期待値を持つと、例えば
+\begin{equation}
+-y_e\overline{L_L}He_R+\hc
+\ \longrightarrow\
+-\frac{y_ev}{\sqrt2}\,\overline{e_L}e_R-\frac{y_e}{\sqrt2}\,h\,\overline{e_L}e_R+\hc
+=-m_e\bar ee\left(1+\frac hv\right)
+\end{equation}
+となり、フェルミオンの質量 $m_e=y_ev/\sqrt2$ と、
+質量に比例するヒッグス結合 $m_e/v$ が同時に得られる。
+世代間の混合を含む一般の場合、
+Yukawa 行列の対角化から CKM 行列が現れる（第9章）。
+\subsection{$\theta$ 項（$\theta$ term）}
+上記の他に、ゲージ不変かつ繰り込み可能な項として
+QCD の $\theta$ 項
+\begin{equation}
+\Lag_\theta=\theta\frac{g_s^2}{32\pi^2}G_{\mu\nu}^a\tilde G^{a\mu\nu},
+\qquad
+\tilde G^{a\mu\nu}=\frac12\epsilon^{\mu\nu\rho\sigma}G^a_{\rho\sigma}
+\end{equation}
+が存在する。これは全微分であり摂動論には寄与しないが、
+インスタントン\en{instanton}などの非摂動的効果を通じて $P$ と $CP$ を破る。
+中性子の電気双極子モーメント\en{neutron electric dipole moment, nEDM}の上限から $|\bar\theta|\lesssim10^{-10}$ であり、
+なぜこれほど小さいかは\term{強い CP 問題}{strong CP problem}と呼ばれる（第14章）。
+$\SU(2)_L$ の $\theta$ 項は、$B+L$ の異常を用いた場の再定義で消去できるため物理的でない。
+\subsection{繰り込み可能性による制限（constraints from renormalizability）}
+4次元時空で作用 $S=\int d^4x\,\Lag$ が無次元であるためには、
+$\Lag$ の質量次元は4でなければならない。
+運動項から場の質量次元は
+\begin{equation}
+[\phi]=[A_\mu]=1,\qquad [\psi]=\frac32
+\end{equation}
+と決まる。各項の演算子の次元は次のとおりである。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+項 & 演算子の次元 & 係数の次元\\
+\midrule
+$H^\dagger H$ & 2 & $[\mu^2]=2$\\
+$(H^\dagger H)^2$, $|D H|^2$ & 4 & $[\lambda]=0$\\
+$\bar\psi\gamma^\mu D_\mu\psi$ & 4 & 0\\
+$F_{\mu\nu}F^{\mu\nu}$ & 4 & 0\\
+$\bar\psi H\psi$ & 4 & $[y]=0$\\
+$(\overline{L}\tilde H)(\tilde H^TL^c)$ & 5 & $-1$\\
+$\overline{Q}\,\overline{Q}\,Q\,L$ & 6 & $-2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+結合定数の質量次元が負にならない（演算子の次元が4以下である）ことが
+繰り込み可能性の条件となる。
+$\Lag_{\SM}$ は、与えられた場の内容とゲージ対称性の下で、
+この条件を満たす\textbf{すべての}項を含んでいる。
+有効場の理論の観点から次元 $d>4$ の演算子を加えると
+\begin{equation}
+\Lag_{\mathrm{eff}}=\Lag_{\SM}
++\frac{c_5}{\Lambda}\mathcal{O}_5
++\sum\frac{c_6}{\Lambda^2}\mathcal{O}_6+\cdots
+\end{equation}
+となる。唯一の次元5演算子は Weinberg 演算子
+$(\overline{L_L}\tilde H)(\tilde H^T L_L^c)$ であり、
+対称性の破れの後ニュートリノの Majorana 質量 $m_\nu\sim v^2/\Lambda$ を与える（第11章）。
+$m_\nu\sim0.1\ \mathrm{eV}$ とすると $\Lambda\sim10^{14}$--$10^{15}\ \mathrm{GeV}$ となる。
+次元6には陽子崩壊\en{proton decay}を引き起こす4フェルミオン演算子\en{four-fermion operator}が含まれる。
+\subsection{相互作用頂点の分類（classification of vertices）}
+対称性の破れの後、ラグランジアンを展開すると次のような頂点が現れる。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+起源 & 頂点 & 結合の強さ\\
+\midrule
+$\Lag_{\mathrm{fermion}}$ & $\bar qqg$ & $g_s$\\
+ & $\bar ff\gamma$ & $eQ_f$\\
+ & $\bar f f'W$ & $g/\sqrt2$\\
+ & $\bar ffZ$ & $\frac{g}{\cos\theta_W}(T_3-Q\sin^2\theta_W)$\\
+$\Lag_{\mathrm{gauge}}$ & $ggg$,\ $gggg$ & $g_s$,\ $g_s^2$\\
+ & $WW\gamma$,\ $WWZ$ & $e$,\ $g\cos\theta_W$\\
+ & $WWWW$,\ $WW\gamma\gamma$ など & $g^2$ など\\
+$\Lag_{\mathrm{Higgs}}$ & $hWW$,\ $hZZ$ & $gM_W$,\ $gM_Z/\cos\theta_W$\\
+ & $hhh$,\ $hhhh$ & $3m_h^2/v$,\ $3m_h^2/v^2$\\
+$\Lag_{\mathrm{Yukawa}}$ & $h\bar ff$ & $m_f/v$\\
+\bottomrule
+\end{tabular}
+\end{center}
+（各頂点は第6--8章で導出する。数値係数や $i$ の因子を含む正確な Feynman 則は付録Fにまとめる。）
+%------------------------------------------------
+\section{標準模型の自由パラメータ}
+\label{sec:SM-parameters}
+%------------------------------------------------
+\subsection{19個のパラメータ（the 19 parameters）}
+ニュートリノを massless とする最小標準模型は、
+以下の19個の独立なパラメータを持つ。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+sector & パラメータ & 個数\\
+\midrule
+gauge & $g_s,\ g,\ g'$ & 3\\
+Higgs potential & $\mu^2,\ \lambda$ \quad（または $v,\ m_h$） & 2\\
+quark Yukawa & $m_u,m_d,m_s,m_c,m_b,m_t$ & 6\\
+ & $V_{\mathrm{CKM}}$：$\theta_{12},\theta_{23},\theta_{13},\delta$ & 4\\
+lepton Yukawa & $m_e,m_\mu,m_\tau$ & 3\\
+QCD vacuum angle & $\theta$ & 1\\
+\midrule
+合計 & & 19\\
+\bottomrule
+\end{tabular}
+\end{center}
+このうち13個（質量と混合）が Yukawa 結合に由来し、
+ゲージ部分とヒッグス部分は合わせて5個にすぎない。
+標準模型のパラメータの大部分はフレーバーの構造に関するものである。
+\subsection{Yukawa 行列のパラメータの数え上げ（parameter counting）}
+Yukawa 行列の独立なパラメータが質量と CKM 行列の要素に
+まとめられることは自明ではない。
+複素 $3\times3$ 行列 $y^u$, $y^d$, $y^e$ は合計 $3\times18=54$ 個の実パラメータを持つが、
+その大部分はフェルミオン場の再定義\en{field redefinition}
+\begin{equation}
+Q_L\to U_QQ_L,\quad
+u_R\to U_uu_R,\quad
+d_R\to U_dd_R,\quad
+L_L\to U_LL_L,\quad
+e_R\to U_ee_R
+\end{equation}
+（$U\in\U(3)$）によって消去できる。
+このとき運動項は不変で、Yukawa 行列は
+\begin{equation}
+y^u\to U_Q^\dagger y^uU_u,\qquad
+y^d\to U_Q^\dagger y^dU_d,\qquad
+y^e\to U_L^\dagger y^eU_e
+\end{equation}
+と変わる。
+5つの $\U(3)$ は合計 $5\times9=45$ 個のパラメータ（実角度15個、位相30個）を持つ。
+ただし、そのうち Yukawa 項を不変に保つ変換
+（バリオン数 $\U(1)_B$ と、ニュートリノ質量がゼロの場合に各世代ごとに保存するレプトン数
+$\U(1)_{L_e}\times\U(1)_{L_\mu}\times\U(1)_{L_\tau}$ の計4個）は
+パラメータを消去しないので、実際に消去できるのは $45-4=41$ 個である。したがって
+\begin{equation}
+54-41=13=6\ (\text{クォーク質量})+4\ (\text{CKM})+3\ (\text{レプトン質量})
+\end{equation}
+となる。
+
+クォーク部分だけを取り出すと、
+\begin{equation}
+\underbrace{2\times18}_{y^u,y^d}
+-\left(\underbrace{3\times9}_{U_Q,U_u,U_d}-\underbrace{1}_{\U(1)_B}\right)
+=36-26=10=6+4
+\end{equation}
+であり、CKM 行列には3つの混合角と1つの位相が残る。これは $3\times3$ のユニタリ行列の自由度の数え上げと一致する。
+$N$ 世代の場合には混合角 $N(N-1)/2$ 個、位相 $(N-1)(N-2)/2$ 個が残り、
+$N\ge3$ で初めて CP を破る位相が現れる。
+これが小林・益川による第3世代の予言の根拠である（第9章、付録C）。
+\subsection{パラメータの数値（numerical values）}
+19個のパラメータを直接 $g_s,g,g',\mu^2,\lambda,\ldots$ として測定するのではなく、
+精密に測定できる量を入力\en{input parameters}として用いるのが普通である。
+電弱部分の3つのパラメータ $(g,g',v)$ に対しては、例えば
+\begin{equation}
+\alpha^{-1}=137.036,\qquad
+G_F=1.1664\times10^{-5}\ \mathrm{GeV}^{-2},\qquad
+M_Z=91.188\ \mathrm{GeV}
+\end{equation}
+を入力とし、他の量（$M_W$, $\sin^2\theta_W$ など）は予言\en{prediction}とする。
+ツリーレベルで換算すると、おおよそ
+\begin{equation}
+g\simeq0.65,\qquad g'\simeq0.35,\qquad g_s\simeq1.2\ (\mu=M_Z),\qquad
+v\simeq246\ \mathrm{GeV},\qquad \lambda\simeq0.13
+\end{equation}
+である。CKM 行列の要素の大きさはおおよそ
+\begin{equation}
+|V_{\mathrm{CKM}}|\simeq
+\begin{pmatrix}
+0.974&0.225&0.004\\
+0.225&0.973&0.041\\
+0.009&0.040&0.999
+\end{pmatrix}
+\end{equation}
+であり、対角成分が1に近い階層的な構造を持つ（第9章）。
+\begin{remark}
+ニュートリノ質量を導入すると、パラメータ数は質量生成機構に依存する。
+Dirac 質量の場合は、質量3個と PMNS 行列のパラメータ4個（混合角3、CP位相1）が加わり26個となる。
+Majorana 質量の場合は、さらに2個の Majorana 位相が加わり28個となる（第11章）。
+\end{remark}
+%------------------------------------------------
+\section*{第1章のまとめ}
+%------------------------------------------------
+\begin{itemize}
+    \item 標準模型はゲージ群 $\SU(3)_C\times\SU(2)_L\times\U(1)_Y$ に基づく、
+    繰り込み可能なカイラルゲージ理論である。
+    \item 物質は3世代のクォークとレプトンからなり、
+    1世代は15個の Weyl フェルミオン
+    $Q_L,u_R,d_R,L_L,e_R$ で構成される。
+    \item 左巻きと右巻きのフェルミオンは異なるゲージ表現に属するため、
+    裸の質量項は禁止され、質量はヒッグス機構によって生成される。
+    \item 電荷は $Q=T_3+Y/2$ で与えられ、
+    超電荷の割り当ては異常相殺条件を満たす。
+    \item ラグランジアンはゲージ・フェルミオン・ヒッグス・Yukawa の4部分（と $\theta$ 項）からなり、
+    19個のパラメータで完全に指定される。
+\end{itemize}
+%================================================
+\chapter{標準模型のゲージ構造}
+%================================================
+本章では、第1章で結果だけを示したゲージ部分の構造を、
+非可換ゲージ理論の一般論から組み立て直す。
+まず一般の Lie 群 $G$ に対するゲージ理論を復習し（\S\ref{sec:YM-review}）、
+それを $\SU(2)_L$, $\U(1)_Y$ に適用する。
+最後に、標準模型が\textbf{カイラル}なゲージ理論であることの意味を整理する。
+
+対称性の破れ（ヒッグス機構）は本章では扱わず、
+すべてのゲージボソンは massless のままである。
+質量の生成は第II部で扱う。
+%------------------------------------------------
+\section{非可換ゲージ理論の復習}
+\label{sec:YM-review}
+%------------------------------------------------
+\subsection{大域的対称性から局所対称性へ}
+コンパクト Lie 群 $G$ の生成子を $T^a$（$a=1,\dots,\dim G$）とし、
+\begin{equation}
+[T^a,T^b]=if^{abc}T^c,
+\qquad
+\tr(T^aT^b)=\frac12\delta^{ab}
+\end{equation}
+とする（$T^a$ は表現 $R$ の行列であり、規格化は基本表現について述べている）。
+表現 $R$ に属する $\dim R$ 成分の Dirac 場 $\psi$ の自由ラグランジアン
+\begin{equation}
+\Lag_0=\bar\psi\,i\gamma^\mu\partial_\mu\psi
+\end{equation}
+は、定数行列 $U=e^{i\alpha^aT^a}\in G$ による\term{大域的変換}{global transformation}
+$\psi\to U\psi$ で不変である。
+
+これを時空の各点で独立な変換
+\begin{equation}
+\psi(x)\longrightarrow\psi'(x)=U(x)\psi(x),
+\qquad
+U(x)=\exp\left(i\alpha^a(x)T^a\right)
+\label{eq:local-transf}
+\end{equation}
+（\term{局所ゲージ変換}{local gauge transformation}）に拡張すると、
+$\partial_\mu\psi\to U\partial_\mu\psi+(\partial_\mu U)\psi$ となり、
+第2項のために $\Lag_0$ は不変でなくなる。
+\subsection{共変微分}
+\begin{mydef}{共変微分（covariant derivative）}{covariant-derivative}
+Lie 代数に値をとるベクトル場 $A_\mu=A_\mu^aT^a$（\term{ゲージ場}{gauge field}）と
+結合定数 $g$ を導入し、\term{共変微分}{covariant derivative}を
+\begin{equation}
+D_\mu=\partial_\mu-igA_\mu=\partial_\mu-igA_\mu^aT^a
+\end{equation}
+で定義する。ゲージ場は局所ゲージ変換の下で
+\begin{equation}
+A_\mu\longrightarrow A'_\mu
+=UA_\mu U^{-1}-\frac ig(\partial_\mu U)U^{-1}
+\label{eq:A-transf}
+\end{equation}
+と変換するものとする。
+\end{mydef}
+\begin{myprop}{共変微分の共変性}{Dcov}
+\eqref{eq:A-transf} の下で
+\begin{equation}
+D_\mu\psi\longrightarrow (D_\mu\psi)'=U(x)\,D_\mu\psi
+\end{equation}
+が成り立つ。したがって $\bar\psi\,i\gamma^\mu D_\mu\psi$ は局所ゲージ不変である。
+\end{myprop}
+\begin{note}
+$(D_\mu\psi)'=\partial_\mu(U\psi)-igA'_\mu U\psi$ を計算する：
+\[
+\partial_\mu(U\psi)=U\partial_\mu\psi+(\partial_\mu U)\psi,
+\qquad
+-igA'_\mu U\psi
+=-igUA_\mu\psi-(\partial_\mu U)U^{-1}U\psi
+=-igUA_\mu\psi-(\partial_\mu U)\psi .
+\]
+$(\partial_\mu U)\psi$ が打ち消し、$(D_\mu\psi)'=U(\partial_\mu-igA_\mu)\psi=UD_\mu\psi$。
+また $\bar\psi\to\bar\psi U^\dagger=\bar\psi U^{-1}$ なので
+$\bar\psi\gamma^\mu D_\mu\psi\to\bar\psi U^{-1}\gamma^\mu UD_\mu\psi=\bar\psi\gamma^\mu D_\mu\psi$
+（$U$ は内部空間の行列で $\gamma^\mu$ と可換）。
+\end{note}
+\paragraph{無限小変換}
+$\alpha^a$ が小さいとき $U\simeq1+i\alpha^aT^a$ であり、
+\eqref{eq:A-transf} は成分で
+\begin{equation}
+\delta A_\mu^a
+=\frac1g\partial_\mu\alpha^a+f^{abc}A_\mu^b\alpha^c
+=\frac1g\left(\partial_\mu\alpha^a+gf^{abc}A_\mu^b\alpha^c\right)
+\equiv\frac1g(D_\mu\alpha)^a
+\label{eq:A-infinitesimal}
+\end{equation}
+となる。最後の $(D_\mu\alpha)^a$ は随伴表現での共変微分である。
+\begin{note}
+\eqref{eq:A-transf} を $\alpha$ の1次まで展開すると
+\[
+A'_\mu=(1+i\alpha)A_\mu(1-i\alpha)-\frac ig(i\partial_\mu\alpha)
+=A_\mu+i[\alpha,A_\mu]+\frac1g\partial_\mu\alpha
+\qquad(\alpha\equiv\alpha^aT^a).
+\]
+交換子は $i[\alpha,A_\mu]=i\alpha^cA_\mu^b[T^c,T^b]=i\cdot if^{cba}\alpha^cA_\mu^bT^a=f^{abc}A_\mu^b\alpha^cT^a$
+（$-f^{cba}=f^{abc}$ を用いた）。
+第1項 $f^{abc}A^b\alpha^c$ は、$A_\mu^a$ 自身が随伴表現の「荷」を持ち
+ゲージ変換で回転することを表す。
+可換群（$f^{abc}=0$）ではこの項が消え、$\delta A_\mu=\frac1g\partial_\mu\alpha$ となる。
+\end{note}
+随伴表現の生成子は $(T^a_{\mathrm{adj}})^{bc}=-if^{abc}$ なので、
+$(D_\mu\alpha)^a=\partial_\mu\alpha^a-igA^b_\mu(T^b_{\mathrm{adj}})^{ac}\alpha^c$ と書けば、
+基本表現の共変微分と同じ形をしていることがわかる。
+一般に、表現 $R$ の場に対しては $D_\mu=\partial_\mu-igA_\mu^aT^a_R$ とすればよい。
+\subsection{場の強さ}
+\begin{mydef}{場の強さ（field strength）}{field-strength}
+共変微分の交換子により、\term{場の強さ}{field strength}
+$F_{\mu\nu}=F_{\mu\nu}^aT^a$ を
+\begin{equation}
+[D_\mu,D_\nu]=-igF_{\mu\nu}
+\end{equation}
+で定義する。具体的には
+\begin{equation}
+F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu-ig[A_\mu,A_\nu],
+\qquad
+F_{\mu\nu}^a=\partial_\mu A_\nu^a-\partial_\nu A_\mu^a+gf^{abc}A_\mu^bA_\nu^c .
+\label{eq:Fmunu}
+\end{equation}
+\end{mydef}
+計算は第1章の注で行った。
+$[D_\mu,D_\nu]$ が微分演算子でなく（$\psi$ の微分を含まない）
+単なる掛け算の行列になることが重要である。
+\begin{myprop}{場の強さの変換性}{F-transf}
+局所ゲージ変換の下で
+\begin{equation}
+F_{\mu\nu}\longrightarrow UF_{\mu\nu}U^{-1},
+\qquad\text{無限小では}\quad
+\delta F^a_{\mu\nu}=f^{abc}F^b_{\mu\nu}\alpha^c .
+\end{equation}
+すなわち $F_{\mu\nu}$ は随伴表現として\textbf{共変的に}変換する（不変ではない）。
+\end{myprop}
+\begin{note}
+命題~\ref{prop:Dcov} より $D'_\mu=UD_\mu U^{-1}$（演算子として）。よって
+$[D'_\mu,D'_\nu]=U[D_\mu,D_\nu]U^{-1}$、すなわち $-igF'_{\mu\nu}=-igUF_{\mu\nu}U^{-1}$。
+無限小形は $\delta A$ の第1項と同じ計算で $i[\alpha,F]$ から得られる。
+可換群では $F'_{\mu\nu}=F_{\mu\nu}$ となり、電磁場と同様にゲージ不変である。
+\end{note}
+場の強さは \term{Bianchi 恒等式}{Bianchi identity}
+\begin{equation}
+D_\mu F_{\nu\rho}+D_\nu F_{\rho\mu}+D_\rho F_{\mu\nu}=0,
+\qquad
+D_\mu F_{\nu\rho}\equiv\partial_\mu F_{\nu\rho}-ig[A_\mu,F_{\nu\rho}]
+\end{equation}
+を満たす。これは Jacobi 恒等式 $[D_\mu,[D_\nu,D_\rho]]+\text{(cyclic)}=0$ から直ちに従い、
+電磁気学の斉次 Maxwell 方程式 $\nabla\cdot\bm B=0$, $\nabla\times\bm E+\partial_t\bm B=0$ の一般化である。
+\begin{remark}
+幾何学的には、$A_\mu$ は主 $G$ 束の\term{接続}{connection}、
+$F_{\mu\nu}$ はその\term{曲率}{curvature}であり、
+物質場は同伴ベクトル束の切断である。
+共変微分は「異なる点のファイバーを比較する」ための平行移動を与える。
+有限区間の平行移動は \term{Wilson 線}{Wilson line}
+$W[C]=\mathcal{P}\exp\left(ig\int_CA_\mu dx^\mu\right)$ で与えられ、
+閉曲線についてのトレース $\tr W[C]$（Wilson ループ）はゲージ不変量となる。
+\end{remark}
+%------------------------------------------------
+\section{$\SU(2)_L$ ゲージ対称性}
+%------------------------------------------------
+\subsection{$\SU(2)_L$ 二重項とゲージ変換}
+$\SU(2)_L$ の生成子は $T^i=\sigma^i/2$、構造定数は $f^{ijk}=\epsilon^{ijk}$ である。
+標準模型で $\SU(2)_L$ が非自明に作用するのは、
+左巻き二重項
+\begin{equation}
+Q_{Li}=\begin{pmatrix}u_{Li}\\ d_{Li}\end{pmatrix},
+\qquad
+L_{Li}=\begin{pmatrix}\nu_{Li}\\ e_{Li}\end{pmatrix}
+\qquad(i=1,2,3)
+\end{equation}
+とヒッグス二重項 $H$ のみである。これらは
+\begin{equation}
+\Psi_L\longrightarrow\exp\left(i\beta^i(x)\frac{\sigma^i}{2}\right)\Psi_L
+\end{equation}
+と変換し、右巻き場 $u_R$, $d_R$, $e_R$ は変換しない。
+二重項の上成分と下成分が「回転」して混ざるので、
+\textbf{$\SU(2)_L$ 対称性が破れていなければ $\nu_L$ と $e_L$、$u_L$ と $d_L$ は区別できない}。
+実際に区別できるのは、電弱対称性が破れているからである。
+\subsection{$W$ ボソンの場の強さ}
+3つのゲージ場 $W_\mu^i$ は随伴表現 $\mathbf{3}$（三重項）に属し、
+\eqref{eq:A-infinitesimal} より
+\begin{equation}
+\delta W_\mu^i=\frac1g\partial_\mu\beta^i+\epsilon^{ijk}W_\mu^j\beta^k
+\end{equation}
+と変換する。第2項は3次元ベクトルの無限小回転 $\delta\bm W=-\bm\beta\times\bm W$ である。
+場の強さは
+\begin{equation}
+W_{\mu\nu}^i=\partial_\mu W_\nu^i-\partial_\nu W_\mu^i+g\epsilon^{ijk}W_\mu^jW_\nu^k,
+\qquad
+\text{ベクトル記法で}\quad
+\bm W_{\mu\nu}=\partial_\mu\bm W_\nu-\partial_\nu\bm W_\mu+g\,\bm W_\mu\times\bm W_\nu .
+\end{equation}
+\subsection{荷電基底：$W^\pm$ と $W^3$}
+$T^\pm=T^1\pm iT^2$ と
+\begin{equation}
+W_\mu^\pm=\frac{1}{\sqrt2}\left(W_\mu^1\mp iW_\mu^2\right)
+\end{equation}
+を用いると（第1章の注を参照）、
+\begin{equation}
+W_\mu^i\frac{\sigma^i}{2}
+=\frac12\begin{pmatrix}
+W_\mu^3 & W_\mu^1-iW_\mu^2\\
+W_\mu^1+iW_\mu^2 & -W_\mu^3
+\end{pmatrix}
+=\frac12\begin{pmatrix}
+W_\mu^3 & \sqrt2W_\mu^+\\
+\sqrt2W_\mu^- & -W_\mu^3
+\end{pmatrix}
+\label{eq:Wmatrix}
+\end{equation}
+となる。非対角成分 $W^\pm$ は二重項の上下を入れ替え、
+対角成分 $W^3$ は上下の成分に $\pm\frac12$ の重みで結合する。
+
+$W^\pm$ は $T_3$ の固有値 $\pm1$ を持つ。実際
+\begin{equation}
+[T^3,T^\pm]=\pm T^\pm
+\end{equation}
+なので、$W^+$ は $T_3$ を $+1$ だけ上げる演算子 $T^+$ と組になる。
+$W^\pm$ は $\U(1)_Y$ の荷を持たない（$Y=0$）ので、
+電荷は $Q=T_3=\pm1$ となる。
+\begin{note}
+$W^3_{\mu\nu}$ を $W^\pm$ で書き直す。
+$W^1=\frac{1}{\sqrt2}(W^++W^-)$, $W^2=\frac{i}{\sqrt2}(W^+-W^-)$ より
+\[
+\epsilon^{3jk}W^j_\mu W^k_\nu
+=W^1_\mu W^2_\nu-W^2_\mu W^1_\nu
+=-i\left(W^+_\mu W^-_\nu-W^-_\mu W^+_\nu\right).
+\]
+したがって
+\[
+W^3_{\mu\nu}=\partial_\mu W^3_\nu-\partial_\nu W^3_\mu-ig\left(W^+_\mu W^-_\nu-W^-_\mu W^+_\nu\right).
+\]
+$-\frac14W^3_{\mu\nu}W^{3\mu\nu}$ を展開すると $W^3W^+W^-$ の3点結合が現れる。
+$W^3$ は対称性の破れの後に光子と $Z$ の線形結合になるので、
+これが $WW\gamma$, $WWZ$ 結合の起源である（第8章）。
+\end{note}
+\subsection{二重項に対する共変微分}
+\eqref{eq:Wmatrix} を用いると、超電荷 $Y$ の二重項 $\Psi_L=(\psi_1,\psi_2)^T$ に対して
+\begin{equation}
+D_\mu\Psi_L
+=\begin{pmatrix}
+\partial_\mu-\dfrac{i}{2}\left(gW_\mu^3+g'YB_\mu\right) & -\dfrac{ig}{\sqrt2}W_\mu^+\\[2mm]
+-\dfrac{ig}{\sqrt2}W_\mu^- & \partial_\mu+\dfrac{i}{2}\left(gW_\mu^3-g'YB_\mu\right)
+\end{pmatrix}
+\begin{pmatrix}\psi_1\\ \psi_2\end{pmatrix}
+\label{eq:D-doublet}
+\end{equation}
+となる（カラー部分は省略）。
+\begin{note}
+$-igW^i\frac{\sigma^i}{2}-ig'\frac Y2B$ の $(1,1)$ 成分は
+$-\frac{ig}{2}W^3-\frac{ig'Y}{2}B$、$(2,2)$ 成分は $+\frac{ig}{2}W^3-\frac{ig'Y}{2}B$、
+$(1,2)$ 成分は $-ig\cdot\frac{\sqrt2}{2}W^+=-\frac{ig}{\sqrt2}W^+$。
+\end{note}
+\subsection{$\SU(2)_L$ の相互作用の構造}
+$\SU(2)_L$ は単純群なので結合定数は $g$ ただ1つである。
+したがって、すべての二重項（3世代のクォーク・レプトン、ヒッグス）は
+同じ強さ $g$ で $W$ ボソンと結合する。
+これが弱い相互作用の\term{普遍性}{universality}の起源である。
+例えばミューオン崩壊 $\mu\to e\bar\nu_e\nu_\mu$ と
+原子核の $\beta$崩壊 $d\to ue\bar\nu_e$ の結合の強さがほぼ等しいことは、
+この普遍性の帰結である（クォークの場合の小さなずれは CKM 混合による。第9章）。
+
+非可換ゲージ理論では、ゲージ場の規格化（$-\frac14W^iW^i$ の係数）を固定すると、
+生成子の交換関係 $[T^i,T^j]=i\epsilon^{ijk}T^k$ によって
+荷（$T_3$ の固有値）の大きさまで決まってしまう。
+二重項の $T_3=\pm\frac12$、三重項の $T_3=0,\pm1$ のように、
+荷は量子化されている。
+%------------------------------------------------
+\section{$\U(1)_Y$ とハイパーチャージ}
+%------------------------------------------------
+\subsection{可換ゲージ理論}
+$\U(1)_Y$ の変換は、超電荷 $Y$ の場に対して
+\begin{equation}
+\psi\longrightarrow e^{i\theta(x)Y/2}\psi,
+\qquad
+B_\mu\longrightarrow B_\mu+\frac{1}{g'}\partial_\mu\theta
+\end{equation}
+である。構造定数がゼロなので
+\begin{equation}
+B_{\mu\nu}=\partial_\mu B_\nu-\partial_\nu B_\mu
+\end{equation}
+はそれ自体ゲージ不変であり、$B_\mu$ は自己相互作用を持たない。
+$B_\mu$ は電磁場 $A_\mu$ と同様の可換ゲージ場であるが、
+光子そのものではない（光子は $W^3$ と $B$ の線形結合である）。
+\subsection{超電荷は量子化されない}
+非可換群と異なり、$\U(1)$ の生成子は交換関係による制約を受けない。
+$\U(1)$ の既約表現は任意の実数 $q$ に対して $\psi\to e^{iq\theta}\psi$ で与えられ、
+\textbf{原理的には任意の実数値の超電荷が許される}。
+例えば $Y=\sqrt2$ の粒子を導入しても、ゲージ不変性とは矛盾しない。
+
+それにもかかわらず、観測される電荷は
+\begin{equation}
+Q(e)=-1,\qquad Q(u)=+\frac23,\qquad Q(d)=-\frac13
+\end{equation}
+のように $1/3$ の整数倍に量子化されている。特に
+\begin{equation}
+Q(p)+Q(e)=2Q(u)+Q(d)+Q(e)=0
+\end{equation}
+は $10^{-21}$ 程度の精度で成り立っている。
+標準模型の枠内では、この量子化はゲージ異常の相殺条件（第3章）と
+Yukawa 結合の存在から説明される。
+大統一理論では、$Y$ が非可換群の生成子の一部となることでより自然に説明される（第14章）。
+\subsection{超電荷の決め方}
+各場の超電荷は、Gell-Mann--西島--中野の関係式 $Q=T_3+Y/2$ を
+観測された電荷に当てはめて決める：
+\begin{itemize}
+    \item 一重項（$T_3=0$）では $Y=2Q$。
+    例：$Y(e_R)=-2$, $Y(u_R)=\frac43$, $Y(d_R)=-\frac23$。
+    \item 二重項では、上下の成分で $Q$ の差が1でなければならず、$Y$ は平均電荷の2倍。
+    例：$Y(L_L)=Q(\nu)+Q(e)=-1$, $Y(Q_L)=Q(u)+Q(d)=\frac13$。
+\end{itemize}
+二重項の上下で電荷の差が1であることは、
+$W^\pm$ が電荷 $\pm1$ を持つことと整合している。
+\begin{remark}
+$\U(1)$ 因子が複数ある理論では、場の強さ同士の
+\term{運動項混合}{kinetic mixing} $\epsilon\,B_{\mu\nu}X^{\mu\nu}$ がゲージ不変に書けるが、
+標準模型の $\U(1)$ は $\U(1)_Y$ の1つだけなので、この問題は生じない。
+\end{remark}
+%------------------------------------------------
+\section{共変微分とゲージ場}
+%------------------------------------------------
+\subsection{直積群の共変微分}
+標準模型のゲージ群は3つの因子の直積なので、
+異なる因子の生成子は互いに可換である：
+\begin{equation}
+[T^a_{(3)},T^i_{(2)}]=[T^a_{(3)},Y]=[T^i_{(2)},Y]=0 .
+\end{equation}
+このため、各因子のゲージ場をそれぞれ独立に導入し、共変微分を
+\begin{equation}
+\boxed{
+D_\mu
+=
+\partial_\mu
+-ig_sG_\mu^aT^a
+-igW_\mu^i\frac{\sigma^i}{2}
+-ig'\frac{Y}{2}B_\mu
+}
+\label{eq:SM-covariant-derivative}
+\end{equation}
+とすればよい。ゲージ変換はそれぞれの因子ごとに \eqref{eq:A-transf} に従う：
+\begin{align}
+G_\mu^aT^a&\longrightarrow U_3\,G_\mu^aT^a\,U_3^{-1}-\frac{i}{g_s}(\partial_\mu U_3)U_3^{-1},\\
+W_\mu^i\frac{\sigma^i}{2}&\longrightarrow U_2\,W_\mu^i\frac{\sigma^i}{2}\,U_2^{-1}-\frac{i}{g}(\partial_\mu U_2)U_2^{-1},\\
+B_\mu&\longrightarrow B_\mu+\frac{1}{g'}\partial_\mu\theta .
+\end{align}
+ゲージ場 $G_\mu^a$ は $\SU(2)_L\times\U(1)_Y$ の下で不変、
+$W_\mu^i$ は $\SU(3)_C\times\U(1)_Y$ の下で不変である。
+\begin{note}
+$U=U_3U_2U_1$ と書く。$U_3,U_2,U_1$ は互いに可換であり、
+例えば $W$ の項は $U_3$, $U_1$ と可換なので
+$U(W^i\sigma^i/2)U^{-1}=U_2(W^i\sigma^i/2)U_2^{-1}$。
+また $(\partial_\mu U)U^{-1}=(\partial_\mu U_3)U_3^{-1}+(\partial_\mu U_2)U_2^{-1}+(\partial_\mu U_1)U_1^{-1}$
+となり、各因子の非斉次項が独立に現れる。
+したがって3つのゲージ場はそれぞれ自分の因子の変換だけを補償すればよい。
+\end{note}
+各因子の結合定数 $g_s$, $g$, $g'$ は互いに独立である。
+$G_{\SM}$ は単純群ではないので、ゲージ対称性だけからは
+結合定数の比は決まらない。
+これが Weinberg 角 $\tan\theta_W=g'/g$ が自由パラメータとなる理由である。
+\subsection{各場への作用}
+共変微分 \eqref{eq:SM-covariant-derivative} は、場の表現に応じて作用する
+（すべての場について書き下した形は第1章 \S\ref{sec:SM-lagrangian} を参照）。
+例えば $L_L$ に対しては \eqref{eq:D-doublet} で $Y=-1$ とおいて
+\begin{equation}
+D_\mu L_L=
+\begin{pmatrix}
+\partial_\mu-\dfrac{i}{2}\left(gW_\mu^3-g'B_\mu\right) & -\dfrac{ig}{\sqrt2}W_\mu^+\\[2mm]
+-\dfrac{ig}{\sqrt2}W_\mu^- & \partial_\mu+\dfrac{i}{2}\left(gW_\mu^3+g'B_\mu\right)
+\end{pmatrix}
+\begin{pmatrix}\nu_L\\ e_L\end{pmatrix}
+\end{equation}
+となる。ニュートリノ成分には $gW^3-g'B$ の組み合わせが現れる。
+後で見るように、これは $Z$ ボソンに比例する組み合わせ
+（$gW^3-g'B=\sqrt{g^2+g'^2}\,Z$）であり、
+\textbf{ニュートリノが光子と結合しない}ことが自動的に保証される（第6章）。
+\begin{note}
+第1章の \eqref{eq:ZA-preview} より
+$Z=\cos\theta_WW^3-\sin\theta_WB=(gW^3-g'B)/\sqrt{g^2+g'^2}$。
+ニュートリノは $Q=0$ なので光子と結合しないのは当然であるが、
+これが共変微分の形から見えるのは、$\theta_W$ が $Q=T_3+Y/2$ と整合するように定義されているからである。
+\end{note}
+\subsection{共役な場の共変微分}
+$\psi$ が $D_\mu\psi$ の形で変換するとき、エルミート共役 $\psi^\dagger$ に対しては
+\begin{equation}
+(D_\mu\psi)^\dagger=\partial_\mu\psi^\dagger+ig\psi^\dagger A_\mu
+\end{equation}
+となる（$A_\mu$ はエルミート）。ヒッグス場の運動項
+\begin{equation}
+(D_\mu H)^\dagger(D^\mu H)
+\end{equation}
+はこの組み合わせで書かれている。
+共役場 $\tilde H=i\sigma^2H^*$ は $Y=-1$ の二重項なので、
+$D_\mu\tilde H$ は \eqref{eq:D-doublet} で $Y=-1$ とおいたものになり、
+$D_\mu\tilde H=i\sigma^2(D_\mu H)^*$ が成り立つ。
+\begin{note}
+$(D_\mu H)^*=\left(\partial_\mu+igW^i\frac{(\sigma^i)^*}{2}+\frac{ig'}{2}B_\mu\right)H^*$。
+左から $i\sigma^2$ を掛け、$\sigma^2(\sigma^i)^*=-\sigma^i\sigma^2$（擬実性 \eqref{eq:pseudoreal}）を用いると
+\[
+i\sigma^2(D_\mu H)^*
+=\left(\partial_\mu-igW^i\frac{\sigma^i}{2}+\frac{ig'}{2}B_\mu\right)(i\sigma^2H^*)
+\]
+となり、これは $Y=-1$ の二重項に対する共変微分である。
+\end{note}
+%------------------------------------------------
+\section{Yang--Mills ラグランジアン}
+%------------------------------------------------
+\subsection{ゲージ不変な運動項}
+\begin{myprop}{Yang--Mills ラグランジアン}{YM}
+\begin{equation}
+\boxed{
+\Lag_{\mathrm{YM}}
+=-\frac12\tr\left(F_{\mu\nu}F^{\mu\nu}\right)
+=-\frac14F^a_{\mu\nu}F^{a\mu\nu}
+}
+\end{equation}
+は局所ゲージ不変である。
+\end{myprop}
+\begin{note}
+$F\to UFU^{-1}$ とトレースの巡回性より
+$\tr(F'F')=\tr(UFU^{-1}UFU^{-1})=\tr(FF)$。
+成分では $\tr(T^aT^b)=\frac12\delta^{ab}$ より
+$\tr(F_{\mu\nu}F^{\mu\nu})=\frac12F^a_{\mu\nu}F^{a\mu\nu}$。
+\end{note}
+係数 $-\frac14$ は、$g\to0$ で各成分 $A^a_\mu$ が
+Maxwell 理論と同じ規格化の運動項
+\begin{equation}
+-\frac14(\partial_\mu A_\nu^a-\partial_\nu A_\mu^a)^2
+=\frac12\left(\bm E^a\cdot\bm E^a-\bm B^a\cdot\bm B^a\right)
+\end{equation}
+を持つように選んでいる。
+この規格化（\term{正準規格化}{canonical normalization}）では、
+結合定数 $g$ は共変微分の中に現れる。
+$A_\mu\to A_\mu/g$ と再定義すると $\Lag_{\mathrm{YM}}=-\frac{1}{4g^2}F^aF^a$ となり、
+$g$ が運動項の前に現れる流儀もある。
+
+ゲージ場の質量項
+\begin{equation}
+\frac12M^2A^a_\mu A^{a\mu}
+\end{equation}
+は \eqref{eq:A-infinitesimal} の $\frac1g\partial_\mu\alpha^a$ のためにゲージ不変ではない。
+したがって\textbf{ゲージ対称性が破れていない限りゲージボソンは massless である}。
+$W^\pm$, $Z^0$ の質量を説明するには、ヒッグス機構が必要となる（第5章、第6章）。
+\subsection{自己相互作用}
+$F^a_{\mu\nu}$ が $A$ について非線形であるため、$\Lag_{\mathrm{YM}}$ は
+\begin{equation}
+\Lag_{\mathrm{YM}}
+=\underbrace{-\frac14(\partial_\mu A_\nu^a-\partial_\nu A_\mu^a)^2}_{\text{運動項}}
+\underbrace{-gf^{abc}(\partial_\mu A_\nu^a)A^{b\mu}A^{c\nu}}_{\text{3点結合}}
+\underbrace{-\frac{g^2}{4}f^{abe}f^{cde}A_\mu^aA_\nu^bA^{c\mu}A^{d\nu}}_{\text{4点結合}}
+\end{equation}
+となる（展開は第1章の注を参照）。
+3点結合は $g$、4点結合は $g^2$ に比例し、
+その相対的な大きさはゲージ対称性によって固定されている。
+Feynman 則は付録Fにまとめる。
+
+これらの自己相互作用は、ゲージ場自身が荷を持つ
+（随伴表現に属する）ことの帰結である。
+光子は電荷を持たないので光子同士は直接結合しないが、
+グルーオンはカラー荷を、$W$ ボソンは弱アイソスピンを持つ。
+この自己相互作用が、QCD の漸近的自由性（$\beta$ 関数の $-\frac{11}{3}N$）の起源である。
+\subsection{運動方程式}
+\begin{myprop}{Yang--Mills 方程式}{YM-eq}
+\begin{equation}
+\Lag=-\frac14F^a_{\mu\nu}F^{a\mu\nu}+\bar\psi\,i\gamma^\mu D_\mu\psi
+\end{equation}
+の $A_\nu^a$ に関する運動方程式は
+\begin{equation}
+(D_\mu F^{\mu\nu})^a
+\equiv\partial_\mu F^{a\mu\nu}+gf^{abc}A^b_\mu F^{c\mu\nu}
+=-g\,j^{a\nu},
+\qquad
+j^{a\nu}=\bar\psi\gamma^\nu T^a\psi
+\end{equation}
+である。
+\end{myprop}
+\begin{note}
+フェルミオン部分は $\bar\psi i\gamma^\mu(-igA^a_\mu T^a)\psi=g\,j^{a\mu}A^a_\mu$ なので、
+$\partial\Lag/\partial A^a_\nu\supset g\,j^{a\nu}$。
+Yang--Mills 部分は
+$\partial\Lag/\partial(\partial_\mu A^a_\nu)=-F^{a\mu\nu}$、
+および非線形項から
+\[
+\frac{\partial\Lag_{\mathrm{YM}}}{\partial A^a_\nu}
+=-\frac12F^{c\rho\sigma}\frac{\partial F^c_{\rho\sigma}}{\partial A^a_\nu}
+=-gf^{cae}F^{c\nu\sigma}A^e_\sigma .
+\]
+Euler--Lagrange 方程式 $\partial_\mu(-F^{a\mu\nu})=-gf^{cae}F^{c\nu\sigma}A^e_\sigma+g\,j^{a\nu}$ を整理し、
+$f^{cae}F^{c\nu\sigma}A^e_\sigma=-f^{abc}A^b_\mu F^{c\mu\nu}$（添字の付け替えと反対称性）を用いれば得られる。
+\end{note}
+左辺を $\partial_\mu F^{a\mu\nu}=-g\left(j^{a\nu}+f^{abc}A^b_\mu F^{c\mu\nu}\right)$ と書き直すと、
+右辺の括弧はゲージ場自身の寄与を含む全カレントであり、
+$\partial_\mu F^{a\mu\nu}$ の反対称性からこれは通常の意味で保存する。
+一方、物質のカレント $j^{a\nu}$ だけでは保存せず、
+\textbf{共変的に}保存する（$(D_\nu j^\nu)^a=0$）。
+これも「ゲージ場が荷を持つ」ことの表れである。
+\subsection{標準模型のゲージ部分}
+標準模型のゲージ部分は3つの Yang--Mills 項の和
+\begin{equation}
+\Lag_{\mathrm{gauge}}
+=-\frac14G^a_{\mu\nu}G^{a\mu\nu}
+-\frac14W^i_{\mu\nu}W^{i\mu\nu}
+-\frac14B_{\mu\nu}B^{\mu\nu}
+\end{equation}
+である。これに加えて、ゲージ不変かつ繰り込み可能な項として
+\begin{equation}
+\theta_3\frac{g_s^2}{32\pi^2}G^a_{\mu\nu}\tilde G^{a\mu\nu},
+\qquad
+\theta_2\frac{g^2}{32\pi^2}W^i_{\mu\nu}\tilde W^{i\mu\nu},
+\qquad
+\theta_1\frac{g'^2}{32\pi^2}B_{\mu\nu}\tilde B^{\mu\nu}
+\end{equation}
+が書けるが、いずれも全微分である。
+$\theta_1$ は物理的効果を持たず、$\theta_2$ は場の再定義で消去でき、
+$\theta_3$ のみが物理的意味を持つ（第1章、第14章）。
+
+量子化にはゲージ固定が必要であり、それに伴って Faddeev--Popov ゴーストが現れる。
+これについては付録Eで扱う。
+%------------------------------------------------
+\section{電弱相互作用のゲージ構造}
+%------------------------------------------------
+\subsection{電弱カレント}
+$\SU(2)_L\times\U(1)_Y$ 部分のフェルミオンの相互作用は、
+共変微分を展開して
+\begin{equation}
+\Lag_{\mathrm{EW}}
+=g\,W^i_\mu J^{i\mu}+g'B_\mu J^\mu_Y
+\end{equation}
+と書ける。ここで
+\begin{equation}
+J^{i\mu}=\sum_{\Psi_L}\overline{\Psi_L}\gamma^\mu\frac{\sigma^i}{2}\Psi_L,
+\qquad
+J^\mu_Y=\sum_\psi\bar\psi\gamma^\mu\frac{Y}{2}\psi
+\end{equation}
+はそれぞれ\term{弱アイソスピンカレント}{weak isospin current}、
+\term{超電荷カレント}{hypercharge current}である
+（和は左巻き二重項およびすべての Weyl 場についてとる）。
+
+荷電基底に移ると、\eqref{eq:Wmatrix} より
+\begin{equation}
+gW^i_\mu J^{i\mu}
+=\frac{g}{\sqrt2}\left(W^+_\mu J^{+\mu}+W^-_\mu J^{-\mu}\right)+gW^3_\mu J^{3\mu},
+\qquad
+J^{+\mu}=\sum\overline{\Psi_L}\gamma^\mu T^+\Psi_L
+\end{equation}
+となる。1世代分を具体的に書くと
+\begin{align}
+J^{+\mu}&=\overline{\nu_L}\gamma^\mu e_L+\overline{u_L}\gamma^\mu d_L,
+\qquad J^{-\mu}=(J^{+\mu})^\dagger,\\
+J^{3\mu}&=\frac12\left(\overline{\nu_L}\gamma^\mu\nu_L-\overline{e_L}\gamma^\mu e_L
++\overline{u_L}\gamma^\mu u_L-\overline{d_L}\gamma^\mu d_L\right)
+\end{align}
+である（クォークの世代間混合は第9章で扱う）。
+\subsection{電磁カレントの埋め込み}
+$Q=T_3+Y/2$ をカレントで書くと
+\begin{equation}
+J^\mu_{\mathrm{EM}}=J^{3\mu}+J^\mu_Y,
+\qquad
+J^\mu_{\mathrm{EM}}=\sum_\psi Q_\psi\,\bar\psi\gamma^\mu\psi .
+\end{equation}
+電磁カレントは $\SU(2)_L$ と $\U(1)_Y$ のカレントの和として埋め込まれている。
+中性部分を
+\begin{equation}
+W^3_\mu=\cos\theta_WZ_\mu+\sin\theta_WA_\mu,
+\qquad
+B_\mu=-\sin\theta_WZ_\mu+\cos\theta_WA_\mu
+\end{equation}
+で書き直すと、次の結果を得る。
+\begin{myprop}{中性カレント相互作用}{neutral-current}
+$\tan\theta_W=g'/g$ とすると
+\begin{equation}
+gW^3_\mu J^{3\mu}+g'B_\mu J^\mu_Y
+=e\,A_\mu J^\mu_{\mathrm{EM}}
++\frac{g}{\cos\theta_W}Z_\mu\left(J^{3\mu}-\sin^2\theta_W J^\mu_{\mathrm{EM}}\right),
+\qquad
+e=g\sin\theta_W .
+\end{equation}
+\end{myprop}
+\begin{note}
+$J_Y=J_{\mathrm{EM}}-J^3$ を代入する。$s\equiv\sin\theta_W$, $c\equiv\cos\theta_W$ とおく。
+
+$A_\mu$ の係数：$gs\,J^3+g'c\,(J_{\mathrm{EM}}-J^3)$。
+$gs=g'c=gg'/\sqrt{g^2+g'^2}=e$ なので $J^3$ が打ち消し、$e\,J_{\mathrm{EM}}$。
+
+$Z_\mu$ の係数：$gc\,J^3-g's\,(J_{\mathrm{EM}}-J^3)=(gc+g's)J^3-g's\,J_{\mathrm{EM}}$。
+$gc+g's=(g^2+g'^2)/\sqrt{g^2+g'^2}=g/c$、$g's=g\,s^2/c$ より
+$\frac gc\left(J^3-s^2J_{\mathrm{EM}}\right)$。
+\end{note}
+この命題は純粋にゲージ場の基底の取り替えであり、
+対称性の破れとは独立に成り立つ。
+ただし $A_\mu$ と $Z_\mu$ が質量の固有状態（物理的な粒子）になることは、
+ヒッグス機構によって初めて示される（第6章）。
+$Z$ ボソンの結合 $T_3-Q\sin^2\theta_W$ の現象論は第8章で扱う。
+\subsection{電弱「統一」の意味}
+$\SU(2)_L\times\U(1)_Y$ は単純群ではないので、
+電弱理論は2つの独立な結合定数 $g$, $g'$ を持ち、
+厳密な意味での「統一」ではない。
+この理論の本質は、
+\begin{itemize}
+    \item 電磁相互作用と弱い相互作用が、1つのゲージ群の異なる部分として記述されること
+    \item 電荷 $Q$ が $\SU(2)_L$ と $\U(1)_Y$ の生成子の組み合わせとして埋め込まれていること
+    \item その結果、$e$, $\sin\theta_W$, $M_W$, $M_Z$, $G_F$ などの間に関係が生じること
+\end{itemize}
+にある。例えば中性カレント（$Z$ 交換）の存在とその強さは、
+荷電カレント（$W$ 交換）の強さと $\sin\theta_W$ から予言され、
+1973年の発見と整合した。
+%------------------------------------------------
+\section{カイラルゲージ理論としての標準模型}
+%------------------------------------------------
+\subsection{ベクトル的理論とカイラル理論}
+すべてのフェルミオンを左巻き Weyl 場で表したとき（第1章の左巻き表示）、
+フェルミオン全体が属するゲージ群の表現を $R_{\mathrm{tot}}$ とする。
+\begin{mydef}{ベクトル的理論とカイラル理論}{chiral-theory}
+$R_{\mathrm{tot}}$ が実表現（または擬実表現）、すなわち $R_{\mathrm{tot}}\simeq\bar R_{\mathrm{tot}}$ のとき、
+理論は\term{ベクトル的}{vector-like}であるという。
+そうでないとき（$R_{\mathrm{tot}}$ が複素表現のとき）、理論は\term{カイラル}{chiral}であるという。
+\end{mydef}
+Dirac 場 $\psi$ の言葉では、$\psi_L$ と $\psi_R$ が同じ表現 $R$ に属するとき、
+左巻き表示では $\psi_L\in R$, $(\psi_R)^c\in\bar R$ となり、$R\oplus\bar R$ は実なので
+ベクトル的である。このとき質量項 $m\bar\psi\psi$ はゲージ不変に書ける。
+\begin{myex}{QCD と QED はベクトル的}{vectorlike}
+QCD では各クォークについて $q_L,q_R\in\mathbf 3$ なので、
+左巻き表示で $\mathbf 3\oplus\bar{\mathbf 3}$ となりベクトル的である。
+したがって $\SU(3)_C$ だけを考えれば、クォーク質量 $m_q\bar qq$ はゲージ不変である。
+QED でも $e_L$, $e_R$ はともに $Q=-1$ なのでベクトル的である。
+\end{myex}
+\begin{myex}{標準模型はカイラル}{SM-chiral}
+1世代の左巻き表示
+\begin{equation}
+R_{\mathrm{tot}}
+=(\mathbf3,\mathbf2)_{1/3}
+\oplus(\bar{\mathbf3},\mathbf1)_{-4/3}
+\oplus(\bar{\mathbf3},\mathbf1)_{2/3}
+\oplus(\mathbf1,\mathbf2)_{-1}
+\oplus(\mathbf1,\mathbf1)_{2}
+\end{equation}
+の複素共役は
+\begin{equation}
+\bar R_{\mathrm{tot}}
+=(\bar{\mathbf3},\mathbf2)_{-1/3}
+\oplus(\mathbf3,\mathbf1)_{4/3}
+\oplus(\mathbf3,\mathbf1)_{-2/3}
+\oplus(\mathbf1,\mathbf2)_{1}
+\oplus(\mathbf1,\mathbf1)_{-2}
+\end{equation}
+であり（$\bar{\mathbf2}\simeq\mathbf2$ を用いた）、
+例えば $(\mathbf3,\mathbf2)_{1/3}$ は $\bar R_{\mathrm{tot}}$ に含まれない。
+したがって $R_{\mathrm{tot}}\not\simeq\bar R_{\mathrm{tot}}$ であり、標準模型はカイラルである。
+\end{myex}
+\subsection{カイラル性の帰結}
+標準模型がカイラルであることから、次の重要な帰結が得られる。
+\paragraph{1. 裸の質量項の禁止}
+ゲージ不変な質量項は、表現 $R$ と $\bar R$ の組からしか作れない。
+カイラルな理論ではすべてのフェルミオンについてこの組が欠けているため、
+\textbf{すべてのフェルミオンが massless でなければならない}。
+質量を得るには、ヒッグス場との結合（Yukawa 結合）を通じて対称性を破る必要がある（第3章、第7章）。
+\paragraph{2. 破れずに残る対称性はベクトル的}
+対称性の破れの後に残る $\SU(3)_C\times\U(1)_{\mathrm{EM}}$ の下では、
+標準模型のフェルミオンはベクトル的である（例~\ref{ex:vectorlike}）。
+フェルミオンが質量を持てるのはこのためである。
+逆に、もしフェルミオンが $\U(1)_{\mathrm{EM}}$ の下でもカイラルであったなら、
+電磁対称性を破らずにそのフェルミオンに質量を与えることはできない。
+\paragraph{3. フェルミオン質量の上限}
+フェルミオン質量は $m_f=y_fv/\sqrt2$ と電弱スケールに比例する。
+摂動論が有効な範囲（$y_f\lesssim\sqrt{4\pi}$）では
+$m_f\lesssim\mathcal O(\mathrm{TeV})$ となる。
+標準模型のフェルミオンが電弱スケールより重くなれないのは、カイラル性の帰結である。
+\paragraph{4. 量子補正に対する保護}
+$y_f\to0$ の極限では理論に
+\term{カイラル対称性}{chiral symmetry} $\psi_L\to e^{i\alpha}\psi_L$ が現れる。
+このためフェルミオン質量の量子補正は $m_f$ 自身に比例し
+（$\delta m_f\propto m_f\ln\Lambda$）、
+カットオフ $\Lambda$ に対して対数的にしか依存しない。
+これを\term{技術的自然さ}{technical naturalness}と呼ぶ。
+ヒッグス質量にはこのような保護がなく、$\delta m_h^2\propto\Lambda^2$ となることが
+階層性問題の根源である（第14章）。
+\paragraph{5. ゲージ異常}
+カイラルなフェルミオンはゲージ異常を生じ得る。
+ベクトル的な理論では異常は自動的に相殺するが、
+カイラルな理論では表現の選び方に非自明な条件が課される。
+標準模型ではこの条件が1世代ごとに満たされている（第3章）。
+\paragraph{6. パリティの破れ}
+$\psi_L$ と $\psi_R$ が異なる表現に属するので、
+これらを入れ替えるパリティ変換はゲージ相互作用の対称性ではない。
+これが弱い相互作用におけるパリティの最大の破れの起源である。
+\begin{remark}
+カイラルゲージ理論は、摂動論を超えた定義に技術的な困難を伴う。
+例えば格子上にカイラルフェルミオンを置くと、
+Nielsen--二宮の定理によって必ず逆のカイラリティを持つ
+\term{ダブラー}{doubler}が現れる。
+これは格子 QCD（ベクトル的理論）では回避できるが、
+標準模型の電弱部分を格子上で非摂動的に定義することは現在でも未解決の問題である。
+\end{remark}
+%------------------------------------------------
+\section*{第2章のまとめ}
+%------------------------------------------------
+\begin{itemize}
+    \item 局所ゲージ不変性は、ゲージ場 $A_\mu$ と共変微分 $D_\mu=\partial_\mu-igA_\mu$ の導入を要求し、
+    ゲージ場とフェルミオンの相互作用の形を一意に決める。
+    \item 場の強さ $F_{\mu\nu}$ は随伴表現で共変的に変換し、
+    $-\frac14F^aF^a$ が唯一のゲージ不変な（繰り込み可能な）運動項である。
+    非可換ゲージ場は自己相互作用を持つ。
+    \item ゲージボソンの質量項はゲージ不変ではない。
+    \item $\SU(2)_L$ は左巻き二重項にのみ作用し、単一の結合定数 $g$ が弱い相互作用の普遍性を与える。
+    $\U(1)_Y$ の超電荷は群論からは量子化されない。
+    \item 電磁カレントは $J_{\mathrm{EM}}=J^3+J_Y$ として埋め込まれ、
+    基底の回転により $eA_\mu J_{\mathrm{EM}}$ と $Z$ の中性カレント結合が得られる。
+    \item 標準模型はカイラルなゲージ理論であり、これが
+    裸の質量項の禁止、パリティの破れ、異常相殺条件の起源である。
+\end{itemize}
+%================================================
+\chapter{フェルミオンの表現とゲージ不変性}
+%================================================
+第1章では標準模型のフェルミオンの量子数を表として与え、
+第2章ではゲージ場の側の構造を調べた。
+本章では物質場（フェルミオン）の側に立ち返り、
+\begin{itemize}
+    \item フェルミオン場がどのような表現に属し（\S\ref{sec:fermion-rep}--\S\ref{sec:quantum-numbers}）、
+    \item その表現からどのような項がゲージ不変に書けるか（\S\ref{sec:invariant-terms}, \S\ref{sec:no-bare-mass}）、
+    \item 表現の選び方が量子論的な整合性からどう制限されるか（\S\ref{sec:anomaly}）
+\end{itemize}
+を議論する。
+最後の点は、超電荷の値が（規格化を除いて）\textbf{理論の整合性から決まってしまう}という
+著しい結果につながる。
+%------------------------------------------------
+\section{フェルミオン場の表現}
+\label{sec:fermion-rep}
+%------------------------------------------------
+\subsection{場の添字構造}
+標準模型のフェルミオン場は、
+Lorentz 群・ゲージ群・世代（フレーバー）の3種類の添字を持つ。
+例えば左巻きクォーク二重項は
+\begin{equation}
+Q_{L\,\alpha a i}^{\ s}
+\qquad
+\begin{cases}
+s=1,2 & \text{Weyl スピノルの添字（Lorentz 群 $(\tfrac12,0)$）}\\
+\alpha=1,2,3 & \text{カラーの添字（$\SU(3)_C$ の $\mathbf3$）}\\
+a=1,2 & \text{弱アイソスピンの添字（$\SU(2)_L$ の $\mathbf2$）}\\
+i=1,2,3 & \text{世代の添字}
+\end{cases}
+\end{equation}
+を持つ。すなわち $Q_L$ は
+\begin{equation}
+\text{Lorentz}\ (\tfrac12,0)\ \otimes\ \SU(3)_C\ \mathbf3\ \otimes\ \SU(2)_L\ \mathbf2\ \otimes\ \U(1)_Y\ (Y=\tfrac13)\ \otimes\ \text{世代}\ \mathbf3
+\end{equation}
+の表現空間の元である。
+ゲージ変換は $\alpha,a$ にのみ作用し、Lorentz 変換は $s$ にのみ作用する。
+世代の添字にはゲージ変換は作用しない（世代はゲージ量子数では区別されない）。
+以下では通常、スピノルとカラーの添字は省略する。
+\subsection{Weyl スピノルと荷電共役}
+第1章で見たように、Dirac 場は2つの Weyl 場 $\psi_L\in(\frac12,0)$, $\psi_R\in(0,\frac12)$ からなる。
+Lorentz 群の表現として $(\frac12,0)$ と $(0,\frac12)$ は互いに複素共役の関係にある。
+したがって右巻き場の複素共役をとれば左巻き場が得られる。
+これを Dirac 場の言葉で表すのが\term{荷電共役}{charge conjugation}である。
+\begin{mydef}{荷電共役場}{charge-conj}
+Dirac 場 $\psi$ の荷電共役場を
+\begin{equation}
+\psi^c\equiv C\bar\psi^T=i\gamma^2\psi^*
+\end{equation}
+で定義する。ここで $C=i\gamma^2\gamma^0$（Weyl 表示）である。
+\end{mydef}
+\begin{myprop}{荷電共役とカイラリティ}{chiral-conj}
+荷電共役はカイラリティを反転する：
+\begin{equation}
+(\psi_R)^c=\PL\,\psi^c,
+\qquad
+(\psi_L)^c=\PR\,\psi^c .
+\end{equation}
+また、$\psi$ がゲージ群の表現 $R$ に属し $\psi\to U\psi$ と変換するとき、
+$\psi^c\to U^*\psi^c$ であり、$\psi^c$ は複素共役表現 $\bar R$ に属する。
+特に $\U(1)$ 電荷は符号が反転する。
+\end{myprop}
+\begin{note}
+Weyl 表示では $\gamma^0$ は実対称なので $C\bar\psi^T=i\gamma^2\gamma^0(\gamma^0)^T\psi^*=i\gamma^2\psi^*$。
+また $\gamma^5=\diag(-1,1)$ は実なので $(\PR\psi)^*=\PR\psi^*$。
+$\gamma^2$ と $\gamma^5$ は反可換なので $\gamma^2\PR=\PL\gamma^2$。よって
+\[
+(\psi_R)^c=i\gamma^2(\PR\psi)^*=i\gamma^2\PR\psi^*=\PL\,i\gamma^2\psi^*=\PL\psi^c .
+\]
+ゲージ変換については、$U$ は内部空間に作用し $\gamma^2$ と可換なので
+$(U\psi)^c=i\gamma^2U^*\psi^*=U^*\psi^c$。
+$\U(1)$ では $U=e^{iq\theta}$ に対し $U^*=e^{-iq\theta}$ である。
+\end{note}
+この性質により、\textbf{すべてのフェルミオンを左巻き Weyl 場で表す}ことができる。
+右巻き場 $\psi_R\in R$ の代わりに、左巻き場 $(\psi_R)^c\in\bar R$ を用いればよい。
+第1章の左巻き表示
+\begin{equation}
+Q,\quad u^c\equiv(u_R)^c,\quad d^c\equiv(d_R)^c,\quad L,\quad e^c\equiv(e_R)^c
+\end{equation}
+はこの書き方である。
+左巻き表示では、ゲージ不変性・異常相殺などの条件が
+「左巻き Weyl 場の集合」についての条件として統一的に書ける。
+\begin{remark}
+Lorentz 不変な2次形式は、2成分記法で
+$\chi\psi\equiv\chi^s\psi_s=\epsilon^{st}\chi_t\psi_s$（左巻き同士、Lorentz スカラー）と
+$\chi^\dagger\bar\sigma^\mu\psi$（左巻きとその共役、Lorentz ベクトル）の2種類である。
+Dirac 記法の $\bar\psi_L\psi_R$ は前者に、$\bar\psi_L\gamma^\mu\psi_L$ は後者に対応する。
+本ノートでは主に Dirac 記法を用い、必要に応じて左巻き表示に言い換える。
+\end{remark}
+\subsection{不変テンソル}
+ゲージ不変な項を作るには、表現の積の中から一重項 $\mathbf1$ を取り出す必要がある。
+そのための道具が\term{不変テンソル}{invariant tensor}である。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+群 & 不変テンソル & 作る一重項\\
+\midrule
+$\SU(N)$ & $\delta^\alpha{}_\beta$ & $\bar{\mathbf N}\otimes\mathbf N\ni\mathbf1$：$\bar\psi_\alpha\chi^\alpha$\\
+$\SU(2)$ & $\epsilon^{ab}$ \ ($\epsilon^{12}=+1$) & $\mathbf2\otimes\mathbf2\ni\mathbf1$：$\epsilon^{ab}\psi_a\chi_b$\\
+$\SU(3)$ & $\epsilon^{\alpha\beta\gamma}$ & $\mathbf3\otimes\mathbf3\otimes\mathbf3\ni\mathbf1$：$\epsilon^{\alpha\beta\gamma}q_\alpha q_\beta q_\gamma$\\
+$\U(1)$ & — & 電荷の和がゼロ\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{note}
+$\epsilon^{ab}$ が $\SU(2)$ 不変であることは
+$\epsilon^{ab}U_a{}^cU_b{}^d=(\det U)\,\epsilon^{cd}=\epsilon^{cd}$ による。
+$\SU(3)$ の $\epsilon^{\alpha\beta\gamma}$ も同様に $\det U=1$ から不変である。
+$\U(N)$ では $\det U=e^{i\phi}\ne1$ なので $\epsilon$ は不変テンソルにならない。
+$\epsilon^{ab}$ の存在が $\mathbf2\simeq\bar{\mathbf2}$（擬実性）の別の表現であり、
+$\tilde H^a=\epsilon^{ab}H^*_b$ である（$i\sigma^2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}=\epsilon^{ab}$）。
+\end{note}
+$\SU(3)$ の $\epsilon^{\alpha\beta\gamma}$ はバリオンの波動関数
+（3つのクォークのカラーの反対称な組み合わせ）を与える。
+後で見るように、標準模型では $\epsilon^{\alpha\beta\gamma}$ を用いた
+繰り込み可能な項は存在しない。これがバリオン数保存の理由である。
+%------------------------------------------------
+\section{左巻きダブレットと右巻きシングレット}
+\label{sec:doublet-singlet}
+%------------------------------------------------
+\subsection{表現の割り当て}
+標準模型の本質的な仮定は、
+\begin{equation}
+\boxed{
+\text{左巻き場は }\SU(2)_L\text{ 二重項、右巻き場は }\SU(2)_L\text{ 一重項}
+}
+\end{equation}
+という割り当てである。
+1世代あたり
+\begin{equation}
+Q_L=\begin{pmatrix}u_L\\ d_L\end{pmatrix},\quad
+L_L=\begin{pmatrix}\nu_L\\ e_L\end{pmatrix}
+\qquad\text{と}\qquad
+u_R,\quad d_R,\quad e_R
+\end{equation}
+を持つ。二重項の上下の成分は電荷が1だけ異なる粒子の組であり、
+$W^\pm$ の放出・吸収で互いに移り変わる。
+\subsection{実験的根拠}
+この割り当ては次のような実験事実から決まった。
+\paragraph{荷電カレントは左巻きのみ}
+$\beta$崩壊やミューオン崩壊の分析から、
+荷電カレントは V$-$A 形 $\bar\psi\gamma^\mu(1-\gamma^5)\psi'$ であり、
+右巻きのカレント（V$+$A）は観測されていない。
+ミューオン崩壊の Michel パラメータは V$-$A の予言と $10^{-3}$ 程度の精度で一致する。
+これは右巻き場が $\SU(2)_L$ に関して一重項であることを意味する。
+\paragraph{ニュートリノのヘリシティ}
+Goldhaber らの実験（1958）により、ニュートリノのヘリシティは $-1/2$ であることが示された。
+最小標準模型では $\nu_R$ を含めない。
+\paragraph{右巻き場も中性カレントを持つ}
+右巻き場は $\SU(2)_L$ 一重項であるが、超電荷を持つので
+光子と $Z$ ボソンに結合する。第2章の命題~\ref{prop:neutral-current} より、
+$Z$ との結合は $T_3-Q\sin^2\theta_W$ に比例し、
+\begin{equation}
+g_L^e=-\frac12+\sin^2\theta_W\simeq-0.27,
+\qquad
+g_R^e=\sin^2\theta_W\simeq0.23
+\end{equation}
+となる。
+$e_R$ の $Z$ 結合がゼロでないことは、LEP での $Z$ の崩壊の精密測定で確かめられている（第12章）。
+\begin{note}
+$e_L$ は $T_3=-\frac12$, $Q=-1$ なので $g_L^e=-\frac12-(-1)\sin^2\theta_W$。
+$e_R$ は $T_3=0$, $Q=-1$ なので $g_R^e=\sin^2\theta_W$。
+$\sin^2\theta_W\simeq\frac14$ に近いため、
+荷電レプトンの $Z$ へのベクトル結合 $g_V=g_L+g_R=-\frac12+2\sin^2\theta_W$ は非常に小さい。
+\end{note}
+\subsection{右巻きニュートリノ}
+右巻きニュートリノ $\nu_R$ を加えるとすれば、その量子数は
+\begin{equation}
+\nu_R\sim(\mathbf1,\mathbf1)_0
+\end{equation}
+でなければならない（$T_3=0$, $Q=0$ より $Y=0$）。
+これはすべてのゲージ相互作用に対して一重項であり（\term{ステライル}{sterile}）、
+ゲージ相互作用だけでは生成も検出もできない。
+$\nu_R$ の有無はニュートリノ質量の起源と関係しており、第11章で詳しく扱う。
+\begin{remark}
+右巻き場も二重項にまとめる\term{左右対称模型}{left-right symmetric model}
+$\SU(2)_L\times\SU(2)_R\times\U(1)_{B-L}$ も考えられている。
+この模型では $\nu_R$ が自然に現れ、パリティの破れは $\SU(2)_R$ の自発的破れとして説明される。
+\end{remark}
+\subsection{フレーバー対称性}
+ゲージ相互作用は世代の添字に作用しないので、
+フェルミオンの運動項 $\Lag_{\mathrm{fermion}}$ は世代の回転
+\begin{equation}
+Q_L\to U_QQ_L,\quad
+u_R\to U_uu_R,\quad
+d_R\to U_dd_R,\quad
+L_L\to U_LL_L,\quad
+e_R\to U_ee_R
+\qquad(U_X\in\U(3))
+\end{equation}
+の下で不変である。この大域的対称性
+\begin{equation}
+G_F=\U(3)^5=\U(3)_Q\times\U(3)_u\times\U(3)_d\times\U(3)_L\times\U(3)_e
+\end{equation}
+を\term{フレーバー対称性}{flavor symmetry}と呼ぶ。
+$G_F$ を破るのは Yukawa 結合だけである。
+したがって、フレーバーを変える過程はすべて Yukawa 行列（質量と CKM 行列）を通じてのみ起こる。
+これは第1章のパラメータの数え上げの基礎であり、
+第9・10章の CKM 行列と GIM 機構の議論の出発点になる。
+%------------------------------------------------
+\section{クォークとレプトンのゲージ量子数}
+\label{sec:quantum-numbers}
+%------------------------------------------------
+\subsection{量子数の一覧}
+1世代分のゲージ量子数を、Dirac 表示と左巻き表示で並べると次のようになる
+（第1章の表を再掲）。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cccc|cccc}
+\toprule
+\multicolumn{4}{c|}{Dirac 表示} & \multicolumn{4}{c}{左巻き表示}\\
+場 & $\SU(3)_C$ & $\SU(2)_L$ & $Y$ & 場 & $\SU(3)_C$ & $\SU(2)_L$ & $Y$\\
+\midrule
+$Q_L$ & $\mathbf3$ & $\mathbf2$ & $+\frac13$ & $Q$ & $\mathbf3$ & $\mathbf2$ & $+\frac13$\\
+$u_R$ & $\mathbf3$ & $\mathbf1$ & $+\frac43$ & $u^c$ & $\bar{\mathbf3}$ & $\mathbf1$ & $-\frac43$\\
+$d_R$ & $\mathbf3$ & $\mathbf1$ & $-\frac23$ & $d^c$ & $\bar{\mathbf3}$ & $\mathbf1$ & $+\frac23$\\
+$L_L$ & $\mathbf1$ & $\mathbf2$ & $-1$ & $L$ & $\mathbf1$ & $\mathbf2$ & $-1$\\
+$e_R$ & $\mathbf1$ & $\mathbf1$ & $-2$ & $e^c$ & $\mathbf1$ & $\mathbf1$ & $+2$\\
+\midrule
+$H$ & $\mathbf1$ & $\mathbf2$ & $+1$ & $H$ & $\mathbf1$ & $\mathbf2$ & $+1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\subsection{超電荷を未知数として扱う}
+第2章で見たように、$\U(1)_Y$ の超電荷は群論からは決まらない。
+そこで、超電荷を未知数
+\begin{equation}
+Y_Q,\quad Y_u,\quad Y_d,\quad Y_L,\quad Y_e,\quad Y_H
+\end{equation}
+とおき、どのような条件で現実の値が決まるかを調べよう。
+これは本章を通じたテーマである。
+
+第1の条件は Yukawa 結合の存在である。
+3種類の Yukawa 項 $\overline{Q_L}Hd_R$, $\overline{Q_L}\tilde Hu_R$, $\overline{L_L}He_R$ が
+$\U(1)_Y$ 不変であるためには
+\begin{equation}
+Y_d=Y_Q-Y_H,\qquad
+Y_u=Y_Q+Y_H,\qquad
+Y_e=Y_L-Y_H
+\label{eq:Y-yukawa}
+\end{equation}
+でなければならない。
+第2の条件は、ヒッグス場の真空期待値が電荷を破らないことである。
+真空期待値を持つ成分（下成分、$T_3=-\frac12$）が中性であるためには
+\begin{equation}
+Q=-\frac12+\frac{Y_H}{2}=0
+\quad\Longrightarrow\quad
+Y_H=1
+\label{eq:YH}
+\end{equation}
+でなければならない（これは $\U(1)_Y$ の規格化を固定する条件とみなせる）。
+
+これだけでは $Y_Q$ と $Y_L$ が未定のまま残る。
+実際、\eqref{eq:Y-yukawa} と \eqref{eq:YH} の下で電荷は
+\begin{equation}
+Q(u)=\frac12+\frac{Y_Q}{2},\quad
+Q(d)=-\frac12+\frac{Y_Q}{2},\quad
+Q(\nu)=\frac12+\frac{Y_L}{2},\quad
+Q(e)=-\frac12+\frac{Y_L}{2}
+\end{equation}
+となり、$Y_Q$, $Y_L$ は任意の実数でよい。
+残りの2つの自由度を固定するのが、\S\ref{sec:anomaly} の異常相殺条件である。
+%------------------------------------------------
+\section{ゲージ不変な相互作用項}
+\label{sec:invariant-terms}
+%------------------------------------------------
+\subsection{繰り込み可能な項の分類}
+質量次元4以下で Lorentz 不変な演算子は、
+場の次元 $[\psi]=\frac32$, $[\phi]=[A_\mu]=1$, $[\partial]=1$ から
+次の形に限られる。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+型 & 例 & 標準模型での項\\
+\midrule
+$\bar\psi\gamma^\mu D_\mu\psi$ & フェルミオン運動項 & $\Lag_{\mathrm{fermion}}$\\
+$F_{\mu\nu}F^{\mu\nu}$, $F\tilde F$ & ゲージ場運動項、$\theta$ 項 & $\Lag_{\mathrm{gauge}}$, $\Lag_\theta$\\
+$|D_\mu\phi|^2$, $\phi^2$, $\phi^3$, $\phi^4$ & スカラーの運動項・ポテンシャル & $\Lag_{\mathrm{Higgs}}$\\
+$\psi\psi$（$\bar\psi\psi$） & フェルミオン質量項 & なし（\S\ref{sec:no-bare-mass}）\\
+$\psi\psi\phi$ & Yukawa 結合 & $\Lag_{\mathrm{Yukawa}}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+運動項はゲージ不変性から共変微分の形に決まり、
+第2章で見たように任意の表現に対して書ける。
+非自明なのは、フェルミオンとスカラーを含む項（質量項・Yukawa 項）と
+スカラーポテンシャルである。
+\subsection{スカラーポテンシャル}
+$H\sim(\mathbf1,\mathbf2)_1$ だけから作れるゲージ不変量は $H^\dagger H$ のみである。
+\begin{itemize}
+    \item $H^3$, $H^2H^\dagger$ などの奇数次の項は $Y$ の和がゼロにならない。
+    \item $\epsilon^{ab}H_aH_b=0$（反対称テンソルと対称な積）。
+\end{itemize}
+したがって
+\begin{equation}
+V(H)=-\mu^2H^\dagger H+\lambda(H^\dagger H)^2
+\end{equation}
+が最も一般的なポテンシャルである（定数項を除く）。
+ヒッグス二重項が2つ以上ある模型では、ポテンシャルはずっと複雑になる。
+\subsection{Yukawa 項の網羅的な探索}
+左巻き表示では、Yukawa 項は2つの左巻きフェルミオン $\psi_1\psi_2$ と
+スカラー $H$ または $H^\dagger$ の積である。
+1世代の左巻き場 $\{Q,u^c,d^c,L,e^c\}$ から2つを選び、
+$H$（$Y=+1$）または $H^\dagger$（$Y=-1$）を掛けて一重項になるものを探す。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cccccc}
+\toprule
+$\psi_1\psi_2$ & $\SU(3)_C$ & $\SU(2)_L$ & $Y_1+Y_2$ & 相手 & 結果\\
+\midrule
+$Q\,u^c$ & $\mathbf3\otimes\bar{\mathbf3}\ni\mathbf1$ & $\mathbf2$ & $-1$ & $H$ & ○ 上型 Yukawa\\
+$Q\,d^c$ & $\mathbf3\otimes\bar{\mathbf3}\ni\mathbf1$ & $\mathbf2$ & $+1$ & $H^\dagger$ & ○ 下型 Yukawa\\
+$L\,e^c$ & $\mathbf1$ & $\mathbf2$ & $+1$ & $H^\dagger$ & ○ 荷電レプトン Yukawa\\
+$Q\,L$ & $\mathbf3$ & & & & × カラー\\
+$Q\,Q$ & $\mathbf3\otimes\mathbf3\not\ni\mathbf1$ & & & & × カラー\\
+$u^c\,d^c$ & $\bar{\mathbf3}\otimes\bar{\mathbf3}\not\ni\mathbf1$ & & & & × カラー\\
+$L\,L$ & $\mathbf1$ & $\mathbf1\oplus\mathbf3$ & $-2$ & & × $Y$\\
+$e^c\,e^c$ & $\mathbf1$ & $\mathbf1$ & $+4$ & & × $Y$\\
+$L\,e^c$ & $\mathbf1$ & $\mathbf2$ & $+1$ & $H$ & × $Y$\\
+\bottomrule
+\end{tabular}
+\end{center}
+その他の組み合わせも同様に、カラーまたは $Y$ の保存則で禁止される。
+結局、許される Yukawa 項は
+\begin{equation}
+Q\,u^c\,H,\qquad Q\,d^c\,H^\dagger,\qquad L\,e^c\,H^\dagger
+\end{equation}
+の3種類（とそのエルミート共役）だけであり、これが第1章で与えた
+\begin{equation}
+\Lag_{\mathrm{Yukawa}}
+=-y^d_{ij}\,\overline{Q_{Li}}Hd_{Rj}
+-y^u_{ij}\,\overline{Q_{Li}}\tilde Hu_{Rj}
+-y^e_{ij}\,\overline{L_{Li}}He_{Rj}+\hc
+\label{eq:Yukawa-ch3}
+\end{equation}
+に対応する。
+\subsection{ゲージ不変性の確認}
+Dirac 表示で、$\SU(2)_L$ の添字を明示すると
+\begin{equation}
+\overline{Q_L}Hd_R=\overline{Q_L}{}_a\,H^a\,d_R,
+\qquad
+\overline{Q_L}\tilde Hu_R=\overline{Q_L}{}_a\,\epsilon^{ab}H^*_b\,u_R,
+\qquad
+\overline{L_L}He_R=\overline{L_L}{}_a\,H^a\,e_R
+\end{equation}
+である。
+\begin{myprop}{Yukawa 項のゲージ不変性}{yukawa-invariance}
+\eqref{eq:Yukawa-ch3} の各項は $\SU(3)_C\times\SU(2)_L\times\U(1)_Y$ 不変である。
+\end{myprop}
+\begin{note}
+\textbf{$\SU(3)_C$}：$\overline{Q_L}$ と $d_R$ のカラー添字が $\delta$ で縮約され、
+$\bar q\,U_3^\dagger U_3\,q$ の形になる。
+
+\textbf{$\SU(2)_L$}：$\overline{Q_L}\to\overline{Q_L}U_2^\dagger$, $H\to U_2H$, $d_R\to d_R$ なので
+$\overline{Q_L}Hd_R\to\overline{Q_L}U_2^\dagger U_2Hd_R=\overline{Q_L}Hd_R$。
+$\tilde H$ も $U_2\tilde H$ と変換する（命題~\ref{prop:pseudoreal}）ので同様。
+
+\textbf{$\U(1)_Y$}：$\bar\psi$ は $-Y$ を持つので、超電荷の和は
+$\overline{Q_L}Hd_R$：$-\frac13+1-\frac23=0$、
+$\overline{Q_L}\tilde Hu_R$：$-\frac13-1+\frac43=0$、
+$\overline{L_L}He_R$：$+1+1-2=0$。
+\end{note}
+上型クォークに $\tilde H$ が必要なのは、
+$\overline{Q_L}Hu_R$ の超電荷が $-\frac13+1+\frac43=2\ne0$ となるからである。
+ヒッグス二重項が1つしかなくても上型・下型の両方に質量を与えられるのは、
+$\SU(2)$ の擬実性（$\mathbf2\simeq\bar{\mathbf2}$）のおかげである。
+超対称模型ではこの手が使えず、2つのヒッグス二重項が必要になる。
+\subsection{偶然的対称性}
+上の分類から、標準模型の繰り込み可能なラグランジアンには、
+\begin{itemize}
+    \item $\epsilon^{\alpha\beta\gamma}$（3つのクォーク）を含む項がない
+    $\Rightarrow$ バリオン数 $B$ が保存する。
+    \item $LL$, $Le^c$（同符号のレプトン数）を含む項がない
+    $\Rightarrow$ レプトン数 $L$ が保存する。
+\end{itemize}
+これらは課した対称性ではなく、ゲージ対称性と繰り込み可能性から
+自動的に従う\term{偶然的対称性}{accidental symmetry}である。
+$B$ を破る最低次の演算子は次元6（$QQQL$ など）であり、
+陽子崩壊の寿命の下限 $\tau_p\gtrsim10^{34}$ 年から
+そのスケールは $\Lambda\gtrsim10^{15}\ \mathrm{GeV}$ と制限される。
+\begin{remark}
+最小超対称標準模型では、スカラー場の超対称パートナーを用いて
+$u^cd^cd^c$ などの $B$ を破る繰り込み可能な項が書けてしまうため、
+$R$ パリティと呼ばれる対称性を別途課す必要がある。
+標準模型で $B$ と $L$ が自動的に保存することは、その意味で非自明な性質である。
+\end{remark}
+%------------------------------------------------
+\section{なぜ裸の質量項を導入できないのか}
+\label{sec:no-bare-mass}
+%------------------------------------------------
+\subsection{Dirac 質量項}
+Dirac 質量項は
+\begin{equation}
+-m\bar\psi\psi=-m\left(\overline{\psi_L}\psi_R+\overline{\psi_R}\psi_L\right)
+\end{equation}
+であり、左巻き場と右巻き場を結ぶ。
+これがゲージ不変であるためには、$\psi_L$ と $\psi_R$ が同じ表現に属さなければならない。
+標準模型のすべての候補について確かめると次のようになる。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lccc}
+\toprule
+質量項 & $\SU(2)_L$ & $Y$ の和 & 判定\\
+\midrule
+$\overline{e_L}e_R$ & $\mathbf2$ の成分 $\otimes\ \mathbf1$ & $+1-2=-1$ & ×\\
+$\overline{u_L}u_R$ & $\mathbf2$ の成分 $\otimes\ \mathbf1$ & $-\frac13+\frac43=1$ & ×\\
+$\overline{d_L}d_R$ & $\mathbf2$ の成分 $\otimes\ \mathbf1$ & $-\frac13-\frac23=-1$ & ×\\
+$\overline{\nu_L}\nu_R$（$\nu_R$ を加えた場合） & $\mathbf2$ の成分 $\otimes\ \mathbf1$ & $+1+0=1$ & ×\\
+\bottomrule
+\end{tabular}
+\end{center}
+すべての項で $Y$ の和が $\pm1$ となっている。
+これは偶然ではなく、Yukawa 項 $\overline{\psi_L}H\psi_R$ が不変であることから
+$\overline{\psi_L}\psi_R$ は $H$ の電荷 $\mp1$ を補えばよいことを意味する。
+つまり\textbf{質量項に足りないのはちょうどヒッグス場1つ分の量子数}である。
+$\SU(2)_L$ についても、$\overline{\psi_L}\psi_R$ は二重項の成分であり、
+二重項 $H$ と縮約して初めて一重項になる。
+\begin{note}
+$\overline{e_L}e_R$ は $\SU(2)_L$ 二重項 $\overline{L_L}$ の下成分だけを取り出したものなので、
+$\SU(2)_L$ 変換で $\overline{\nu_L}e_R$ と混ざる。
+仮に二重項全体で $\overline{L_L}e_R$ と書いても、これは $\SU(2)_L$ 二重項（の共役）であり一重項ではない。
+\end{note}
+\subsection{Majorana 質量項}
+1つの左巻き Weyl 場 $\chi$ だけで作る質量項
+\begin{equation}
+-\frac{m}{2}\left(\chi\chi+\hc\right)
+\qquad\left(\text{Dirac 記法では}\ -\frac m2\overline{(\chi_L)^c}\chi_L+\hc\right)
+\end{equation}
+を \term{Majorana 質量項}{Majorana mass term} と呼ぶ。
+これは $\chi$ の持つすべての $\U(1)$ 電荷を2倍だけ破るので、
+$\chi$ が電荷を持つ場合は禁止される。
+\begin{itemize}
+    \item $e_L$, $u_L$ などの荷電フェルミオン：電荷 $Q\ne0$ を持つので禁止。
+    \item $\nu_L$：電荷は持たないが、$LL$ は $Y=-2$ で $\SU(2)_L$ の $\mathbf1\oplus\mathbf3$ なので禁止。
+    \item $\nu_R$（加えた場合）：$(\mathbf1,\mathbf1)_0$ なので\textbf{許される}。
+    $\nu_R$ の Majorana 質量 $M_R$ はゲージ対称性で制限されず、任意に大きくてよい。
+\end{itemize}
+最後の点はシーソー機構の基礎となる（第11章）。
+\begin{remark}
+$LL$ の $\SU(2)_L$ 三重項部分（$Y=-2$）と結合するには、
+$Y=+2$ の三重項スカラー $\Delta\sim(\mathbf1,\mathbf3)_2$ を導入すればよい
+（type-II シーソー）。また、繰り込み不可能な Weinberg 演算子
+$(LH)(LH)/\Lambda$ は $H$ を2つ用いて $Y$ と $\SU(2)_L$ を補っている（第11章）。
+\end{remark}
+\subsection{結論：すべての質量は電弱対称性の破れに由来する}
+以上より、標準模型では
+\begin{itemize}
+    \item すべてのフェルミオン（$\nu_R$ を除く）の質量項はゲージ不変でない、
+    \item ゲージボソンの質量項もゲージ不変でない（第2章）、
+\end{itemize}
+したがって、\textbf{電弱対称性が破れていなければ、標準模型の全粒子は massless である}
+（ヒッグス場自身の $-\mu^2H^\dagger H$ を除く）。
+観測される質量はすべて、電弱対称性の破れの大きさ $v$ に比例する：
+\begin{equation}
+m_f=\frac{y_fv}{\sqrt2},\qquad
+M_W=\frac{gv}{2},\qquad
+M_Z=\frac{\sqrt{g^2+g'^2}\,v}{2},\qquad
+m_h=\sqrt{2\lambda}\,v .
+\end{equation}
+これらの導出は第6章・第7章で行う。
+\begin{remark}
+ヒッグス場がなくても、QCD のクォーク凝縮 $\langle\bar q_Lq_R\rangle\ne0$ は
+$\overline{Q_L}$ と $q_R$ の積が二重項であることから $\SU(2)_L\times\U(1)_Y$ を破る。
+このとき $W$, $Z$ はパイ中間子を「食べて」質量
+$M_W\sim gf_\pi/2\sim30\ \mathrm{MeV}$ 程度を得る。
+これは観測値よりはるかに小さいが、
+「強い相互作用による動的な電弱対称性の破れ」というテクニカラー模型の着想の元になった。
+\end{remark}
+%------------------------------------------------
+\section{ゲージ異常と異常相殺}
+\label{sec:anomaly}
+%------------------------------------------------
+\subsection{量子異常}
+古典的なラグランジアンが持つ対称性が、量子化の後に破れる現象を
+\term{量子異常}{quantum anomaly}あるいは単に\term{アノマリー}{anomaly}と呼ぶ。
+経路積分の言葉では、作用は不変でも
+フェルミオンの経路積分測度 $\mathcal D\psi\mathcal D\bar\psi$ が不変でないことに由来する（藤川の方法）。
+摂動論では、カイラルフェルミオンのループを含む
+\term{三角形ダイアグラム}{triangle diagram}（カレント3つの相関関数）に現れる。
+
+最も有名な例は、質量ゼロの Dirac フェルミオン（電荷 $e$）の軸性カレント
+$j^\mu_5=\bar\psi\gamma^\mu\gamma^5\psi$ に対する
+\term{Adler--Bell--Jackiw 異常}{ABJ anomaly}
+\begin{equation}
+\partial_\mu j^\mu_5=\frac{e^2}{8\pi^2}F_{\mu\nu}\tilde F^{\mu\nu},
+\qquad
+\tilde F^{\mu\nu}=\frac12\epsilon^{\mu\nu\rho\sigma}F_{\rho\sigma}
+\end{equation}
+である（全体の符号は $\epsilon^{0123}$ や $\gamma^5$ の規約に依存する）。
+古典的には $\partial_\mu j^\mu_5=0$ であるが、量子論では右辺が現れる。
+三角形ダイアグラムの計算そのものは場の量子論の標準的な教科書に譲り、本ノートでは結果のみを用いる。
+\begin{myex}{$\pi^0\to\gamma\gamma$ とカラー数}{pi0}
+$\pi^0$ の2光子崩壊は、軸性カレントの ABJ 異常によって支配される。
+クォークの寄与を足し合わせると
+\begin{equation}
+\Gamma(\pi^0\to\gamma\gamma)
+=\frac{\alpha^2m_\pi^3}{64\pi^3f_\pi^2}
+\left[N_c\left(Q_u^2-Q_d^2\right)\right]^2
+\end{equation}
+となる（$f_\pi\simeq92\ \mathrm{MeV}$）。
+$N_c=3$ では $N_c(Q_u^2-Q_d^2)=3\left(\frac49-\frac19\right)=1$ となり、
+$\Gamma\simeq7.8\ \mathrm{eV}$ を与えて実験値とよく一致する。
+$N_c=1$ では $1/9$ 倍になってしまう。
+\end{myex}
+\begin{note}
+数値：$\alpha^2=5.33\times10^{-5}$、$m_\pi^3=(0.135)^3=2.46\times10^{-3}\ \mathrm{GeV}^3$、
+$64\pi^3f_\pi^2=1984\times(0.0921)^2=16.8\ \mathrm{GeV}^2$。
+よって $\Gamma=5.33\times10^{-5}\times2.46\times10^{-3}/16.8\simeq7.8\times10^{-9}\ \mathrm{GeV}$。
+\end{note}
+\subsection{大域的異常とゲージ異常}
+ABJ 異常のように、\textbf{大域的}対称性が異常で破れることは問題ではない。
+むしろ $\pi^0\to\gamma\gamma$ のような物理的な予言を与える。
+
+一方、\textbf{ゲージ}対称性が異常で破れると理論は破綻する：
+\begin{itemize}
+    \item ゲージカレントが保存しないと Ward 恒等式が成り立たず、
+    ゲージボソンの非物理的な偏極（縦波・時間成分）が物理的な状態から分離しない。
+    \item その結果、ユニタリ性（確率の保存）や繰り込み可能性が失われる。
+\end{itemize}
+したがって、\textbf{ゲージ異常は相殺していなければならない}。
+これはカイラルなゲージ理論の表現に対する非自明な制約である。
+\subsection{異常係数}
+左巻き Weyl フェルミオンの集合が、ゲージ群の生成子 $T^a$ の表現を持つとする
+（右巻き場は荷電共役をとって左巻き場に直す）。
+3つのゲージカレント $j^a,j^b,j^c$ の三角形ダイアグラムによる異常は、
+\begin{equation}
+\mathcal A^{abc}\equiv\sum_{\text{左巻き Weyl}}\tr\left[T^a\{T^b,T^c\}\right]
+\end{equation}
+に比例する。異常がないための条件は、すべての $a,b,c$ について
+\begin{equation}
+\boxed{\mathcal A^{abc}=0}
+\end{equation}
+である。
+\begin{note}
+右巻き場 $\psi_R\in R$ は、三角形ダイアグラムに左巻き場と逆符号で寄与する。
+一方、その荷電共役 $(\psi_R)^c\in\bar R$ の生成子は $-T^{a*}=-T^{aT}$ であり、
+\[
+\tr\left[(-T^{aT})\{-T^{bT},-T^{cT}\}\right]
+=-\tr\left[T^{aT}\{T^{bT},T^{cT}\}\right]
+=-\tr\left[T^a\{T^b,T^c\}\right]
+\]
+（転置のトレースは不変で、積の順序が逆転するが反交換子なので同じ）。
+したがって「右巻き場の寄与に $-1$ を掛ける」ことと
+「左巻き表示で $\bar R$ として数える」ことは同値である。
+\end{note}
+\subsection{標準模型で調べるべき異常}
+$G_{\SM}=\SU(3)_C\times\SU(2)_L\times\U(1)_Y$ の場合、
+3つの生成子をどの因子から選ぶかで次の組み合わせがある。
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+\toprule
+型 & 異常係数 & 自明か\\
+\midrule
+$\SU(3)^3$ & $\sum\tr_3[T^a\{T^b,T^c\}]$ & 非自明（$\mathbf3$ と $\bar{\mathbf3}$ の数の差）\\
+$\SU(2)^3$ & $\tr[\sigma^a\{\sigma^b,\sigma^c\}]$ & 自明に $0$\\
+$\SU(3)^2\,\U(1)$ & $\sum Y\,\tr_3[T^aT^b]$ & 非自明\\
+$\SU(2)^2\,\U(1)$ & $\sum Y\,\tr_2[T^iT^j]$ & 非自明\\
+$\U(1)^3$ & $\sum Y^3$ & 非自明\\
+重力$^2\,\U(1)$ & $\sum Y$ & 非自明\\
+$\SU(N)\times(\text{その他})^2$ など & $\propto\tr T^a$ & 自明に $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{note}
+\textbf{$\SU(2)^3$}：$\{\sigma^b,\sigma^c\}=2\delta^{bc}$ なので
+$\tr[\sigma^a\{\sigma^b,\sigma^c\}]=2\delta^{bc}\tr\sigma^a=0$。
+より一般に、$\SU(2)$ の表現はすべて実または擬実なので $\SU(2)^3$ 異常は存在しない。
+
+\textbf{生成子1つだけが非可換因子から来る場合}：
+例えば $\SU(3)\,\U(1)^2$ では $\tr_3[T^a]\times(\cdots)=0$。
+$\SU(3)\,\SU(2)\,\U(1)$ も $\tr T^a=0$ を含むので消える。
+
+\textbf{重力}：ゲージカレント1つと重力子（エネルギー運動量テンソル）2つの三角形ダイアグラムも、
+理論を重力と結合させたときに整合的であるためには相殺しなければならない。
+その係数は $\sum Y$（$\U(1)$ 電荷の和）である。
+\end{note}
+\subsection{1世代での異常相殺}
+左巻き表示の1世代 $\{Q,u^c,d^c,L,e^c\}$ について、非自明な条件を順に確かめる。
+$T(\mathbf3)=T(\bar{\mathbf3})=T(\mathbf2)=\frac12$ を用いる。
+\paragraph{$\SU(3)^3$}
+$\mathbf3$ に属する Weyl 場は $Q$ の2成分（$\SU(2)$ の上下）、
+$\bar{\mathbf3}$ に属するものは $u^c$, $d^c$ の2つ。
+$\mathbf3$ と $\bar{\mathbf3}$ の異常係数は逆符号なので
+\begin{equation}
+\mathcal A_{333}\propto2-2=0 .
+\end{equation}
+これは $\SU(3)_C$ がベクトル的（第2章）であることの反映である。
+\paragraph{$\SU(3)^2\,\U(1)_Y$}
+カラーを持つ場の $Y$ を、$\SU(2)$ の多重度を掛けて足す：
+\begin{equation}
+\mathcal A_{33Y}\propto
+\underbrace{2\cdot\tfrac13}_{Q}
++\underbrace{\left(-\tfrac43\right)}_{u^c}
++\underbrace{\tfrac23}_{d^c}
+=0 .
+\end{equation}
+\paragraph{$\SU(2)^2\,\U(1)_Y$}
+二重項の $Y$ を、カラーの多重度を掛けて足す：
+\begin{equation}
+\mathcal A_{22Y}\propto
+\underbrace{3\cdot\tfrac13}_{Q}
++\underbrace{(-1)}_{L}
+=0 .
+\end{equation}
+\paragraph{$\U(1)_Y^3$}
+すべての Weyl 成分について
+\begin{equation}
+\mathcal A_{YYY}\propto
+6\left(\tfrac13\right)^3+3\left(-\tfrac43\right)^3+3\left(\tfrac23\right)^3+2(-1)^3+(2)^3
+=\tfrac29-\tfrac{64}9+\tfrac89-2+8=0 .
+\end{equation}
+\paragraph{重力$^2\,\U(1)_Y$}
+\begin{equation}
+\mathcal A_{\mathrm{grav}}\propto
+6\cdot\tfrac13+3\left(-\tfrac43\right)+3\cdot\tfrac23+2(-1)+2
+=2-4+2-2+2=0 .
+\end{equation}
+\begin{mythm}{標準模型の異常相殺}{anomaly-free}
+標準模型のゲージ異常は、各世代ごとに独立に相殺する。
+ただし相殺はクォークとレプトンの間で起こり、
+クォークだけ、あるいはレプトンだけでは相殺しない。
+\end{mythm}
+例えば $\SU(2)^2\U(1)$ ではクォーク二重項の $+1$ とレプトン二重項の $-1$ が、
+$\U(1)^3$ ではクォーク部分 $-6$ とレプトン部分 $+6$ が打ち消し合う。
+もしトップクォークが存在しなければ第3世代の異常は相殺しないので、
+異常相殺の観点からも、$b$ クォークと $\tau$ の発見の後にトップクォークの存在が強く期待された。
+\subsection{異常相殺による超電荷の決定}
+\S\ref{sec:quantum-numbers} で未定のまま残した超電荷を、異常相殺条件から決定しよう。
+これは本章の主結果である。
+\begin{mythm}{異常相殺と電荷の量子化}{charge-quantization}
+1世代のフェルミオンの表現 $(\mathbf3,\mathbf2)_{Y_Q}$, $(\mathbf3,\mathbf1)_{Y_u}$, $(\mathbf3,\mathbf1)_{Y_d}$,
+$(\mathbf1,\mathbf2)_{Y_L}$, $(\mathbf1,\mathbf1)_{Y_e}$（Dirac 表示）を仮定する。
+4つの非自明な異常相殺条件の解は、$u\leftrightarrow d$ の入れ替えを除いて
+\begin{equation}
+(Y_Q,\ Y_u,\ Y_d,\ Y_L,\ Y_e)=Y_Q\times(1,\ 4,\ -2,\ -3,\ -6)
+\end{equation}
+または $Y_Q=0$ の自明に近い解（$Y_L=Y_e=0$, $Y_u=-Y_d$）である。
+さらに Yukawa 結合の存在 \eqref{eq:Y-yukawa} と $Y_H=1$ \eqref{eq:YH} を課すと $Y_Q=\frac13$ となり、
+すべての超電荷と電荷が一意に決まる：
+\begin{equation}
+Q(u)=\frac23,\quad Q(d)=-\frac13,\quad Q(\nu)=0,\quad Q(e)=-1 .
+\end{equation}
+\end{mythm}
+\begin{note}
+左巻き表示では $u^c$, $d^c$, $e^c$ の超電荷は $-Y_u$, $-Y_d$, $-Y_e$ である。
+
+$\SU(2)^2\U(1)$：$3Y_Q+Y_L=0$ より $Y_L=-3Y_Q$。
+
+$\SU(3)^2\U(1)$：$2Y_Q-Y_u-Y_d=0$。そこで $Y_u=Y_Q+x$, $Y_d=Y_Q-x$ とおく。
+
+重力：$6Y_Q-3Y_u-3Y_d+2Y_L-Y_e=6Y_Q-6Y_Q-6Y_Q-Y_e=0$ より $Y_e=-6Y_Q$。
+
+$\U(1)^3$：
+\[
+6Y_Q^3-3(Y_Q+x)^3-3(Y_Q-x)^3+2(-3Y_Q)^3-(-6Y_Q)^3
+=6Y_Q^3-6Y_Q^3-18Y_Qx^2-54Y_Q^3+216Y_Q^3
+=18Y_Q\left(9Y_Q^2-x^2\right)=0 .
+\]
+よって $Y_Q=0$ または $x=\pm3Y_Q$。
+$x=3Y_Q$ のとき $Y_u=4Y_Q$, $Y_d=-2Y_Q$（$x=-3Y_Q$ は $u\leftrightarrow d$ の入れ替え）。
+
+Yukawa 条件：$Y_H=Y_Q-Y_d=3Y_Q$, $Y_H=Y_u-Y_Q=3Y_Q$, $Y_H=Y_L-Y_e=3Y_Q$ はすべて整合しており、
+$Y_H=1$ から $Y_Q=\frac13$。電荷は $Q(u)=\frac12+\frac16=\frac23$ などとなる。
+\end{note}
+この定理の意味は大きい。
+$\U(1)$ の電荷は群論的には任意の実数でよいにもかかわらず、
+\begin{itemize}
+    \item 異常相殺（量子論の整合性）、
+    \item Yukawa 結合の存在（フェルミオンが質量を持つこと）、
+    \item ヒッグス場の真空が電荷を保存すること
+\end{itemize}
+を要求するだけで、クォークの電荷が $\frac23$, $-\frac13$、電子の電荷が $-1$ と決まる。
+特に陽子と電子の電荷が厳密に逆符号で等しいこと
+\begin{equation}
+Q(p)+Q(e)=2\cdot\frac23-\frac13-1=0
+\end{equation}
+が説明される。
+カラー数 $N_c=3$ も、$\SU(2)^2\U(1)$ の条件 $N_cY_Q+Y_L=0$ を通じて電荷の値と結びついている。
+\subsection{Witten 異常}
+$\SU(2)$ には、摂動論の三角形ダイアグラムでは見えない
+\term{大域的異常}{global anomaly}（\term{Witten 異常}{Witten anomaly}）が存在する。
+$\SU(2)$ 二重項の左巻き Weyl 場の数が奇数であると、
+理論は数学的に定義できない（分配関数がゼロになる）。
+
+標準模型の1世代には、$\SU(2)_L$ 二重項が
+\begin{equation}
+\underbrace{3}_{Q\text{ のカラー}}+\underbrace{1}_{L}=4
+\end{equation}
+個あり、偶数なので Witten 異常は存在しない。
+これもクォークとレプトンが揃うことで満たされる条件である。
+\subsection{大域的対称性の異常}
+偶然的対称性 $\U(1)_B$, $\U(1)_L$ は、$\SU(2)_L$ のゲージ場との間に異常を持つ：
+\begin{equation}
+\partial_\mu j^\mu_B=\partial_\mu j^\mu_L
+=n_g\frac{g^2}{32\pi^2}W^i_{\mu\nu}\tilde W^{i\mu\nu}+\cdots
+\end{equation}
+（$n_g=3$ は世代数）。
+これらは大域的対称性なので理論の整合性は損なわれないが、
+$B$ と $L$ が非摂動的に破れることを意味する。
+一方 $B-L$ の異常は相殺するので、$B-L$ は厳密に保存する。
+この $B+L$ を破る過程（\term{スファレロン}{sphaleron}過程）は
+現在の宇宙では極めて稀であるが、初期宇宙の高温ではよく起こり、
+バリオン数非対称性の生成に関与する（第14章）。
+\begin{note}
+$\SU(2)^2\U(1)_B$：二重項のバリオン数は $Q$ のみで、$3\times\frac13=1$（1世代あたり）。
+$\SU(2)^2\U(1)_L$：二重項のレプトン数は $L$ のみで $1$。
+両者は等しいので、$B-L$ では打ち消し合う。
+\end{note}
+\begin{remark}
+右巻きニュートリノ $\nu^c\sim(\mathbf1,\mathbf1)_0$（$B-L=+1$）を各世代に加えると、
+$\U(1)_{B-L}$ はすべての異常（$\U(1)_{B-L}^3$、重力$^2\U(1)_{B-L}$ を含む）が相殺し、
+ゲージ化することが可能になる。例えば
+\[
+\sum(B-L)^3=6\left(\tfrac13\right)^3+3\left(-\tfrac13\right)^3+3\left(-\tfrac13\right)^3+2(-1)^3+1+1
+=\tfrac29-\tfrac19-\tfrac19-2+2=0 .
+\]
+$\nu^c$ がないと $\sum(B-L)^3=-1\ne0$ となる。
+これは $\SO(10)$ 大統一理論や左右対称模型で $\nu_R$ が自然に現れることと対応している。
+\end{remark}
+%------------------------------------------------
+\section*{第3章のまとめ}
+%------------------------------------------------
+\begin{itemize}
+    \item フェルミオン場は Lorentz・ゲージ・世代の添字を持つ。
+    荷電共役によりすべてを左巻き Weyl 場で表すことができ、
+    このときゲージ量子数は複素共役になる。
+    \item 左巻き場は $\SU(2)_L$ 二重項、右巻き場は一重項であり、
+    これは V$-$A 構造などの実験事実に基づく。
+    ゲージ部分は大きな大域的フレーバー対称性 $\U(3)^5$ を持ち、それを破るのは Yukawa 結合のみである。
+    \item ゲージ不変かつ繰り込み可能なフェルミオン--スカラー項は3種類の Yukawa 項のみであり、
+    $B$ と $L$ は偶然的対称性として保存する。
+    \item 裸の Dirac 質量項・Majorana 質量項はすべて禁止され（$\nu_R$ の Majorana 質量を除く）、
+    質量項に足りない量子数はちょうどヒッグス場1つ分である。
+    \item ゲージ異常は各世代でクォークとレプトンの間で相殺する。
+    異常相殺と Yukawa 結合の存在から、超電荷（すなわち電荷）は一意に決まる。
+\end{itemize}
+%------------------------------------------------
+\section*{第I部のまとめ}
+%------------------------------------------------
+第I部では、標準模型の対称性と場の内容を導入した。
+\begin{enumerate}
+    \item 標準模型はゲージ群 $\SU(3)_C\times\SU(2)_L\times\U(1)_Y$ に基づく
+    繰り込み可能なカイラルゲージ理論である。
+    \item ゲージ対称性は、ゲージ場の自己相互作用、フェルミオンとゲージ場の相互作用、
+    および許される Yukawa 項の形を決める。
+    \item ゲージ対称性はゲージボソンとフェルミオンの質量項を禁止する。
+    \item 表現の割り当ては異常相殺条件を満たし、電荷の量子化を説明する。
+\end{enumerate}
+ゲージ対称性が厳密なら、すべての粒子は massless のはずである。
+第II部では、自発的対称性の破れとヒッグス機構を導入し、
+この対称性が「隠される」ことで粒子が質量を獲得する仕組みを導出する。
 \end{document}
