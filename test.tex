@@ -3119,4 +3119,2150 @@ $\nu^c$ がないと $\sum(B-L)^3=-1\ne0$ となる。
 ゲージ対称性が厳密なら、すべての粒子は massless のはずである。
 第II部では、自発的対称性の破れとヒッグス機構を導入し、
 この対称性が「隠される」ことで粒子が質量を獲得する仕組みを導出する。
+%================================================
+% Part II
+%================================================
+\part{自発的対称性の破れとヒッグス機構}
+%================================================
+\chapter{自発的対称性の破れ（SSB）}
+\label{ch:SSB}
+%================================================
+第I部の最後で見たように、標準模型のゲージ対称性が「そのまま」実現されていれば、
+ゲージボソンもフェルミオンもすべて massless でなければならない。
+この矛盾を解決する鍵が\term{自発的対称性の破れ}{spontaneous symmetry breaking, SSB}である。
+本章ではまずゲージ場を含まない\textbf{大域的}対称性の場合にSSBを調べ、
+\begin{itemize}
+    \item 対称性が破れるとはどういうことか（\S\ref{sec:SSB-global}）、
+    \item スカラー場のポテンシャルと真空の構造（\S\ref{sec:scalar-potential}, \S\ref{sec:vev}）、
+    \item 連続対称性の破れに必ず伴う massless 粒子（\S\ref{sec:goldstone-thm}, \S\ref{sec:NG-boson}）、
+    \item 具体例としての複素スカラー場の模型（\S\ref{sec:complex-SSB}）と自由度の数え上げ（\S\ref{sec:SSB-counting}）
+\end{itemize}
+を順に議論する。
+局所（ゲージ）対称性の場合、ここで現れる massless 粒子はゲージ場に「食べられて」消え、
+代わりにゲージ場が質量を得る。これが第5章のヒッグス機構である。
+%------------------------------------------------
+\section{大域的対称性と自発的対称性の破れ}
+\label{sec:SSB-global}
+%------------------------------------------------
+\subsection{大域的対称性と Noether の定理}
+場 $\phi_i$ の変換 $\phi_i\to\phi_i+\delta\phi_i$ が時空の点によらないパラメータ $\alpha^a$ で
+$\delta\phi_i=\alpha^a\Delta^a_i(\phi)$ と書かれ、ラグランジアンを（全微分を除いて）不変に保つとき、
+これを\term{大域的対称性}{global symmetry}という。
+\begin{myprop}{Noether の定理}{noether}
+連続的な大域的対称性 $\delta\phi_i=\alpha^a\Delta^a_i$ のもとで $\delta\Lag=\alpha^a\partial_\mu K^{a\mu}$ ならば、
+\begin{equation}
+j^{a\mu}=\frac{\partial\Lag}{\partial(\partial_\mu\phi_i)}\Delta^a_i-K^{a\mu}
+\label{eq:noether-current}
+\end{equation}
+は運動方程式を用いると $\partial_\mu j^{a\mu}=0$ を満たす（\term{Noether カレント}{Noether current}）。
+対応する\term{保存荷}{conserved charge}
+\begin{equation}
+Q^a=\int d^3x\,j^{a0}(t,\bm x)
+\end{equation}
+は時間によらず、量子論では場の変換を生成する：$[\,i\alpha^aQ^a,\phi_i\,]=\delta\phi_i$
+（符号は $\alpha^a$ の向きの規約による）。
+\end{myprop}
+\begin{note}
+パラメータを $\alpha^a\to\alpha^a(x)$ と局所化すると、
+$\delta\Lag=\alpha^a\partial_\mu K^{a\mu}+(\partial_\mu\alpha^a)\frac{\partial\Lag}{\partial(\partial_\mu\phi_i)}\Delta^a_i$。
+作用の変化は部分積分して $\delta S=-\int d^4x\,\alpha^a\,\partial_\mu\Bigl(\frac{\partial\Lag}{\partial(\partial_\mu\phi_i)}\Delta^a_i-K^{a\mu}\Bigr)$。
+運動方程式を満たす配位では任意の $\alpha^a(x)$ に対して $\delta S=0$ なので、$\partial_\mu j^{a\mu}=0$ が従う。
+\end{note}
+対称性が量子論でどのように「実現」されるかには、本質的に異なる2つの様式がある。
+\begin{mydef}{対称性の実現様式}{realization}
+対称性の生成子 $Q^a$ に対して、
+\begin{enumerate}
+    \item 真空が不変 $Q^a|0\rangle=0$（すべての $a$）のとき、対称性は
+    \term{Wigner--Weyl 様式}{Wigner--Weyl mode}で実現されているという。
+    このとき粒子は対称性群の既約表現に従って縮退した多重項をなす。
+    \item ラグランジアン（ハミルトニアン）は不変だが、真空が不変でない $Q^a|0\rangle\ne0$ とき、
+    対称性は\term{自発的に破れている}{spontaneously broken}、あるいは
+    \term{Nambu--Goldstone 様式}{Nambu--Goldstone mode}で実現されているという。
+\end{enumerate}
+\end{mydef}
+SSB では、対称性は「失われた」のではなく、真空を選ぶことで\textbf{隠されて}いる\en{hidden symmetry}。
+実際、ラグランジアンの対称性は、粒子のスペクトルや結合定数の間の関係として痕跡を残す
+（\S\ref{sec:vev} の3点・4点結合の関係や、Goldstone の定理）。
+これと区別して、ラグランジアン自身に対称性を破る項がある場合を
+\term{陽な対称性の破れ}{explicit symmetry breaking}という。
+\begin{note}
+無限体積では $Q^a|0\rangle$ は規格化可能な状態ではない。
+並進不変性から $\langle0|Q^aQ^a|0\rangle=\int d^3x\,\langle0|j^{a0}(\bm x)Q^a|0\rangle=V\langle0|j^{a0}(0)Q^a|0\rangle$ となり、
+右辺が 0 でなければ体積 $V\to\infty$ で発散する。
+したがって SSB の正確な定義は「$Q^a|0\rangle\ne0$」ではなく、
+ある演算子 $\mathcal O$ について $\langle0|[Q^a,\mathcal O]|0\rangle\ne0$（\term{秩序変数}{order parameter}が 0 でない）
+とするのがよい。交換子は局所性により有限である。
+\end{note}
+\subsection{SSB の例}
+\begin{itemize}
+    \item \textbf{強磁性体}\en{ferromagnet}：
+    Heisenberg 模型 $H=-J\sum_{\langle ij\rangle}\bm S_i\cdot\bm S_j$（$J>0$）は空間回転 $\SO(3)$ で不変だが、
+    基底状態ではスピンがそろって磁化 $\bm M\ne0$ を持ち、$\SO(3)$ が $\SO(2)$ に破れる。
+    磁化の向きは任意で、無限に縮退した基底状態の1つが選ばれる。
+    \item \textbf{QCD のカイラル対称性}\en{chiral symmetry}：
+    $u,d$ クォークの質量を無視すると QCD は $\SU(2)_L\times\SU(2)_R$ で不変だが、
+    クォーク凝縮 $\langle\bar qq\rangle\ne0$ により $\SU(2)_V$ に破れる。
+    その痕跡がパイ中間子の軽さである（例題\ref{ex:pion-PNG}）。
+    \item \textbf{電弱対称性}：
+    ヒッグス場の真空期待値により $\SU(2)_L\times\U(1)_Y\to\U(1)_{\mathrm{EM}}$ と破れる（第6章）。
+    ただしこれは局所対称性であり、その意味は第5章で注意深く議論する。
+\end{itemize}
+\subsection{なぜ場の理論では対称性が破れうるのか}
+量子力学（有限自由度）では、対称な2重井戸ポテンシャルの基底状態は2つの井戸に広がった
+対称な状態であり、対称性は破れない。
+2つの「古典的真空」の間を\term{トンネル効果}{tunneling}が混ぜ、
+エネルギー準位を $\Delta E\propto e^{-S_{\mathrm{inst}}/\hbar}$ だけ分裂させるからである。
+場の理論（無限自由度）ではこの事情が変わる。
+空間全体の場の値を一斉にひっくり返すトンネル振幅は体積に比例する作用で抑制され、
+$\langle+|H|-\rangle\propto e^{-c V}\to0$（$V\to\infty$）となる。
+したがって異なる真空は混ざらず、そのうちの1つが実現される。
+\begin{note}
+簡単な見積もり：空間を $N$ 個の独立な小領域に分け、各領域での2つの真空状態の重なりを $|\langle+|-\rangle_x|=r<1$ とすると、
+全体では $\langle+|-\rangle=\prod_x\langle+|-\rangle_x$、すなわち $|\langle+|-\rangle|=r^N=e^{-N\ln(1/r)}\to0$（$N\propto V\to\infty$）。
+異なる真空は互いに直交し、さらに局所演算子で互いに移り合うこともない。
+このように異なる真空の上に作られた状態空間は、互いに干渉しない\term{超選択セクター}{superselection sector}をなす。
+\end{note}
+\begin{remark}
+時空2次元（空間1次元）では、連続的な大域的対称性は自発的に破れない
+（\term{Coleman--Mermin--Wagner の定理}{Coleman--Mermin--Wagner theorem}）。
+2次元の massless スカラーの伝播関数 $\int d^2k/k^2$ が赤外発散し、揺らぎが秩序を壊すためである。
+4次元の標準模型ではこの制限はない。
+\end{remark}
+%------------------------------------------------
+\section{スカラー場のポテンシャル}
+\label{sec:scalar-potential}
+%------------------------------------------------
+SSB を最も簡単に実現するのは、スカラー場のポテンシャルが原点以外に最小値を持つ場合である。
+ローレンツ不変性を保ったまま真空期待値を持てるのは\textbf{スカラー場}だけである
+（ベクトル場やスピノル場が真空期待値を持つとローレンツ対称性が破れる）。
+\subsection{実スカラー場と $\mathbb Z_2$ 対称性}
+1成分の実スカラー場を考える。
+\begin{equation}
+\Lag=\frac12\partial_\mu\phi\,\partial^\mu\phi-V(\phi),
+\qquad
+V(\phi)=\frac12\mu^2\phi^2+\frac\lambda4\phi^4 .
+\label{eq:Z2-potential}
+\end{equation}
+この理論は\term{離散対称性}{discrete symmetry} $\mathbb Z_2:\phi\to-\phi$ を持つ。
+ポテンシャルの形は次の要請で決まる。
+\begin{itemize}
+    \item \textbf{繰り込み可能性}：4次元ではスカラー場の質量次元は $[\phi]=1$ なので、
+    $[V]=4$ より $\phi^n$（$n\le4$）の項だけが許される。
+    \item \textbf{$\mathbb Z_2$ 対称性}：奇数べき $\phi,\phi^3$ は禁止される。
+    \item \textbf{安定性}：エネルギーが下に有界であるためには $\lambda>0$ が必要。
+\end{itemize}
+\subsection{古典的な真空}
+ハミルトニアン密度は
+\begin{equation}
+\mathcal H=\frac12\dot\phi^2+\frac12(\nabla\phi)^2+V(\phi)
+\end{equation}
+であり、最初の2項は非負である。
+したがって最低エネルギーの配位（古典的な\term{真空}{vacuum}）は、
+$\dot\phi=0$、$\nabla\phi=0$ の一様な場で、かつ $V$ の最小値を与えるものである。
+$V'(\phi)=\phi(\mu^2+\lambda\phi^2)=0$ より、$\mu^2$ の符号で2つの場合に分かれる。
+\begin{enumerate}
+    \item $\mu^2>0$：最小値は $\phi=0$ のみ。真空は一意で $\mathbb Z_2$ 不変。
+    $\phi$ は質量 $\mu$ の粒子を記述し、$\phi^4$ 項は自己相互作用である。
+    \item $\mu^2<0$：$\phi=0$ は極大になり、最小値は
+    \begin{equation}
+    \phi=\pm v,\qquad v\equiv\sqrt{-\frac{\mu^2}{\lambda}}
+    \label{eq:Z2-vev}
+    \end{equation}
+    の2点である（\term{2重井戸ポテンシャル}{double-well potential}）。
+    2つの真空は $\mathbb Z_2$ で互いに移り合い、どちらを選んでも $\mathbb Z_2$ は破れる。
+\end{enumerate}
+\begin{note}
+$\mu^2<0$ の場合 $\mu$ は「虚数の質量」であり、$\phi=0$ のまわりで展開すると
+$(\Box+\mu^2)\phi=0$ の解は $\omega^2=\bm k^2+\mu^2$ となり、$|\bm k|<|\mu|$ のモードは指数関数的に増大する
+\en{tachyonic instability}。$\phi=0$ は不安定な平衡点であり、正しい真空のまわりで展開しなければならない。
+\end{note}
+\subsection{量子補正と有効ポテンシャル}
+上の議論は古典的なポテンシャルに基づく。
+量子補正を含めると、真空は\term{有効ポテンシャル}{effective potential} $V_{\mathrm{eff}}(\phi_{\mathrm{cl}})$ の最小値で決まる。
+1ループの補正（\term{Coleman--Weinberg ポテンシャル}{Coleman--Weinberg potential}）は
+$\phi^4\ln(\phi^2/M^2)$ の形の項を与え、古典的には $\mu^2=0$ でも量子効果で対称性が破れうる。
+標準模型のヒッグスポテンシャルの量子補正と真空の安定性は第14章で触れる。
+本ノートでは以後、断らない限り古典的（ツリーレベル）なポテンシャルで議論する。
+%------------------------------------------------
+\section{真空期待値と真空の縮退}
+\label{sec:vev}
+%------------------------------------------------
+\subsection{真空期待値}
+量子論では、古典的な真空の値は場の\term{真空期待値}{vacuum expectation value, VEV}
+\begin{equation}
+\langle0|\phi(x)|0\rangle=v
+\end{equation}
+に対応する（ツリーレベル）。並進不変性から VEV は $x$ によらない定数である。
+$\langle0|\phi|0\rangle\ne0$ は、$\mathbb Z_2$ のもとで奇な演算子が VEV を持つことを意味し、
+$\mathbb Z_2$ が破れていることの秩序変数である。
+\subsection{真空のまわりの展開}
+摂動論は真空のまわりの小さな揺らぎに対して行う。そこで
+\begin{equation}
+\phi(x)=v+h(x)
+\label{eq:Z2-shift}
+\end{equation}
+と置き、$h$ を新しい場とする（$\langle0|h|0\rangle=0$）。
+ポテンシャルを $h$ で書き直すと
+\begin{equation}
+V=-\frac{\lambda v^4}{4}+\lambda v^2h^2+\lambda v\,h^3+\frac\lambda4h^4 .
+\label{eq:Z2-shifted}
+\end{equation}
+\begin{note}
+$\mu^2=-\lambda v^2$ を用いる。
+\begin{align*}
+\frac12\mu^2(v+h)^2&=-\frac{\lambda v^2}{2}\left(v^2+2vh+h^2\right),\\
+\frac\lambda4(v+h)^4&=\frac\lambda4\left(v^4+4v^3h+6v^2h^2+4vh^3+h^4\right).
+\end{align*}
+和をとると、定数項 $(-\frac12+\frac14)\lambda v^4=-\frac14\lambda v^4$、
+1次の項 $(-\lambda v^3+\lambda v^3)h=0$（最小値のまわりなので当然）、
+2次の項 $(-\frac12+\frac32)\lambda v^2h^2=\lambda v^2h^2$、
+3次の項 $\lambda vh^3$、4次の項 $\frac\lambda4h^4$。
+\end{note}
+2次の項 $\frac12m_h^2h^2$ と比べると、$h$ は質量
+\begin{equation}
+m_h^2=2\lambda v^2=-2\mu^2>0
+\label{eq:Z2-mass}
+\end{equation}
+を持つ正常な（タキオンでない）粒子である。
+\subsection{隠れた対称性の痕跡}
+展開後のラグランジアン
+\begin{equation}
+\Lag=\frac12(\partial h)^2-\frac12m_h^2h^2-\lambda v\,h^3-\frac\lambda4h^4
+\end{equation}
+には $h\to-h$ の対称性はなく、$h^3$ 項が現れている。
+しかし元の理論のパラメータは $(\mu^2,\lambda)$ の2つだけなので、
+展開後の3つの量（質量・3点結合・4点結合）は独立ではない。
+$(m_h,v)$ で表すと
+\begin{equation}
+\lambda=\frac{m_h^2}{2v^2},\qquad
+\lambda v=\frac{m_h^2}{2v},\qquad
+\frac\lambda4=\frac{m_h^2}{8v^2}
+\label{eq:Z2-couplings}
+\end{equation}
+となる。この関係こそが「隠れた $\mathbb Z_2$ 対称性」の痕跡であり、
+一般の $\mathbb Z_2$ を持たない理論（$h^3$ の係数が独立）とは区別できる。
+\begin{note}
+Feynman 則では、$-\frac{c_n}{n!}h^n$ の項に頂点因子 $-ic_n$ が対応する。
+3点結合：$\lambda v h^3=\frac{6\lambda v}{3!}h^3$ より $-6i\lambda v=-3i\,m_h^2/v$。
+4点結合：$\frac\lambda4h^4=\frac{6\lambda}{4!}h^4$ より $-6i\lambda=-3i\,m_h^2/v^2$。
+標準模型のヒッグス粒子の自己結合も全く同じ形 $-3im_h^2/v$, $-3im_h^2/v^2$ になる（第7章）。
+これを測ることはヒッグスポテンシャルの形を直接検証することに相当する。
+\end{note}
+\subsection{真空の縮退と領域壁}
+2つの真空 $\phi=\pm v$ はエネルギーが等しく、\term{縮退}{degenerate}している。
+どちらが選ばれるかは理論からは決まらず、初期条件や微小な外場で決まる。
+初期宇宙で空間の異なる領域が異なる真空を選ぶと、その境界には
+\term{領域壁}{domain wall}と呼ばれる位相的に安定な配位ができる。
+\begin{myex}{キンク解（領域壁）}{kink}
+1次元的な静的配位 $\phi=\phi(z)$ で $z\to\mp\infty$ で $\phi\to\mp v$ となるものを求めよ。
+\tcblower
+静的なので運動方程式は $\phi''=V'(\phi)$。両辺に $\phi'$ をかけて積分すると
+$\frac12\phi'^2=V(\phi)-V(v)=\frac\lambda4(\phi^2-v^2)^2$。
+したがって $\phi'=\sqrt{\lambda/2}\,(v^2-\phi^2)$ で、解は
+\[
+\phi(z)=v\tanh\left(\sqrt{\frac\lambda2}\,v\,z\right)=v\tanh\left(\frac{m_hz}{2}\right).
+\]
+壁の厚さは $\sim m_h^{-1}$、単位面積あたりのエネルギー（張力）は
+$\sigma=\int dz\,\phi'^2=\frac{2\sqrt2}{3}\sqrt\lambda\,v^3$ である。
+\end{myex}
+\begin{note}
+$V(\phi)-V(v)=\frac12\mu^2\phi^2+\frac\lambda4\phi^4+\frac{\lambda v^4}{4}=\frac\lambda4(\phi^4-2v^2\phi^2+v^4)=\frac\lambda4(\phi^2-v^2)^2$。
+張力は $\sigma=\int_{-v}^{v}d\phi\,\phi'=\sqrt{\lambda/2}\int_{-v}^{v}(v^2-\phi^2)d\phi=\sqrt{\lambda/2}\cdot\frac43v^3$。
+\end{note}
+離散対称性の破れでは massless 粒子は現れない（$h$ は massive）。
+これに対し\textbf{連続}対称性の破れでは、必ず massless 粒子が現れる。これが次節の主題である。
+%------------------------------------------------
+\section{Goldstone の定理}
+\label{sec:goldstone-thm}
+%------------------------------------------------
+\begin{mythm}{Goldstone の定理}{goldstone}
+ローレンツ不変で局所的な場の理論において、連続的な大域的対称性が自発的に破れると、
+破れた生成子1つごとに1つの massless スカラー粒子
+（\term{Nambu--Goldstone ボソン}{Nambu--Goldstone boson, NG boson}）が存在する。
+対称性群 $G$ が部分群 $H$ に破れるとき、NG ボソンの数は
+\begin{equation}
+n_{\mathrm{NG}}=\dim G-\dim H
+\label{eq:NG-number}
+\end{equation}
+である。
+\end{mythm}
+\subsection{古典論での証明}
+$n$ 個の実スカラー場 $\phi_i$ が群 $G$ の（実）表現に従い、
+無限小変換が
+\begin{equation}
+\delta\phi_i=\alpha^a\,t^a_{ij}\,\phi_j
+\qquad(t^a:\ \text{実反対称行列},\ a=1,\dots,\dim G)
+\end{equation}
+で与えられるとする（エルミートな生成子とは $T^a=it^a$ で結ばれる）。
+ポテンシャルが不変であることは、すべての $\phi$ に対して
+\begin{equation}
+\delta V=\frac{\partial V}{\partial\phi_i}\,\alpha^a t^a_{ij}\phi_j=0
+\quad\Longrightarrow\quad
+\frac{\partial V}{\partial\phi_i}\,t^a_{ij}\phi_j=0
+\label{eq:V-invariance}
+\end{equation}
+を意味する。これを $\phi_k$ で微分すると
+\begin{equation}
+\frac{\partial^2V}{\partial\phi_k\partial\phi_i}\,t^a_{ij}\phi_j+\frac{\partial V}{\partial\phi_i}\,t^a_{ik}=0 .
+\end{equation}
+真空 $\phi=v$ で評価すると、第2項は $\partial V/\partial\phi_i|_v=0$ により消える。
+\term{質量行列}{mass matrix} $(M^2)_{ki}\equiv\partial^2V/\partial\phi_k\partial\phi_i|_v$ を用いると
+\begin{equation}
+(M^2)_{ki}\,(t^av)_i=0 .
+\label{eq:goldstone-classical}
+\end{equation}
+すなわち、ベクトル $t^av$ は質量行列の固有値 0 の固有ベクトルである。
+\begin{itemize}
+    \item 真空を変えない生成子（$t^av=0$）は自明に \eqref{eq:goldstone-classical} を満たし、何も与えない。
+    これらの生成子は部分群 $H$（\term{非破れ部分群}{unbroken subgroup}、真空の\term{安定化部分群}{stabilizer}）をなす。
+    \item 真空を変える生成子（$t^av\ne0$、\term{破れた生成子}{broken generator}）ごとに、
+    質量 0 の方向 $t^av$ が1つ得られる。
+\end{itemize}
+\begin{note}
+破れた生成子から得られるベクトルが線形独立であること：
+$G$ のリー代数を $\mathfrak g=\mathfrak h\oplus\mathfrak m$ と分け、$\mathfrak h=\{t\in\mathfrak g\,|\,tv=0\}$ とする。
+$\mathfrak m$ の基底 $t^{\hat a}$（$\hat a=1,\dots,\dim G-\dim H$）について $\sum_{\hat a}c_{\hat a}t^{\hat a}v=0$ ならば、
+$\sum c_{\hat a}t^{\hat a}\in\mathfrak h$ となるが、$\mathfrak h\cap\mathfrak m=\{0\}$ なので $c_{\hat a}=0$。
+したがって質量 0 の固有ベクトルは少なくとも $\dim G-\dim H$ 個ある。
+「少なくとも」であるのは、ポテンシャルが偶然にもっと大きな対称性を持つ場合などに追加の massless 粒子がありうるためである
+（\term{擬 NG ボソン}{pseudo-NG boson}、\S\ref{sec:NG-boson}）。
+\end{note}
+幾何学的には、$t^av$ は真空 $v$ を対称性で動かす方向である。
+ポテンシャルは対称性で不変なので、この方向に沿ってポテンシャルは平坦であり、
+平坦な方向の揺らぎは質量（ポテンシャルの曲率）を持たない。
+\subsection{量子論での証明（概略）}
+古典論の議論はツリーレベルに限られるが、Goldstone の定理は摂動論によらず成り立つ。
+保存カレント $j^\mu$（$\partial_\mu j^\mu=0$）と、
+\begin{equation}
+\langle0|[Q,\phi(0)]|0\rangle\equiv\eta\ne0
+\label{eq:SSB-condition}
+\end{equation}
+を満たす演算子 $\phi$ があるとする（SSB の条件）。
+\begin{enumerate}
+    \item $F(t)\equiv\int d^3x\,\langle0|[j^0(t,\bm x),\phi(0)]|0\rangle$ とおくと、
+    \[
+    \frac{dF}{dt}=\int d^3x\,\langle0|[\partial_0j^0,\phi(0)]|0\rangle=-\int d^3x\,\nabla\cdot\langle0|[\bm j(t,\bm x),\phi(0)]|0\rangle=0 .
+    \]
+    最後に、局所性（空間的に離れた演算子は可換）により十分遠方で交換子が 0 になり、表面項が消えることを用いた。
+    したがって $F(t)=\eta$ は時間によらない。
+    \item 完全系 $\sum_n|n\rangle\langle n|$ を挿入し、並進 $j^0(t,\bm x)=e^{iP\cdot x}j^0(0)e^{-iP\cdot x}$ を用いると
+    \[
+    F(t)=\sum_n(2\pi)^3\delta^3(\bm p_n)\Bigl[\langle0|j^0(0)|n\rangle\langle n|\phi(0)|0\rangle e^{-iE_nt}
+    -\langle0|\phi(0)|n\rangle\langle n|j^0(0)|0\rangle e^{iE_nt}\Bigr].
+    \]
+    \item 真空自身の寄与は $\langle0|j^0|0\rangle=0$（ローレンツ不変性）で消える。
+    $F$ が 0 でなく時間に依存しないためには、
+    $\bm p_n=0$ で $E_n=0$ となる状態、すなわち $\bm p\to0$ で $E\to0$ となる励起が存在し、
+    $\langle0|j^0|n\rangle\ne0$ かつ $\langle n|\phi|0\rangle\ne0$ でなければならない。
+    ローレンツ不変性から、これは質量 0 の1粒子状態である。
+\end{enumerate}
+この粒子は $j^\mu$ によって真空から生成されるので、
+\begin{equation}
+\langle0|j^\mu(x)|\pi(p)\rangle=-iF\,p^\mu e^{-ip\cdot x}
+\label{eq:NG-decay-constant}
+\end{equation}
+と書ける（$F$ は\term{崩壊定数}{decay constant}）。
+$\partial_\mu j^\mu=0$ とすると $F\,p^2=0$ となり、$F\ne0$ なら $p^2=0$、すなわち massless であることが再確認できる。
+NG ボソンは破れた生成子と同じ量子数を持つ。内部対称性の生成子はスカラーなので、NG ボソンはスピン 0 である
+（ただし、生成子がパリティ奇なら擬スカラー）。
+\begin{remark}
+定理の仮定は (i) ローレンツ不変性、(ii) 局所性、(iii) 正定値のヒルベルト空間 である。
+\begin{itemize}
+    \item 非相対論的な系では (i) が成り立たず、NG ボソンの数や分散関係が変わりうる。
+    例えば強磁性体のマグノンは $\omega\propto k^2$ で、破れた生成子2つ（$S_x,S_y$）に対して1種類しかない。
+    \item ゲージ理論では、共変なゲージでは (iii) が、物理的なゲージ（クーロンゲージなど）では (i) と (ii) が成り立たず、定理を回避する。
+    この結果、NG ボソンは物理的な粒子として現れず、ゲージ場が質量を得る。これがヒッグス機構である（第5章）。
+\end{itemize}
+\end{remark}
+%------------------------------------------------
+\section{Nambu--Goldstone ボソン}
+\label{sec:NG-boson}
+%------------------------------------------------
+\subsection{NG ボソンの性質}
+NG ボソンは次のような普遍的な性質を持つ。
+\begin{enumerate}
+    \item \textbf{シフト対称性}\en{shift symmetry}：
+    NG ボソン場 $\pi$ は、破れた対称性のもとで $\pi\to\pi+v\alpha+\cdots$ と非斉次に変換する
+    （\S\ref{sec:complex-SSB} で具体的に見る）。したがって $\pi$ の質量項 $\pi^2$ や $\pi^4$ のような項は禁止される。
+    \item \textbf{微分結合}\en{derivative coupling}：
+    適切な場の変数を選ぶと、NG ボソンは微分 $\partial_\mu\pi$ を通じてのみ他の場と結合する。
+    \item \textbf{低エネルギー定理}\en{low-energy theorem}：
+    その結果、NG ボソンが関わる散乱振幅は、NG ボソンの運動量 $p\to0$ で 0 になる
+    （\term{Adler ゼロ}{Adler zero}）。NG ボソンは低エネルギーで弱く相互作用する。
+    \item \textbf{崩壊定数}：NG ボソンの相互作用の強さは崩壊定数 $F$（ツリーレベルでは $F\sim v$）で決まり、
+    典型的に $\partial\pi\partial\pi/F^2$ の形の結合を持つ。
+\end{enumerate}
+これらの性質は、NG ボソンを記述する低エネルギー有効理論
+（\term{非線形シグマ模型}{nonlinear sigma model}、\term{カイラル摂動論}{chiral perturbation theory}）の基礎になる。
+\subsection{擬 NG ボソン}
+現実には対称性が厳密でなく、小さな陽な破れがあることが多い。
+このとき NG ボソンは小さな質量を得て、\term{擬 NG ボソン}{pseudo-Nambu--Goldstone boson, PNGB}となる。
+質量の2乗は陽な破れのパラメータに比例する（$m^2\propto\epsilon$、\S\ref{sec:complex-SSB} の例題）。
+\begin{myex}{パイ中間子：QCD の擬 NG ボソン}{pion-PNG}
+$u,d$ クォークの質量を 0 とすると、QCD ラグランジアン
+$\bar q\,i\gamma^\mu D_\mu q=\bar q_Li\gamma^\mu D_\mu q_L+\bar q_Ri\gamma^\mu D_\mu q_R$（$q=(u,d)^T$）は、
+左巻きと右巻きを独立に回す $\SU(2)_L\times\SU(2)_R$ で不変である。
+強い相互作用の非摂動効果でクォーク凝縮 $\langle\bar qq\rangle=\langle\bar q_Lq_R+\bar q_Rq_L\rangle\ne0$ が生じると、
+これは $q_L\to Lq_L$, $q_R\to Rq_R$ のもとで $L=R$ のときだけ不変なので、
+\[
+\SU(2)_L\times\SU(2)_R\to\SU(2)_V
+\]
+と破れる。NG ボソンの数は $3+3-3=3$ で、これが $\pi^\pm,\pi^0$ である。
+破れた生成子は軸性（パリティ奇）なので、パイ中間子は擬スカラーである。
+\tcblower
+クォーク質量 $m_q\bar qq$ は陽な破れであり、パイ中間子は小さな質量を得る。
+\term{Gell-Mann--Oakes--Renner の関係式}{Gell-Mann--Oakes--Renner relation}
+\[
+m_\pi^2f_\pi^2=(m_u+m_d)\,|\langle\bar qq\rangle|
+\]
+により $m_\pi^2\propto m_q$ である（$f_\pi\simeq92\ \mathrm{MeV}$）。
+実際 $m_\pi\simeq140\ \mathrm{MeV}$ は、他のハドロン（$m_\rho\simeq775\ \mathrm{MeV}$, $m_p\simeq938\ \mathrm{MeV}$）より著しく軽い。
+$s$ クォークまで含めると $\SU(3)_L\times\SU(3)_R\to\SU(3)_V$ で $8$ 個の擬 NG ボソン（$\pi,K,\eta$）が現れる。
+なお $f_\pi$ は荷電パイ中間子の崩壊 $\pi^+\to\mu^+\nu_\mu$ の振幅を決める量であり（例題\ref{ex:pion}）、
+\eqref{eq:NG-decay-constant} の $F$ にあたる。
+\end{myex}
+\begin{remark}
+歴史的には、南部が超伝導の BCS 理論との類推から、核子の質量とパイ中間子の軽さを
+カイラル対称性の自発的破れで説明した（1960--61年、南部--Jona-Lasinio 模型）。
+Goldstone はスカラー場の模型でこれを一般化し（1961年）、
+Goldstone--Salam--Weinberg が一般的な証明を与えた（1962年）。
+\end{remark}
+\subsection{標準模型における NG ボソン}
+標準模型では、ヒッグス二重項の SSB により3個の NG ボソンが現れる（\S\ref{sec:SSB-counting}）。
+しかし破れる対称性は\textbf{ゲージ}対称性なので、これらは物理的な粒子としては現れず、
+$W^\pm$, $Z$ の縦偏極成分になる（第5章、第6章）。
+それでも高エネルギーでは、縦偏極の $W,Z$ の散乱振幅は対応する NG ボソンの振幅で近似できる
+（\term{等価定理}{Goldstone boson equivalence theorem}、第12章）。
+%------------------------------------------------
+\section{複素スカラー場の SSB}
+\label{sec:complex-SSB}
+%------------------------------------------------
+連続対称性の SSB の最も簡単な例として、$\U(1)$ 対称性を持つ複素スカラー場を考える。
+\begin{equation}
+\Lag=\partial_\mu\phi^*\partial^\mu\phi-V(\phi),\qquad
+V(\phi)=\mu^2|\phi|^2+\lambda|\phi|^4 .
+\label{eq:U1-model}
+\end{equation}
+これは大域的 $\U(1)$ 変換 $\phi\to e^{i\alpha}\phi$ で不変である。
+\subsection{ポテンシャルと真空}
+$\lambda>0$, $\mu^2<0$ とする。ポテンシャルは $|\phi|$ のみの関数で、
+\begin{equation}
+V=\lambda\left(|\phi|^2-\frac{v^2}{2}\right)^2-\frac{\lambda v^4}{4},
+\qquad v\equiv\sqrt{-\frac{\mu^2}{\lambda}}
+\label{eq:mexican-hat}
+\end{equation}
+と書ける。最小値は円周
+\begin{equation}
+|\phi|=\frac{v}{\sqrt2}
+\qquad\text{すなわち}\qquad
+\phi=\frac{v}{\sqrt2}e^{i\theta}\quad(0\le\theta<2\pi)
+\end{equation}
+上にあり、真空は連続無限に縮退している（\term{メキシカンハット型ポテンシャル}{Mexican hat potential}、
+\term{ワインボトル型ポテンシャル}{wine-bottle potential}）。
+$\U(1)$ 変換は $\theta\to\theta+\alpha$ と真空を互いに移す。
+一般性を失わずに $\theta=0$、すなわち
+\begin{equation}
+\langle0|\phi|0\rangle=\frac{v}{\sqrt2}\quad(\text{実数})
+\end{equation}
+を選ぶ。$1/\sqrt2$ は、実部・虚部を正準規格化された実スカラー場にするための因子である。
+\begin{note}
+$\lambda(|\phi|^2-\frac{v^2}{2})^2=\lambda|\phi|^4-\lambda v^2|\phi|^2+\frac{\lambda v^4}{4}$ であり、
+$-\lambda v^2=\mu^2$ なので \eqref{eq:U1-model} と一致する。
+\end{note}
+\subsection{直交座標による展開}
+真空のまわりで
+\begin{equation}
+\phi(x)=\frac{1}{\sqrt2}\bigl(v+h(x)+i\chi(x)\bigr)
+\label{eq:U1-cartesian}
+\end{equation}
+と展開する（$h,\chi$ は実スカラー場）。運動項は $\partial\phi^*\partial\phi=\frac12(\partial h)^2+\frac12(\partial\chi)^2$、ポテンシャルは
+\begin{equation}
+V=\lambda v^2h^2+\lambda v\,h\,(h^2+\chi^2)+\frac\lambda4(h^2+\chi^2)^2+\text{const.}
+\label{eq:U1-cartesian-V}
+\end{equation}
+となる。したがって
+\begin{equation}
+m_h^2=2\lambda v^2,\qquad m_\chi=0 .
+\end{equation}
+\begin{note}
+$|\phi|^2=\frac12\left[(v+h)^2+\chi^2\right]$ なので
+$|\phi|^2-\frac{v^2}{2}=\frac12\left(2vh+h^2+\chi^2\right)$。
+これを \eqref{eq:mexican-hat} に代入して
+$V+\frac{\lambda v^4}{4}=\frac\lambda4(2vh+h^2+\chi^2)^2=\lambda v^2h^2+\lambda vh(h^2+\chi^2)+\frac\lambda4(h^2+\chi^2)^2$。
+\end{note}
+$h$ はポテンシャルの「谷を横切る」動径方向の揺らぎで massive、
+$\chi$ は「谷に沿う」角度方向の揺らぎで massless の NG ボソンである。
+破れた生成子は $\U(1)$ の1つなので、Goldstone の定理と一致する。
+実際、$\delta\phi=i\alpha\phi$ より $\delta(h+i\chi)=i\alpha(v+h+i\chi)$、すなわち
+\begin{equation}
+\delta h=-\alpha\chi,\qquad \delta\chi=\alpha(v+h)
+\end{equation}
+であり、真空の近傍では $\chi\to\chi+\alpha v$ というシフトになっている。
+\subsection{極座標による展開}
+同じ理論を極座標
+\begin{equation}
+\phi(x)=\frac{1}{\sqrt2}\bigl(v+h(x)\bigr)e^{i\pi(x)/v}
+\label{eq:U1-polar}
+\end{equation}
+で書くこともできる。このとき $\U(1)$ 変換は\textbf{厳密に}
+\begin{equation}
+h\to h,\qquad \pi\to\pi+v\alpha
+\end{equation}
+というシフトになる。ラグランジアンは
+\begin{equation}
+\Lag=\frac12(\partial_\mu h)^2+\frac12\left(1+\frac hv\right)^2(\partial_\mu\pi)^2
+-\lambda v^2h^2-\lambda vh^3-\frac\lambda4h^4 .
+\label{eq:U1-polar-L}
+\end{equation}
+\begin{note}
+$\partial_\mu\phi=\frac{1}{\sqrt2}e^{i\pi/v}\left[\partial_\mu h+i\frac{v+h}{v}\partial_\mu\pi\right]$ なので
+$\partial_\mu\phi^*\partial^\mu\phi=\frac12\left[(\partial h)^2+\left(1+\frac hv\right)^2(\partial\pi)^2\right]$
+（交差項 $\pm i\,\partial h\,\partial\pi$ は打ち消す）。
+ポテンシャルは $|\phi|=\frac{v+h}{\sqrt2}$ のみに依存するので、\eqref{eq:U1-cartesian-V} で $\chi=0$ とおいたものになる。
+\end{note}
+極座標では NG ボソン $\pi$ がポテンシャルから完全に消え、
+\begin{equation}
+\Lag\supset\frac{h}{v}(\partial\pi)^2+\frac{h^2}{2v^2}(\partial\pi)^2
+\end{equation}
+のように\textbf{微分を通じてのみ}結合する。これは $\pi$ のシフト対称性の直接の帰結である。
+一方、直交座標では $\lambda vh\chi^2$ のような微分を含まない結合がある。
+2つの記述は場の再定義で結ばれており、S 行列（物理的な散乱振幅）は一致する。
+直交座標で計算すると、$\lambda vh\chi^2$ 項と $h$ の交換図などが打ち消し合って、
+最終的に低エネルギーで振幅が 0 になる（Adler ゼロ）。
+\subsection{Noether カレントと崩壊定数}
+$\U(1)$ の Noether カレントは、\eqref{eq:noether-current} から（全体の符号を選んで）
+\begin{equation}
+j^\mu=i\left(\phi\,\partial^\mu\phi^*-\phi^*\partial^\mu\phi\right)
+=\frac{(v+h)^2}{v}\partial^\mu\pi
+=v\,\partial^\mu\pi+2h\,\partial^\mu\pi+\frac{h^2}{v}\partial^\mu\pi .
+\label{eq:U1-current}
+\end{equation}
+\begin{note}
+$\phi^*\partial^\mu\phi=\frac12(v+h)\left[\partial^\mu h+i\frac{v+h}{v}\partial^\mu\pi\right]$ とその複素共役から
+$\phi^*\partial^\mu\phi-\phi\,\partial^\mu\phi^*=i\frac{(v+h)^2}{v}\partial^\mu\pi$。
+これに $-i$ をかけて \eqref{eq:U1-current} を得る。
+\end{note}
+カレントの最低次は $v\,\partial^\mu\pi$ という\textbf{1次の項}であり、
+カレントが真空から NG ボソンを1つ生成する：
+\begin{equation}
+\langle0|j^\mu(x)|\pi(p)\rangle=v\,\partial^\mu e^{-ip\cdot x}=-iv\,p^\mu e^{-ip\cdot x}.
+\end{equation}
+\eqref{eq:NG-decay-constant} と比べて、崩壊定数は（ツリーレベルで）$F=v$ である。
+SSB のない場合（$v=0$）、カレントは場の2次式で、真空から1粒子を作ることはない。
+\begin{myex}{陽な破れと擬 NG ボソンの質量}{U1-explicit}
+\eqref{eq:U1-model} に小さな陽な破れ $V_{\mathrm{br}}=-\epsilon(\phi+\phi^*)$（$\epsilon>0$）を加える。
+NG ボソンの質量を $\epsilon$ の1次で求めよ。
+\tcblower
+極座標 \eqref{eq:U1-polar} で $V_{\mathrm{br}}=-\sqrt2\,\epsilon\,(v+h)\cos(\pi/v)$。
+$\pi$ について展開すると $\cos(\pi/v)=1-\frac{\pi^2}{2v^2}+\cdots$ なので、$h=0$ で
+\[
+V_{\mathrm{br}}=-\sqrt2\,\epsilon v+\frac{\sqrt2\,\epsilon}{2v}\pi^2+\cdots
+\quad\Longrightarrow\quad
+m_\pi^2=\frac{\sqrt2\,\epsilon}{v}.
+\]
+質量の2乗は陽な破れのパラメータ $\epsilon$ に比例する（GMOR の関係式 $m_\pi^2\propto m_q$ と同じ構造）。
+また、陽な破れは縮退していた真空のうち $\theta=0$（$\pi=0$）を選び出す。
+$\epsilon$ による $v$ 自身のずれは $O(\epsilon)$ であり、$m_\pi^2$ には $O(\epsilon^2)$ でしか効かない。
+\end{myex}
+\subsection{$\mathrm O(N)$ 模型}
+$\U(1)\simeq\SO(2)$ の模型は、$N$ 成分の実スカラー場 $\bm\phi=(\phi_1,\dots,\phi_N)$ の
+\term{線形シグマ模型}{linear sigma model}
+\begin{equation}
+\Lag=\frac12\partial_\mu\bm\phi\cdot\partial^\mu\bm\phi-\frac12\mu^2\bm\phi^2-\frac\lambda4(\bm\phi^2)^2
+\label{eq:ON-model}
+\end{equation}
+に一般化される（$N=2$ が $\U(1)$ 模型で、$\phi=(\phi_1+i\phi_2)/\sqrt2$）。
+これは $\mathrm O(N)$ 回転 $\bm\phi\to R\bm\phi$ で不変である。
+$\mu^2<0$ のとき真空は $|\bm\phi|=v=\sqrt{-\mu^2/\lambda}$ の球面 $S^{N-1}$ 上にあり、
+$\langle\bm\phi\rangle=(0,\dots,0,v)$ を選ぶと、
+\begin{equation}
+\bm\phi=(\pi_1,\dots,\pi_{N-1},\,v+\sigma)
+\end{equation}
+と展開して
+\begin{equation}
+V=\lambda v^2\sigma^2+\lambda v\,\sigma(\sigma^2+\bm\pi^2)+\frac\lambda4(\sigma^2+\bm\pi^2)^2+\text{const.}
+\end{equation}
+となる。$\sigma$ は質量 $m_\sigma^2=2\lambda v^2$ を持ち、$N-1$ 個の $\pi_i$ は massless である。
+\begin{note}
+$\bm\phi^2-v^2=2v\sigma+\sigma^2+\bm\pi^2$ であり、$V=\frac\lambda4(\bm\phi^2-v^2)^2+\text{const.}$ を展開すればよい。
+真空 $(0,\dots,0,v)$ を変えない回転は、最初の $N-1$ 成分の回転 $\mathrm O(N-1)$ である。
+破れた生成子は $(i,N)$ 平面の回転 $(i=1,\dots,N-1)$ の $N-1$ 個で、
+\[
+\dim\mathrm O(N)-\dim\mathrm O(N-1)=\frac{N(N-1)}{2}-\frac{(N-1)(N-2)}{2}=N-1
+\]
+は NG ボソンの数と一致する。
+\end{note}
+$N=4$ の場合が特に重要である。標準模型のヒッグス二重項は4つの実スカラー場からなり、
+そのポテンシャルは $\mathrm O(4)$ 模型と同じ形をしている（\S\ref{sec:SSB-counting}、第6章）。
+QCD の $\SU(2)_L\times\SU(2)_R$ も $\SO(4)$ と局所的に同型であり、
+$N=4$ の線形シグマ模型（$\sigma$ と3つの $\pi$）はパイ中間子の古典的な模型でもある。
+%------------------------------------------------
+\section{対称性の破れと自由度の数え上げ}
+\label{sec:SSB-counting}
+%------------------------------------------------
+\subsection{真空多様体}
+SSB で縮退した真空全体の集合 $\mathcal M_{\mathrm{vac}}=\{g\cdot v\,|\,g\in G\}$ を
+\term{真空多様体}{vacuum manifold}という。
+$H$ の元は $v$ を動かさないので、$\mathcal M_{\mathrm{vac}}$ は\term{剰余空間}{coset space}
+\begin{equation}
+\mathcal M_{\mathrm{vac}}\simeq G/H
+\end{equation}
+と同一視できる。その次元 $\dim G-\dim H$ は、真空を動かす独立な方向の数、
+すなわち NG ボソンの数に等しい。NG ボソンの場は、真空多様体上の座標（の揺らぎ）とみなせる。
+\begin{note}
+別の真空 $v'=gv$ を選ぶと、非破れ部分群は $H'=gHg^{-1}$（共役な部分群）になる。
+どの真空を選んでも物理（スペクトルや相互作用）は同じであり、
+破れのパターンは $G\to H$ の共役類で特徴づけられる。
+\end{note}
+\subsection{自由度の保存}
+SSB は場の自由度の数を変えない。$n$ 個の実スカラー場は、破れた後も $n$ 個の実スカラー場であり、
+\begin{equation}
+n=\underbrace{(\dim G-\dim H)}_{\text{NG ボソン（massless）}}+\underbrace{(n-\dim G+\dim H)}_{\text{massive なスカラー}}
+\end{equation}
+と分かれるだけである。
+\begin{table}[htbp]
+\centering
+\caption{代表的な対称性の破れのパターンと NG ボソンの数}
+\label{tab:SSB-patterns}
+\begin{tabular}{llccc}
+\toprule
+模型 & $G\to H$ & 実スカラー & $\dim G-\dim H$ & $\mathcal M_{\mathrm{vac}}$\\
+\midrule
+実スカラー & $\mathbb Z_2\to\{1\}$ & 1 & 0（離散） & 2点\\
+複素スカラー & $\U(1)\to\{1\}$ & 2 & $1-0=1$ & $S^1$\\
+$\mathrm O(N)$ 模型 & $\mathrm O(N)\to\mathrm O(N-1)$ & $N$ & $N-1$ & $S^{N-1}$\\
+$\SU(3)$ 三重項 & $\SU(3)\to\SU(2)$ & 6 & $8-3=5$ & $S^5$\\
+ヒッグス二重項 & $\SU(2)\times\U(1)\to\U(1)$ & 4 & $4-1=3$ & $S^3$\\
+QCD（2フレーバー） & $\SU(2)_L\times\SU(2)_R\to\SU(2)_V$ & -- & $6-3=3$ & $\SU(2)\simeq S^3$\\
+QCD（3フレーバー） & $\SU(3)_L\times\SU(3)_R\to\SU(3)_V$ & -- & $16-8=8$ & $\SU(3)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{note}
+$\SU(3)$ 三重項：$\phi\in\mathbb C^3$ は6個の実自由度。$\langle\phi\rangle=(0,0,v/\sqrt2)$ は最初の2成分に作用する $\SU(2)$ で不変
+（$\U(1)$ をすべて考えると $\U(3)\to\U(2)$ で $9-4=5$ と同じ）。真空多様体は $|\phi|=v/\sqrt2$ の $S^5$。
+6 = 5（NG）+ 1（動径）。
+QCD の場合、NG ボソンはクォークの複合状態でありスカラー場の数は意味を持たないので「--」とした。
+\end{note}
+\subsection{ヒッグス二重項の場合（第6章の予告）}
+標準模型のヒッグス二重項
+\begin{equation}
+\Phi=\begin{pmatrix}\phi^+\\ \phi^0\end{pmatrix}
+=\frac{1}{\sqrt2}\begin{pmatrix}\phi_1+i\phi_2\\ \phi_3+i\phi_4\end{pmatrix}
+\sim(\mathbf1,\mathbf2)_{1}
+\end{equation}
+を考える。$\Phi^\dagger\Phi=\frac12(\phi_1^2+\phi_2^2+\phi_3^2+\phi_4^2)$ なので、
+ポテンシャル $V=\mu^2\Phi^\dagger\Phi+\lambda(\Phi^\dagger\Phi)^2$ は $N=4$ の $\mathrm O(4)$ 模型と同じ形である。
+真空を
+\begin{equation}
+\langle\Phi\rangle=\frac{1}{\sqrt2}\begin{pmatrix}0\\ v\end{pmatrix}
+\end{equation}
+に選ぶ。$\SU(2)_L\times\U(1)_Y$ の生成子 $T^i=\sigma^i/2$ と $Y/2=1/2$ を真空に作用させると
+\begin{equation}
+T^1\langle\Phi\rangle=\frac{v}{2\sqrt2}\begin{pmatrix}1\\0\end{pmatrix},\quad
+T^2\langle\Phi\rangle=\frac{v}{2\sqrt2}\begin{pmatrix}-i\\0\end{pmatrix},\quad
+T^3\langle\Phi\rangle=\frac{v}{2\sqrt2}\begin{pmatrix}0\\-1\end{pmatrix},\quad
+\frac Y2\langle\Phi\rangle=\frac{v}{2\sqrt2}\begin{pmatrix}0\\1\end{pmatrix}.
+\end{equation}
+したがって
+\begin{equation}
+Q\langle\Phi\rangle=\left(T^3+\frac Y2\right)\langle\Phi\rangle=0
+\end{equation}
+であり、電荷 $Q$ に対応する $\U(1)_{\mathrm{EM}}$ が破れずに残る。
+残りの3つ（$T^1$, $T^2$, $T^3-Y/2$ など）が破れた生成子で、NG ボソンは
+\begin{equation}
+n_{\mathrm{NG}}=\dim(\SU(2)\times\U(1))-\dim\U(1)=4-1=3
+\end{equation}
+個である。4つの実スカラーのうち、3つが NG ボソン、1つが massive なヒッグス粒子 $h$ になる。
+\begin{note}
+実際の変換は $\delta\Phi=i\alpha^aT^a\Phi$ なので、$i$ をかけた方向を見る。
+$\Phi=\frac{1}{\sqrt2}(\phi_1+i\phi_2,\ \phi_3+i\phi_4)^T$ と比べると
+\[
+iT^1\langle\Phi\rangle=\frac{v}{2\sqrt2}\begin{pmatrix}i\\0\end{pmatrix}\to\phi_2,\quad
+iT^2\langle\Phi\rangle=\frac{v}{2\sqrt2}\begin{pmatrix}1\\0\end{pmatrix}\to\phi_1,\quad
+i\Bigl(T^3-\frac Y2\Bigr)\langle\Phi\rangle=\frac{v}{\sqrt2}\begin{pmatrix}0\\-i\end{pmatrix}\to\phi_4 .
+\]
+したがって NG 方向は $\phi_1,\phi_2,\phi_4$ で、残る $\phi_3$（$\langle\Phi\rangle$ の方向）が動径方向の揺らぎ、すなわちヒッグス粒子 $h$ である。
+\end{note}
+\begin{remark}
+ヒッグスポテンシャルは実は $\SU(2)_L\times\U(1)_Y$ より大きな $\mathrm O(4)\simeq\SU(2)_L\times\SU(2)_R/\mathbb Z_2$ の対称性を持ち、
+真空により $\SU(2)_L\times\SU(2)_R\to\SU(2)_V$ と破れる。
+残る $\SU(2)_V$ は\term{カストディアル対称性}{custodial symmetry}と呼ばれ、
+$W$ と $Z$ の質量比 $\rho=m_W^2/(m_Z^2\cos^2\theta_W)=1$ を保証する（第6章）。
+NG ボソンの数は $\mathrm O(4)\to\mathrm O(3)$ でも $6-3=3$ で変わらない。
+\end{remark}
+\subsection{ゲージ対称性の場合への見通し}
+電弱対称性はゲージ対称性なので、上の3つの NG ボソンは物理的な粒子としては現れない。
+第5章で示すように、ゲージ対称性の破れでは
+\begin{itemize}
+    \item NG ボソンはゲージ変換で取り除くことができ（ユニタリーゲージ）、
+    \item 代わりに対応するゲージボソンが質量を得て、縦偏極の自由度を獲得する。
+\end{itemize}
+自由度で数えると、破れる前は
+\[
+\underbrace{4}_{\text{実スカラー}}+\underbrace{4\times2}_{\text{massless ゲージ場 }W^{1,2,3},B}=12,
+\]
+破れた後は
+\[
+\underbrace{1}_{h}+\underbrace{3\times3}_{\text{massive }W^\pm,Z}+\underbrace{2}_{\text{massless }\gamma}=12
+\]
+となり、全体の数は保存する。NG ボソンの3自由度が、$W^\pm$, $Z$ の縦偏極に移ったのである。
+%------------------------------------------------
+\section*{第4章のまとめ}
+%------------------------------------------------
+\begin{itemize}
+    \item ラグランジアンが対称でも真空が対称でないとき、対称性は自発的に破れる（SSB）。
+    無限自由度の場の理論では異なる真空が混ざらないため、SSB が可能になる。
+    \item スカラー場のポテンシャル $V=\mu^2|\phi|^2+\lambda|\phi|^4$ は、$\mu^2<0$ のとき原点以外に最小値を持ち、
+    場は真空期待値 $v=\sqrt{-\mu^2/\lambda}$ を持つ。真空のまわりの揺らぎ $h$ は質量 $m_h^2=2\lambda v^2$ を持つ。
+    \item 隠れた対称性は、質量と自己結合の間の関係（$h^3$ 結合 $\propto m_h^2/v$ など）として痕跡を残す。
+    \item 連続対称性が $G\to H$ と破れると、$\dim G-\dim H$ 個の massless な NG ボソンが現れる（Goldstone の定理）。
+    NG ボソンはシフト対称性を持ち、微分結合のみで相互作用する。小さな陽な破れがあると擬 NG ボソンとなる（例：パイ中間子）。
+    \item 標準模型のヒッグス二重項では $\SU(2)_L\times\U(1)_Y\to\U(1)_{\mathrm{EM}}$ と破れ、3個の NG ボソンが現れる。
+    これらはゲージ対称性のため物理的粒子にはならず、$W^\pm$, $Z$ の縦偏極成分となる（第5章、第6章）。
+\end{itemize}
+%================================================
+\chapter{ゲージ対称性の破れとヒッグス機構}
+\label{ch:Higgs-mechanism}
+%================================================
+第4章では大域的対称性の SSB を調べ、連続対称性の破れには必ず massless の NG ボソンが伴うことを見た。
+しかし標準模型で破れるのは\textbf{ゲージ}対称性であり、自然界には対応する massless スカラーは見つかっていない。
+本章では、ゲージ対称性のもとでは NG ボソンがゲージ場に吸収され、
+代わりにゲージ場が質量を得ること（\term{ヒッグス機構}{Higgs mechanism}）を示す。
+\begin{itemize}
+    \item 局所対称性の「破れ」の意味（\S\ref{sec:local-breaking}）、
+    \item 最も簡単な模型である Abelian Higgs model と、そのゲージ場の質量生成（\S\ref{sec:abelian-higgs}, \S\ref{sec:gauge-mass}）、
+    \item NG ボソンの行方とゲージの選び方（\S\ref{sec:NG-gauge-dof}--\S\ref{sec:Rxi}）、
+    \item 自由度の数え上げ（\S\ref{sec:Higgs-counting}）と非可換ゲージ群への一般化（\S\ref{sec:nonabelian-higgs}）
+\end{itemize}
+を順に議論する。本章の結果は、第6章で標準模型の $\SU(2)_L\times\U(1)_Y$ にそのまま適用される。
+%------------------------------------------------
+\section{局所対称性の破れ}
+\label{sec:local-breaking}
+%------------------------------------------------
+\subsection{ゲージ対称性は「対称性」か}
+大域的対称性は、物理的に異なる状態を互いに移す本当の対称性である。
+これに対しゲージ対称性（局所対称性）は、同じ物理状態を表す場の配位の間の
+\term{冗長性}{redundancy}であり、物理的な状態・観測量はすべてゲージ不変である。
+この違いから、「ゲージ対称性の自発的破れ」という言葉には注意が必要である。
+\begin{mythm}{Elitzur の定理}{elitzur}
+局所的なゲージ対称性は自発的に破れない。
+すなわち、ゲージ不変でない局所演算子の期待値は、ゲージを固定しなければ 0 である。
+\end{mythm}
+\begin{note}
+直観的な理由：大域的対称性では、真空を一斉に回すには無限体積にわたる変換が必要で、
+そのエネルギー障壁（トンネル振幅の抑制）が無限大になる（\S\ref{sec:SSB-global}）。
+ゲージ変換は一点ごとに独立に行えるので、1点の場の向きを変えてもエネルギーは変わらない。
+したがって $\langle\phi(x)\rangle$ をゲージ変換で平均すると 0 になる。
+\end{note}
+したがって、ゲージ不変な形で $\langle\phi\rangle\ne0$ を言うことはできない。
+実際に行っていることは次の通りである。
+\begin{enumerate}
+    \item ゲージを固定する（例えばユニタリーゲージや $R_\xi$ ゲージ）。
+    ゲージ固定後は局所対称性は残っていないが、\textbf{大域的な部分}（定数パラメータの変換）は残りうる。
+    \item その大域的な部分が、通常の SSB として破れる。$\langle\phi\rangle=v/\sqrt2$ はこの意味の VEV である。
+\end{enumerate}
+「ゲージ対称性の破れ」は、この手続きを簡潔に表す便利な言葉と理解すればよい。
+物理的な帰結（ゲージボソンの質量、スペクトル）はゲージ不変であり、言葉の選び方によらない。
+\begin{remark}
+基本表現のヒッグス場を持つ理論では、ヒッグス相と閉じ込め相の間に相転移がなく、
+両者は連続的につながっている（\term{Fradkin--Shenker の定理}{Fradkin--Shenker theorem}）。
+例えば標準模型の $W$ ボソンは、ゲージ不変な複合演算子 $\Phi^\dagger D_\mu\Phi$ などの束縛状態と見ることもできる
+（Fr\"ohlich--Morchio--Strocchi）。弱結合の摂動論では、ゲージ固定した VEV の描像で正しい結果が得られる。
+\end{remark}
+\subsection{歴史と超伝導}
+ゲージ場が質量を得る機構は、まず超伝導で見出された。
+超伝導体の内部では磁場が侵入長 $\lambda_L$ の距離で指数関数的に減衰する
+（\term{Meissner 効果}{Meissner effect}）。これは、超伝導体中の光子が質量 $m_\gamma=1/\lambda_L$ を持つことと同じである。
+Anderson（1963年）は、ゲージ場があると NG ボソンが現れずに光子が質量を得ることを指摘し、
+相対論的な場の理論での機構は 1964 年に Englert--Brout、Higgs、Guralnik--Hagen--Kibble によって独立に示された。
+このため\term{Brout--Englert--Higgs 機構}{BEH mechanism}とも呼ばれる。
+%------------------------------------------------
+\section{Abelian Higgs model}
+\label{sec:abelian-higgs}
+%------------------------------------------------
+第4章の $\U(1)$ 模型 \eqref{eq:U1-model} の対称性を局所化する。
+\begin{equation}
+\Lag=-\frac14F_{\mu\nu}F^{\mu\nu}+(D_\mu\phi)^*(D^\mu\phi)-V(\phi),
+\qquad
+V(\phi)=\mu^2|\phi|^2+\lambda|\phi|^4,
+\label{eq:abelian-higgs}
+\end{equation}
+\begin{equation}
+D_\mu\phi=(\partial_\mu-igA_\mu)\phi,\qquad F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu .
+\end{equation}
+これを\term{Abelian Higgs model}{Abelian Higgs model}（スカラー QED にポテンシャルを加えたもの）という。
+ゲージ変換は
+\begin{equation}
+\phi(x)\to e^{i\alpha(x)}\phi(x),\qquad A_\mu(x)\to A_\mu(x)+\frac1g\partial_\mu\alpha(x)
+\label{eq:U1-gauge-transf}
+\end{equation}
+である（第1章の規約）。
+\begin{note}
+$D_\mu\phi\to\partial_\mu(e^{i\alpha}\phi)-ig\bigl(A_\mu+\tfrac1g\partial_\mu\alpha\bigr)e^{i\alpha}\phi
+=e^{i\alpha}\bigl(\partial_\mu\phi+i(\partial_\mu\alpha)\phi-igA_\mu\phi-i(\partial_\mu\alpha)\phi\bigr)=e^{i\alpha}D_\mu\phi$。
+したがって $|D_\mu\phi|^2$ と $|\phi|^2$ は不変。$F_{\mu\nu}$ は $\partial_\mu\partial_\nu\alpha-\partial_\nu\partial_\mu\alpha=0$ より不変。
+\end{note}
+運動方程式は
+\begin{equation}
+\partial_\mu F^{\mu\nu}=-g\,j^\nu,\qquad
+j^\nu=i\bigl[\phi^*D^\nu\phi-\phi\,(D^\nu\phi)^*\bigr]
+\label{eq:abelian-higgs-eom}
+\end{equation}
+であり（カレントの全体の符号は規約による）、$j^\nu$ は共変微分を含むためゲージ場自身に依存する。
+SSB が起こると、このカレントが $A_\mu$ に比例する項を持ち、それが質量項として働く（次節）。
+\begin{note}
+$\partial\Lag/\partial A_\nu$ を計算する：$(D_\mu\phi)^*D^\mu\phi$ のうち $A$ を含む部分は
+$ig A_\mu\phi^*\partial^\mu\phi-igA_\mu\phi\,\partial^\mu\phi^*+g^2A^2|\phi|^2$。
+これを $A_\nu$ で微分すると $ig(\phi^*\partial^\nu\phi-\phi\partial^\nu\phi^*)+2g^2A^\nu|\phi|^2
+=ig\bigl[\phi^*D^\nu\phi-\phi(D^\nu\phi)^*\bigr]$。
+$-\frac14F^2$ からは $\partial_\mu F^{\mu\nu}$ が出て、Euler--Lagrange 方程式 $\partial_\mu F^{\mu\nu}+ig[\cdots]=0$、すなわち \eqref{eq:abelian-higgs-eom} を得る。
+\end{note}
+%------------------------------------------------
+\section{ゲージ場の質量生成}
+\label{sec:gauge-mass}
+%------------------------------------------------
+\subsection{直交座標による展開}
+$\mu^2<0$ のとき、第4章と同様に
+\begin{equation}
+\phi=\frac{1}{\sqrt2}(v+h+i\chi),\qquad v=\sqrt{-\mu^2/\lambda}
+\end{equation}
+と展開する。共変微分は
+\begin{equation}
+D_\mu\phi=\frac{1}{\sqrt2}\Bigl[(\partial_\mu h+gA_\mu\chi)+i(\partial_\mu\chi-gvA_\mu-gA_\mu h)\Bigr]
+\end{equation}
+なので、
+\begin{align}
+|D_\mu\phi|^2
+&=\frac12(\partial_\mu h+gA_\mu\chi)^2+\frac12(\partial_\mu\chi-gvA_\mu-gA_\mu h)^2 \notag\\
+&=\frac12(\partial_\mu h)^2+\frac12(\partial_\mu\chi)^2
+-gv\,A^\mu\partial_\mu\chi+\frac12g^2v^2A_\mu A^\mu \notag\\
+&\quad+gA^\mu(\chi\partial_\mu h-h\partial_\mu\chi)+g^2v\,hA_\mu A^\mu+\frac12g^2(h^2+\chi^2)A_\mu A^\mu .
+\label{eq:abelian-higgs-cartesian}
+\end{align}
+最も重要なのは
+\begin{equation}
+\frac12g^2v^2A_\mu A^\mu\equiv\frac12m_A^2A_\mu A^\mu,\qquad m_A=gv
+\label{eq:mA}
+\end{equation}
+という\textbf{ゲージ場の質量項}が現れたことである。
+ゲージ場の質量は、結合定数と VEV の積で決まる。
+ただし同時に、$A_\mu$ と $\chi$ が混ざる2次の項 $-gvA^\mu\partial_\mu\chi$ も現れている。
+この項の意味は \S\ref{sec:NG-gauge-dof} で調べる。
+\begin{note}
+$D_\mu\phi=\frac{1}{\sqrt2}\bigl[\partial_\mu h+i\partial_\mu\chi-igA_\mu(v+h+i\chi)\bigr]$ で、
+$-igA_\mu\cdot i\chi=gA_\mu\chi$ が実部、$-igA_\mu(v+h)$ が虚部に入る。
+2乗の展開：$\frac12(\partial h+gA\chi)^2=\frac12(\partial h)^2+gA^\mu\chi\partial_\mu h+\frac12g^2A^2\chi^2$、
+$\frac12(\partial\chi-gA(v+h))^2=\frac12(\partial\chi)^2-gA^\mu(v+h)\partial_\mu\chi+\frac12g^2(v+h)^2A^2$。
+\end{note}
+\subsection{極座標と Proca 場}
+NG ボソンの扱いは極座標
+\begin{equation}
+\phi=\frac{1}{\sqrt2}(v+h)\,e^{i\pi/v}
+\end{equation}
+の方が見やすい。このとき
+\begin{equation}
+D_\mu\phi=\frac{1}{\sqrt2}e^{i\pi/v}\Bigl[\partial_\mu h-ig(v+h)\Bigl(A_\mu-\frac{1}{gv}\partial_\mu\pi\Bigr)\Bigr]
+\end{equation}
+となるので、新しいベクトル場
+\begin{equation}
+B_\mu\equiv A_\mu-\frac{1}{gv}\partial_\mu\pi
+\label{eq:Bmu}
+\end{equation}
+を定義すると、$\pi$ は $B_\mu$ の中に完全に吸収される。
+$B_\mu$ は $A_\mu$ とゲージ変換の形で違うだけなので、場の強さは $F_{\mu\nu}(B)=F_{\mu\nu}(A)$ である。結果は
+\begin{equation}
+\Lag=-\frac14F_{\mu\nu}F^{\mu\nu}+\frac12m_A^2B_\mu B^\mu
++\frac12(\partial_\mu h)^2-V(h)
++\frac{m_A^2}{v}hB_\mu B^\mu+\frac{m_A^2}{2v^2}h^2B_\mu B^\mu
+\label{eq:abelian-higgs-unitary}
+\end{equation}
+となる（$V(h)=\lambda v^2h^2+\lambda vh^3+\frac\lambda4h^4$）。
+$\pi$ はラグランジアンから完全に消えた。
+\begin{note}
+$|D_\mu\phi|^2=\frac12(\partial h)^2+\frac12g^2(v+h)^2B_\mu B^\mu$（交差項は $\pm i$ で打ち消す）。
+$\frac12g^2(v+h)^2=\frac12m_A^2\left(1+\frac hv\right)^2=\frac12m_A^2+\frac{m_A^2}{v}h+\frac{m_A^2}{2v^2}h^2$。
+\end{note}
+\eqref{eq:abelian-higgs-unitary} の $B_\mu$ の部分
+\begin{equation}
+\Lag_{\mathrm{Proca}}=-\frac14F_{\mu\nu}F^{\mu\nu}+\frac12m^2B_\mu B^\mu
+\end{equation}
+は massive なベクトル場の\term{Proca ラグランジアン}{Proca Lagrangian}である。
+\begin{myprop}{Proca 場の性質}{proca}
+Proca 場の運動方程式 $\partial_\mu F^{\mu\nu}+m^2B^\nu=0$ から
+\begin{equation}
+\partial_\nu B^\nu=0,\qquad(\Box+m^2)B^\nu=0
+\end{equation}
+が従う。したがって $B_\mu$ は質量 $m$ の粒子を記述し、
+4成分のうち $\partial\cdot B=0$ で1つが除かれて、物理的な自由度は $3$（スピン1の $2s+1=3$ 状態）である。
+偏極ベクトル $\epsilon^\mu_\lambda(k)$（$k\cdot\epsilon=0$, $\epsilon^2=-1$）は、$k^\mu=(E,0,0,k)$ に対して
+\begin{equation}
+\epsilon^\mu_\pm=\frac{1}{\sqrt2}(0,1,\pm i,0),\qquad
+\epsilon^\mu_L=\frac1m(k,0,0,E)
+\label{eq:polarization}
+\end{equation}
+であり、偏極和と伝播関数は
+\begin{equation}
+\sum_\lambda\epsilon^\mu_\lambda\epsilon^{\nu*}_\lambda=-g^{\mu\nu}+\frac{k^\mu k^\nu}{m^2},
+\qquad
+\tilde D^{\mu\nu}(k)=\frac{-i}{k^2-m^2+i\epsilon}\left(g^{\mu\nu}-\frac{k^\mu k^\nu}{m^2}\right)
+\label{eq:proca-propagator}
+\end{equation}
+で与えられる。
+\end{myprop}
+\begin{note}
+運動方程式に $\partial_\nu$ を作用させると、$\partial_\nu\partial_\mu F^{\mu\nu}=0$（反対称×対称）より $m^2\partial_\nu B^\nu=0$。
+$m\ne0$ なので $\partial\cdot B=0$。これを使うと $\partial_\mu F^{\mu\nu}=\Box B^\nu-\partial^\nu(\partial\cdot B)=\Box B^\nu$。
+縦偏極：$\epsilon_L\cdot k=(kE-Ek)/m=0$、$\epsilon_L^2=(k^2-E^2)/m^2=-1$。
+\end{note}
+縦偏極ベクトルは高エネルギー $E\gg m$ で
+\begin{equation}
+\epsilon^\mu_L=\frac{k^\mu}{m}+O\!\left(\frac mE\right)
+\label{eq:epsL-highE}
+\end{equation}
+と振る舞い、エネルギーとともに大きくなる。
+このため縦偏極ベクトルボソンの散乱振幅は、個々のダイアグラムでは $E^2/m^2$ のように増大しうる。
+その増大がヒッグス粒子の寄与で相殺されることは、標準模型の重要な整合性条件である（第12章）。
+また、$k^\mu/m$ の部分は「NG ボソンの名残り」であり、
+高エネルギーでは縦偏極の振幅が NG ボソンの振幅に一致する（等価定理）。
+\begin{note}
+$\epsilon_L-\frac km=\frac1m(k-E,0,0,E-k)$ で、$E-k=\frac{m^2}{E+k}\simeq\frac{m^2}{2E}$ なので差は $O(m/E)$。
+\end{note}
+\begin{myex}{超伝導と London 方程式}{london}
+超伝導体の中では、電子の Cooper 対（電荷 $2e$）が凝縮して秩序変数 $\langle\phi\rangle\ne0$ を持つ。
+Abelian Higgs model の非相対論版（Ginzburg--Landau 理論）で、静的な磁場の振る舞いを求めよ。
+\tcblower
+静的で $A_0=0$ のとき、$B_\mu$ の運動方程式 $(\Box+m^2)\bm A=0$ は $\nabla^2\bm A=m^2\bm A$ となる。
+回転をとると磁場 $\bm B=\nabla\times\bm A$ も $\nabla^2\bm B=m^2\bm B$ を満たし、
+超伝導体の表面（$z=0$）から内部へ
+\[
+B(z)=B(0)\,e^{-z/\lambda_L},\qquad \lambda_L=\frac1m
+\]
+と減衰する（Meissner 効果）。$\lambda_L$ は London の侵入長で、典型的には $10$--$100\ \mathrm{nm}$、
+すなわち「光子の質量」は $m_\gamma\sim2$--$20\ \mathrm{eV}$ である。
+カレント $\bm j\propto-m^2\bm A$ は London 方程式そのものである。
+\end{myex}
+%------------------------------------------------
+\section{Goldstone ボソンとゲージ自由度}
+\label{sec:NG-gauge-dof}
+%------------------------------------------------
+\subsection{NG ボソンはゲージ自由度である}
+極座標で、ゲージ変換 \eqref{eq:U1-gauge-transf} は
+\begin{equation}
+h\to h,\qquad \pi\to\pi+v\,\alpha(x),\qquad A_\mu\to A_\mu+\frac1g\partial_\mu\alpha
+\end{equation}
+と作用する。大域的な場合（第4章）には定数シフトだった NG ボソンの変換が、局所的なシフトになっている。
+したがって $\alpha(x)=-\pi(x)/v$ と選べば、各点で $\pi$ を 0 にできる。
+NG ボソンは物理的な自由度ではなく、\textbf{ゲージの自由度}そのものである。
+\eqref{eq:Bmu} の $B_\mu$ はこのゲージ変換を施した後の $A_\mu$ であり、ゲージ不変な組み合わせになっている：
+\begin{equation}
+B_\mu=A_\mu-\frac{1}{gv}\partial_\mu\pi\ \to\ A_\mu+\frac1g\partial_\mu\alpha-\frac{1}{gv}(\partial_\mu\pi+v\partial_\mu\alpha)=B_\mu .
+\end{equation}
+ヒッグス機構のよく使われる表現では、ゲージ場が NG ボソンを\term{食べて}{eat}質量を得る、と言う。
+\subsection{混合項と横波の質量項}
+直交座標の2次の項
+\begin{equation}
+\Lag^{(2)}=-\frac14F_{\mu\nu}F^{\mu\nu}+\frac12(\partial_\mu\chi-mA_\mu)^2,\qquad m=gv
+\label{eq:quadratic-mixing}
+\end{equation}
+において、$A_\mu$ と $\chi$ は混合 $-mA^\mu\partial_\mu\chi$ で結ばれている。
+$\chi$ を古典的に積分すると、ゲージ場に対する有効作用が得られる。
+$\chi$ の運動方程式は
+\begin{equation}
+\partial_\mu(\partial^\mu\chi-mA^\mu)=0\quad\Longrightarrow\quad\chi=m\,\frac{1}{\Box}\,\partial_\mu A^\mu
+\end{equation}
+であり、これを代入すると
+\begin{equation}
+\Lag^{(2)}_{\mathrm{eff}}=-\frac14F_{\mu\nu}F^{\mu\nu}+\frac12m^2A_\mu\left(g^{\mu\nu}-\frac{\partial^\mu\partial^\nu}{\Box}\right)A_\nu
+\end{equation}
+となる。運動量空間では $g^{\mu\nu}-k^\mu k^\nu/k^2$ という\textbf{横波への射影演算子}がかかった質量項で、
+これはゲージ変換 $A_\mu\to A_\mu+\partial_\mu\alpha/g$（$\to k_\mu$ の付加）で不変である。
+\begin{note}
+$(\partial\chi-mA)_\mu=m\Bigl(\partial_\mu\frac1\Box\partial\cdot A-A_\mu\Bigr)\equiv-mA^T_\mu$ と書ける。
+$A^T_\mu=(g_\mu^{\ \nu}-\partial_\mu\partial^\nu/\Box)A_\nu$ は横波成分で、射影演算子 $P_T$ の性質 $P_T^2=P_T$ から
+$\frac12m^2A^T_\mu A^{T\mu}=\frac12m^2A_\mu P_T^{\mu\nu}A_\nu$。
+\end{note}
+ゲージ不変性は通常ゲージ場の質量項を禁止するが（第1章）、
+それは\textbf{局所的な}質量項 $\frac12m^2A_\mu A^\mu$ の話である。
+上の有効作用は $1/\Box$ という非局所的な（massless な極を持つ）構造を通じてゲージ不変性を保っている。
+その massless な極こそ NG ボソンの伝播関数であり、NG ボソンがゲージ不変な質量項を可能にしている。
+これがヒッグス機構の本質である。
+\begin{remark}
+同じ結果は、ゲージ場の真空偏極（自己エネルギー）$\Pi^{\mu\nu}(k)=(k^2g^{\mu\nu}-k^\mu k^\nu)\Pi(k^2)$ が
+$k^2=0$ に極 $\Pi(k^2)\simeq-m^2/k^2$ を持つ、と言い換えられる
+（\term{Schwinger 機構}{Schwinger mechanism}）。このとき伝播関数の極は $k^2=0$ から $k^2=m^2$ に移る。
+\end{remark}
+%------------------------------------------------
+\section{ユニタリーゲージ}
+\label{sec:unitary-gauge}
+%------------------------------------------------
+\subsection{定義}
+NG ボソンを0にするゲージ
+\begin{equation}
+\pi(x)=0\qquad(\text{直交座標では }\chi=0)
+\end{equation}
+を\term{ユニタリーゲージ}{unitary gauge}という。
+このゲージではスカラー場は実で正
+\begin{equation}
+\phi(x)=\frac{1}{\sqrt2}\bigl(v+h(x)\bigr)
+\label{eq:unitary-gauge-phi}
+\end{equation}
+となり、ラグランジアンは \eqref{eq:abelian-higgs-unitary} で $B_\mu\to A_\mu$ としたもの
+\begin{equation}
+\Lag_{\mathrm{U}}=-\frac14F_{\mu\nu}F^{\mu\nu}+\frac12m_A^2\left(1+\frac hv\right)^2A_\mu A^\mu
++\frac12(\partial_\mu h)^2-\frac12m_h^2h^2-\lambda vh^3-\frac\lambda4h^4
+\label{eq:L-unitary}
+\end{equation}
+になる。
+\subsection{長所と短所}
+\textbf{長所}：物理的な粒子（massive ベクトル $A_\mu$ と実スカラー $h$）だけが現れ、スペクトルが一目で分かる。
+相互作用から直接 Feynman 則が読み取れる：
+\begin{equation}
+hAA:\ \ 2i\frac{m_A^2}{v}g^{\mu\nu},\qquad
+hhAA:\ \ 2i\frac{m_A^2}{v^2}g^{\mu\nu}.
+\label{eq:hAA-vertex}
+\end{equation}
+ヒッグス粒子とゲージボソンの結合は\textbf{ゲージボソンの質量の2乗に比例する}。
+これはヒッグス粒子が質量の起源であることの直接の表れであり、標準模型の $hWW$, $hZZ$ 結合も同じ形になる（第6章、第12章）。
+\begin{note}
+$\frac{m_A^2}{v}hA_\mu A^\mu$ の頂点：$A_\mu A_\nu$ の2通りの縮約で因子 $2$、$i$ をかけて $2i\frac{m_A^2}{v}g^{\mu\nu}$。
+$\frac{m_A^2}{2v^2}h^2A_\mu A^\mu$ の頂点：$h$ の縮約 $2$ と $A$ の縮約 $2$ で $2i\frac{m_A^2}{v^2}g^{\mu\nu}$。
+\end{note}
+\textbf{短所}：伝播関数 \eqref{eq:proca-propagator} は $k\to\infty$ で
+\begin{equation}
+\tilde D^{\mu\nu}(k)\sim\frac{i\,k^\mu k^\nu}{m^2k^2}\sim O(1)
+\end{equation}
+となり減衰しない。このため冪勘定（power counting）では理論が繰り込み不可能に見え、
+ループ計算では個々のダイアグラムの発散がひどくなる（発散は最終的に相殺する）。
+ヒッグス機構を伴うゲージ理論が繰り込み可能であることは、次節の $R_\xi$ ゲージを用いて
+'t Hooft（1971年）によって証明された。
+%------------------------------------------------
+\section{$R_\xi$ ゲージ}
+\label{sec:Rxi}
+%------------------------------------------------
+\subsection{ゲージ固定関数}
+\eqref{eq:quadratic-mixing} の混合項 $-mA^\mu\partial_\mu\chi$ を打ち消すように、ゲージ固定項を
+\begin{equation}
+\Lag_{\mathrm{gf}}=-\frac{1}{2\xi}G^2,\qquad G=\partial_\mu A^\mu+\xi m\chi
+\label{eq:Rxi-gf}
+\end{equation}
+と選ぶ（$\xi$ は任意の実パラメータ）。これを\term{$R_\xi$ ゲージ}{$R_\xi$ gauge}（'t Hooft ゲージ）という。
+展開すると
+\begin{equation}
+\Lag_{\mathrm{gf}}=-\frac{1}{2\xi}(\partial_\mu A^\mu)^2-m\chi\,\partial_\mu A^\mu-\frac12\xi m^2\chi^2 ,
+\end{equation}
+中央の項は部分積分で $+mA^\mu\partial_\mu\chi$ となり、\eqref{eq:quadratic-mixing} の混合項とちょうど打ち消す。
+\begin{note}
+$-m\chi\partial_\mu A^\mu=-m\partial_\mu(\chi A^\mu)+mA^\mu\partial_\mu\chi$ で、全微分は作用に寄与しない。
+混合項の符号は共変微分の符号の規約に依存する。$D_\mu=\partial_\mu+igA_\mu$ の規約（Peskin--Schroeder など）では
+$G=\partial_\mu A^\mu-\xi m\chi$ となる。
+\end{note}
+\subsection{伝播関数}
+混合がなくなった2次の部分は
+\begin{equation}
+\Lag^{(2)}=-\frac14F_{\mu\nu}F^{\mu\nu}-\frac{1}{2\xi}(\partial_\mu A^\mu)^2+\frac12m^2A_\mu A^\mu
++\frac12(\partial_\mu\chi)^2-\frac12\xi m^2\chi^2+\frac12(\partial_\mu h)^2-\frac12m_h^2h^2
+\end{equation}
+であり、伝播関数は
+\begin{align}
+\text{ゲージ場：}&\quad
+\tilde D^{\mu\nu}(k)=\frac{-i}{k^2-m^2}\left[g^{\mu\nu}-(1-\xi)\frac{k^\mu k^\nu}{k^2-\xi m^2}\right],
+\label{eq:Rxi-propagator}\\
+\text{NG ボソン：}&\quad
+\tilde D_\chi(k)=\frac{i}{k^2-\xi m^2}
+\end{align}
+となる。NG ボソン $\chi$ はゲージに依存する質量 $\sqrt\xi\,m$ を持つ。
+\begin{note}
+$A$ の2次の部分は部分積分して $\frac12A_\mu\bigl[(\Box+m^2)g^{\mu\nu}-(1-\frac1\xi)\partial^\mu\partial^\nu\bigr]A_\nu$。
+運動量空間で、射影演算子 $P_T^{\mu\nu}=g^{\mu\nu}-k^\mu k^\nu/k^2$, $P_L^{\mu\nu}=k^\mu k^\nu/k^2$ を用いると
+\[
+O^{\mu\nu}=-(k^2-m^2)P_T^{\mu\nu}-\frac1\xi(k^2-\xi m^2)P_L^{\mu\nu}.
+\]
+$P_T,P_L$ は直交射影なので逆は各成分の逆数で、伝播関数 $i(O^{-1})$ は
+\[
+\tilde D^{\mu\nu}=-i\left[\frac{P_T^{\mu\nu}}{k^2-m^2}+\frac{\xi P_L^{\mu\nu}}{k^2-\xi m^2}\right].
+\]
+$P_L$ の係数を通分すると $\frac{1}{k^2-m^2}-\frac{(1-\xi)k^2}{(k^2-m^2)(k^2-\xi m^2)}=\frac{\xi}{k^2-\xi m^2}$ となり、
+\eqref{eq:Rxi-propagator} と一致する。
+\end{note}
+\subsection{ゴースト}
+非可換でなくても、ゲージ固定関数 $G$ がスカラー場を含むため Faddeev--Popov ゴーストが相互作用する。
+ゲージ変換 $\delta A_\mu=\frac1g\partial_\mu\alpha$, $\delta\chi=\alpha(v+h)$ のもとで
+\begin{equation}
+\delta G=\frac1g\left[\Box+\xi m^2\left(1+\frac hv\right)\right]\alpha
+\end{equation}
+なので、ゴーストのラグランジアンは
+\begin{equation}
+\Lag_{\mathrm{ghost}}=\bar c\left[-\Box-\xi m^2\left(1+\frac hv\right)\right]c
+\end{equation}
+となる。ゴーストは質量 $\sqrt\xi\,m$ を持ち、$h$ と結合する。
+Faddeev--Popov の手続きの導出は付録Fで扱う。
+\begin{note}
+$\delta(h+i\chi)=i\alpha(v+h+i\chi)$ より $\delta\chi=\alpha(v+h)$。
+$\delta G=\partial^\mu\delta A_\mu+\xi m\delta\chi=\frac1g\Box\alpha+\xi m\alpha(v+h)$、$m=gv$ より $\xi m v=\xi m^2/g$。
+\end{note}
+\subsection{ゲージパラメータの特別な値}
+\begin{itemize}
+    \item $\xi=1$（\term{'t Hooft--Feynman ゲージ}{'t Hooft--Feynman gauge}）：
+    $\tilde D^{\mu\nu}=-ig^{\mu\nu}/(k^2-m^2)$ と最も簡単で、$\chi$ とゴーストも質量 $m$ を持つ。実用計算でよく使う。
+    \item $\xi=0$（\term{Landau ゲージ}{Landau gauge}）：伝播関数は横波で、$\chi$ とゴーストは massless。
+    \item $\xi\to\infty$：$\chi$ とゴーストは無限に重くなって切り離され、伝播関数は \eqref{eq:proca-propagator} に戻る。
+    これがユニタリーゲージである。
+\end{itemize}
+有限の $\xi$ ではすべての伝播関数が $k\to\infty$ で $1/k^2$ のように減衰し、冪勘定で繰り込み可能性が明らかになる。
+一方、$k^2=\xi m^2$ にゲージ依存の非物理的な極が現れるが、
+物理的な振幅ではゲージ場の縦成分・$\chi$・ゴーストの寄与が打ち消し合い、$\xi$ に依存しない。
+\begin{remark}
+$R_\xi$ ゲージは、$\xi$ を連続的に動かすことでユニタリーゲージ（物理的・ユニタリー性が明白）と
+繰り込み可能なゲージ（繰り込み可能性が明白）を補間する。
+物理量が $\xi$ によらないことから、両方の性質を同時に持つことが分かる。名前の $R$ は renormalizable に由来する。
+\end{remark}
+%------------------------------------------------
+\section{ヒッグス機構における自由度の数え上げ}
+\label{sec:Higgs-counting}
+%------------------------------------------------
+Abelian Higgs model の物理的な自由度を数える。
+\begin{table}[htbp]
+\centering
+\caption{Abelian Higgs model の自由度}
+\label{tab:abelian-dof}
+\begin{tabular}{lll}
+\toprule
+ & 場 & 自由度\\
+\midrule
+対称相（$v=0$） & 複素スカラー $\phi$ & 2\\
+ & massless ゲージ場 $A_\mu$（横波2偏極） & 2\\
+ & 合計 & 4\\
+\midrule
+ヒッグス相（$v\ne0$） & 実スカラー $h$ & 1\\
+ & massive ゲージ場 $A_\mu$（3偏極） & 3\\
+ & 合計 & 4\\
+\bottomrule
+\end{tabular}
+\end{table}
+全体の自由度は保存し、NG ボソン1個分の自由度がゲージ場の縦偏極に移っている。
+$R_\xi$ ゲージで数えると、$A_\mu$ の4成分、$\chi$ と $h$ の2つ、ゴースト $c,\bar c$（それぞれ $-1$）で
+$4+2-2=4$ となり、やはり一致する。
+\begin{note}
+massless ゲージ場の4成分のうち、ゲージ固定で1つ、Gauss の法則（$A_0$ の運動方程式は時間微分を含まない拘束条件）で1つが除かれ、2つが残る。
+massive の場合は $\partial\cdot B=0$ で1つが除かれ3つが残る。$R_\xi$ ゲージでは、ゴーストがゲージ場の非物理的な2成分を相殺し、
+残った $A_\mu$ の時間成分的な $k^2=\xi m^2$ の極と $\chi$ が互いに相殺する。
+\end{note}
+一般に、ゲージ群 $G$ が $H$ に破れるとき、
+\begin{equation}
+\text{massive なゲージボソンの数}=\text{食べられる NG ボソンの数}=\dim G-\dim H
+\label{eq:massive-gauge-count}
+\end{equation}
+であり、$H$ に対応する $\dim H$ 個のゲージボソンは massless のまま残る。
+NG ボソン以外のスカラー（$n-\dim G+\dim H$ 個）は物理的なヒッグス粒子として残る。
+\begin{remark}
+大域的対称性の一部だけをゲージ化した場合、ゲージ化されていない破れた生成子に対応する NG ボソンは食べられずに物理的に残る。
+例えば QCD のカイラル対称性の破れでは、$\SU(2)_L\times\U(1)_Y$ の部分がゲージ化されているので、
+パイ中間子は（ごくわずかに）$W,Z$ の縦偏極に混ざる。もしヒッグス場がなければ、
+QCD のクォーク凝縮だけで $W,Z$ が $\sim gf_\pi$ 程度の質量を得る（テクニカラー模型の発想）。
+\end{remark}
+%------------------------------------------------
+\section{非 Abelian Higgs model}
+\label{sec:nonabelian-higgs}
+%------------------------------------------------
+\subsection{一般論：ゲージボソンの質量行列}
+ゲージ群 $G$（生成子 $T^a$、結合定数 $g$）と、その表現に属するスカラー場 $\phi$ を考える。
+\begin{equation}
+\Lag=-\frac14F^a_{\mu\nu}F^{a\mu\nu}+(D_\mu\phi)^\dagger(D^\mu\phi)-V(\phi),\qquad
+D_\mu\phi=(\partial_\mu-igA^a_\mu T^a)\phi .
+\end{equation}
+$\phi$ が VEV $\langle\phi\rangle=\phi_0$ を持つと、運動項から
+\begin{equation}
+(D_\mu\phi)^\dagger(D^\mu\phi)\supset g^2A^a_\mu A^{b\mu}\,\phi_0^\dagger T^aT^b\phi_0
+=\frac12(M^2)_{ab}A^a_\mu A^{b\mu},
+\end{equation}
+\begin{equation}
+(M^2)_{ab}=g^2\,\phi_0^\dagger\{T^a,T^b\}\phi_0
+\label{eq:gauge-mass-matrix}
+\end{equation}
+というゲージボソンの\term{質量行列}{mass matrix}が得られる。
+\begin{note}
+$A^a_\mu A^{b\mu}$ は $a\leftrightarrow b$ で対称なので、$T^aT^b$ の対称部分 $\frac12\{T^a,T^b\}$ だけが効く。
+複数の結合定数がある場合（積群）は $g^2T^aT^b\to g_ag_bT^aT^b$ とする。
+\end{note}
+\begin{myprop}{質量行列の性質}{gauge-mass-matrix}
+$M^2$ は実対称で半正定値であり、実ベクトル $c^a$ に対して
+\begin{equation}
+c^a(M^2)_{ab}c^b=2g^2\bigl|c^aT^a\phi_0\bigr|^2\ge0 .
+\end{equation}
+等号は $c^aT^a\phi_0=0$、すなわち $c^aT^a$ が非破れ部分群 $H$ の生成子のときに限る。
+したがって、massless のゲージボソンは $H$ の生成子に対応し、
+massive なゲージボソンの数は破れた生成子の数 $\dim G-\dim H$ に等しい。
+\end{myprop}
+\begin{note}
+$c^ac^b\phi_0^\dagger\{T^a,T^b\}\phi_0=2\phi_0^\dagger(c^aT^a)^2\phi_0=2|(c^aT^a)\phi_0|^2$（$c^aT^a$ はエルミート）。
+実対称性：$(\phi_0^\dagger\{T^a,T^b\}\phi_0)^*=\phi_0^\dagger\{T^a,T^b\}^\dagger\phi_0=\phi_0^\dagger\{T^a,T^b\}\phi_0$。
+\end{note}
+NG ボソンは $\delta\phi=i\alpha^aT^a\phi_0$ の方向であり、
+極座標の一般化 $\phi(x)=\exp\bigl(i\pi^{\hat a}(x)T^{\hat a}/v\bigr)\,(\phi_0+\text{動径方向の揺らぎ})$（$\hat a$ は破れた生成子。$\pi^{\hat a}$ の規格化は運動項が正準になるよう適宜選ぶ）
+を用いれば、ユニタリーゲージで $\pi^{\hat a}=0$ とできる。
+$R_\xi$ ゲージは $G^a=\partial_\mu A^{a\mu}+\xi\,(\text{$\pi^a$ に比例する項})$ と一般化され、
+各 massive ゲージボソンに対応する NG ボソンとゴーストが質量 $\sqrt\xi\,m_a$ を持つ。
+\subsection{例1：$\SU(2)$ と二重項}
+$G=\SU(2)$、$\phi$ を二重項、$\phi_0=\frac{1}{\sqrt2}(0,v)^T$ とする。
+$\{\sigma^a/2,\sigma^b/2\}=\frac12\delta^{ab}$ より
+\begin{equation}
+(M^2)_{ab}=g^2\cdot\frac12\delta^{ab}\cdot\phi_0^\dagger\phi_0=\frac{g^2v^2}{4}\delta^{ab}
+\quad\Longrightarrow\quad
+m_1=m_2=m_3=\frac{gv}{2}.
+\end{equation}
+$\SU(2)$ は完全に破れ（$H=\{1\}$）、3つのゲージボソンがすべて同じ質量を得る。
+二重項の4つの実スカラーのうち3つが食べられ、1つがヒッグス粒子として残る。
+3つの質量が等しいのは、\S\ref{sec:SSB-counting} で触れたカストディアル対称性 $\SU(2)_V$ による。
+これに $\U(1)_Y$ を加えたものが標準模型の電弱理論であり、$W^\pm$ は $m_W=gv/2$ を得る（第6章）。
+\subsection{例2：$\SU(2)$ と随伴表現（Georgi--Glashow 模型）}
+$\phi^a$（$a=1,2,3$）を $\SU(2)$ の随伴表現（実3重項）とする。
+$(D_\mu\phi)^a=\partial_\mu\phi^a+g\epsilon^{abc}A^b_\mu\phi^c$ であり、$\langle\phi\rangle=(0,0,v)$ とすると
+\begin{equation}
+\frac12(D_\mu\phi)^a(D^\mu\phi)^a\supset\frac12g^2v^2\bigl[(A^1_\mu)^2+(A^2_\mu)^2\bigr].
+\end{equation}
+$A^{1,2}$（すなわち $W^\pm=(A^1\mp iA^2)/\sqrt2$）が質量 $gv$ を得て、
+$\langle\phi\rangle$ の方向の回転 $A^3$ は massless の「光子」として残る：$\SU(2)\to\U(1)$。
+3つの実スカラーのうち2つが食べられ、1つが残る。
+\begin{note}
+$\epsilon^{abc}A^b\phi_0^c=v\,\epsilon^{ab3}A^b$：$a=1$ で $vA^2$、$a=2$ で $-vA^1$、$a=3$ で $0$。
+2乗の和は $v^2[(A^1)^2+(A^2)^2]$。
+\end{note}
+\begin{remark}
+Georgi--Glashow 模型（1972年）は、中性カレントの発見前に提案された電弱理論の候補であった。
+中性カレント（$Z$ ボソン）の発見により、$\SU(2)\times\U(1)$ の Glashow--Weinberg--Salam 模型が選ばれた。
+この模型は $\SU(2)\to\U(1)$ の破れの位相的性質から \term{'t Hooft--Polyakov モノポール}{'t Hooft--Polyakov monopole}を持つことでも知られる。
+\end{remark}
+\subsection{例3：$\SU(3)$ と三重項}
+$\SU(3)$ の基本表現 $\phi_0=\frac{1}{\sqrt2}(0,0,v)^T$ では $\SU(3)\to\SU(2)$ と破れ、
+$8-3=5$ 個のゲージボソンが質量を得る。
+Gell-Mann 行列 $\lambda^a$（$T^a=\lambda^a/2$）のうち、第3成分に作用する $\lambda^{4,5,6,7}$ の4つは質量 $gv/2$、
+$\lambda^8$ に対応する1つは質量 $gv/\sqrt3$ を得る。$\lambda^{1,2,3}$ に対応する3つは massless である。
+\begin{note}
+$\lambda^8=\frac{1}{\sqrt3}\diag(1,1,-2)$ なので $T^8\phi_0=-\frac{1}{\sqrt3}\phi_0$、
+$(M^2)_{88}=2g^2|T^8\phi_0|^2=2g^2\cdot\frac13\cdot\frac{v^2}{2}=\frac{g^2v^2}{3}$。
+$\lambda^4$ は $(1,3)$ 成分の $\sigma^1$ 型で、$T^4\phi_0=\frac12\cdot\frac{v}{\sqrt2}(1,0,0)^T$ より
+$(M^2)_{44}=2g^2\cdot\frac{v^2}{8}=\frac{g^2v^2}{4}$。$\lambda^{5,6,7}$ も同様。
+\end{note}
+%------------------------------------------------
+\section*{第5章のまとめ}
+%------------------------------------------------
+\begin{itemize}
+    \item ゲージ対称性は冗長性であり、厳密には自発的に破れない（Elitzur の定理）。
+    「ゲージ対称性の破れ」とは、ゲージ固定後に残る大域的部分の SSB を指す。
+    \item Abelian Higgs model では、スカラー場の VEV によりゲージ場が質量 $m_A=gv$ を得る。
+    NG ボソンはゲージ変換で取り除くことができ、ゲージ場の縦偏極になる（ゲージ場が NG ボソンを「食べる」）。
+    \item ユニタリーゲージでは物理的な粒子だけが現れ、ヒッグス粒子とゲージボソンの結合は $m_A^2/v$ に比例する。
+    $R_\xi$ ゲージでは伝播関数が $1/k^2$ で減衰し、繰り込み可能性が明白になる。物理量は $\xi$ によらない。
+    \item 自由度は保存する：複素スカラー（2）+ massless ベクトル（2）= 実スカラー（1）+ massive ベクトル（3）。
+    \item 非可換群 $G\to H$ では、ゲージボソンの質量行列は $(M^2)_{ab}=g^2\phi_0^\dagger\{T^a,T^b\}\phi_0$ で与えられ、
+    $\dim G-\dim H$ 個のゲージボソンが質量を得る。
+\end{itemize}
+%================================================
+\chapter{標準模型における電弱対称性の破れ}
+\label{ch:EWSB}
+%================================================
+第5章のヒッグス機構を、標準模型の電弱ゲージ群 $\SU(2)_L\times\U(1)_Y$ に適用する。
+本章の目標は、第1章で結果だけを示した
+\begin{equation*}
+M_W=\frac{gv}{2},\qquad M_Z=\frac{\sqrt{g^2+g'^2}\,v}{2},\qquad M_\gamma=0,\qquad e=g\sin\theta_W=g'\cos\theta_W
+\end{equation*}
+を導出し、ゲージボソンの質量固有状態 $W^\pm$, $Z^0$, $\gamma$ と Weinberg 角の意味を明らかにすることである。
+電弱対称性の破れ\en{electroweak symmetry breaking, EWSB}は、
+\term{電弱理論}{electroweak theory}（Glashow 1961, Weinberg 1967, Salam 1968）の中心部分である。
+%------------------------------------------------
+\section{Higgs doublet の導入}
+\label{sec:higgs-doublet}
+%------------------------------------------------
+\subsection{ヒッグス場の量子数}
+標準模型のヒッグス場は
+\begin{equation}
+H=\begin{pmatrix}\phi^+\\ \phi^0\end{pmatrix}
+=\frac{1}{\sqrt2}\begin{pmatrix}\phi_1+i\phi_2\\ \phi_3+i\phi_4\end{pmatrix}
+\sim(\mathbf1,\mathbf2)_{1}
+\label{eq:H-doublet}
+\end{equation}
+という、カラー一重項・$\SU(2)_L$ 二重項・超電荷 $Y=1$ の複素スカラー場である
+（第4章の $\Phi$ と同じもの）。成分の電荷は $Q=T_3+Y/2$ より、上成分が $+1$、下成分が $0$ である。
+この選択は次の要請からほぼ一意に決まる。
+\begin{enumerate}
+    \item \textbf{破れのパターン}：$\SU(2)_L\times\U(1)_Y$ を $\U(1)_{\mathrm{EM}}$ に破るには、
+    $T_3\ne0$ かつ $Q=0$ の成分が VEV を持たなければならない。そのためには $\SU(2)_L$ の非自明な表現で $Y\ne0$ が必要である。
+    \item \textbf{Yukawa 結合}：$\overline{Q_L}Hd_R$ などのゲージ不変な Yukawa 項（第3章 \eqref{eq:Y-yukawa}）が書けるには、
+    ヒッグス場は $(\mathbf1,\mathbf2)_{\pm1}$ でなければならない。これは $Y_H=1$ \eqref{eq:YH} を意味する。
+    \item \textbf{$\rho$ パラメータ}：$M_W$ と $M_Z$ の比が実験とよく合う（$\rho\simeq1$）ためには、
+    二重項（あるいは特殊な高次元表現）が必要である（\S\ref{sec:weinberg-angle}）。
+\end{enumerate}
+共役場 $\tilde H=i\sigma^2H^*=(\phi^{0*},\,-\phi^-)^T$ は $Y=-1$ の二重項である（第1章、第3章）。
+\begin{remark}
+電弱理論の歴史を簡単にまとめておく。
+\begin{itemize}
+    \item 1961年：Glashow が $\SU(2)\times\U(1)$ のゲージ群と $Z$ ボソンを導入した。ただし $W,Z$ の質量は手で加えたため、繰り込み可能性は失われていた。
+    \item 1964年：ヒッグス機構（Englert--Brout, Higgs, Guralnik--Hagen--Kibble）。
+    \item 1967--68年：Weinberg と Salam が、ヒッグス二重項による SSB を Glashow の模型に組み込み、レプトンの理論を完成させた。
+    \item 1971年：'t Hooft が（Veltman とともに）SSB を伴うゲージ理論の繰り込み可能性を証明した。
+    \item 1973年：CERN の Gargamelle 泡箱で中性カレント（$\nu_\mu e\to\nu_\mu e$ など）が発見された。
+    \item 1983年：CERN の UA1, UA2 実験で $W^\pm$, $Z^0$ が発見され、質量が予言とよく一致した。
+    \item 1989--2000年：LEP と SLC による $Z$ 共鳴の精密測定で、量子補正のレベルまで標準模型が検証された。
+    \item 2012年：LHC の ATLAS, CMS 実験でヒッグス粒子が発見された。
+\end{itemize}
+\end{remark}
+\subsection{ヒッグス場のラグランジアン}
+ヒッグス場のラグランジアンは
+\begin{equation}
+\Lag_H=(D_\mu H)^\dagger(D^\mu H)-V(H),
+\qquad
+D_\mu H=\left(\partial_\mu-igW^i_\mu\frac{\sigma^i}{2}-i\frac{g'}{2}B_\mu\right)H
+\label{eq:L-Higgs}
+\end{equation}
+である。\eqref{eq:D-doublet} で $Y=1$ とおくと、成分では
+\begin{equation}
+D_\mu H=
+\begin{pmatrix}
+\partial_\mu-\dfrac{i}{2}\left(gW_\mu^3+g'B_\mu\right) & -\dfrac{ig}{\sqrt2}W_\mu^+\\[2mm]
+-\dfrac{ig}{\sqrt2}W_\mu^- & \partial_\mu+\dfrac{i}{2}\left(gW_\mu^3-g'B_\mu\right)
+\end{pmatrix}
+\begin{pmatrix}\phi^+\\ \phi^0\end{pmatrix}
+\label{eq:DH-components}
+\end{equation}
+となる。下成分 $\phi^0$ には $gW^3-g'B$ の組み合わせだけが結合していることに注意する。
+これが後で $Z$ ボソンになる組み合わせである。
+%------------------------------------------------
+\section{ヒッグスポテンシャル}
+\label{sec:higgs-potential}
+%------------------------------------------------
+\subsection{ポテンシャルの一般形}
+\begin{myprop}{ヒッグスポテンシャル}{higgs-potential}
+1つのヒッグス二重項について、$\SU(2)_L\times\U(1)_Y$ 不変で繰り込み可能なポテンシャルは
+\begin{equation}
+V(H)=-\mu^2H^\dagger H+\lambda\left(H^\dagger H\right)^2
+\label{eq:higgs-potential}
+\end{equation}
+に限られる。
+\end{myprop}
+\begin{note}
+$H$ の2次の不変量は $H^\dagger H$ だけである。
+$H^Ti\sigma^2H=\phi^+\phi^0-\phi^0\phi^+=0$ は恒等的に 0（反対称な縮約）であり、しかも $Y=2$ を持つので不変でない。
+3次の項は $Y$ の和が 0 にならず禁止される（$H$ が $+1$、$H^\dagger$ が $-1$ で、3つの和は奇数）。
+4次の不変量は $(H^\dagger H)^2$ に帰着する（二重項の2つの $\SU(2)$ 不変な縮約 $|H^\dagger H|^2$ と $|H^Ti\sigma^2H|^2=0$ のうち非自明なのは前者だけ）。
+\end{note}
+本章では第1章に合わせ、$\mu^2>0$ のとき対称性が破れる符号で書く（第4章・第5章の $\mu^2|\phi|^2$ とは $\mu^2$ の符号が逆）。
+\begin{itemize}
+    \item $\lambda>0$：ポテンシャルが下に有界であるための条件（\term{真空の安定性}{vacuum stability}）。
+    \item $\mu^2>0$：$H=0$ が極大になり、電弱対称性が自発的に破れる。
+\end{itemize}
+平方完成すると
+\begin{equation}
+V(H)=\lambda\left(H^\dagger H-\frac{v^2}{2}\right)^2-\frac{\lambda v^4}{4},
+\qquad v^2\equiv\frac{\mu^2}{\lambda}
+\label{eq:higgs-potential-square}
+\end{equation}
+となる。
+\subsection{$\mathrm O(4)$ 対称性とカストディアル対称性}
+$H^\dagger H=\frac12(\phi_1^2+\phi_2^2+\phi_3^2+\phi_4^2)$ なので、
+$V$ は4つの実スカラー場の回転 $\mathrm O(4)$ で不変であり、ゲージ群 $\SU(2)_L\times\U(1)_Y$ より大きな対称性を持つ。
+これを見やすくするため、$2\times2$ 行列
+\begin{equation}
+\Sigma\equiv\left(\tilde H,\ H\right)
+=\begin{pmatrix}\phi^{0*}&\phi^+\\ -\phi^-&\phi^0\end{pmatrix}
+\label{eq:bidoublet}
+\end{equation}
+を定義する。このとき
+\begin{equation}
+H^\dagger H=\frac12\tr\left(\Sigma^\dagger\Sigma\right),
+\end{equation}
+であり、$\Sigma$ は $\SU(2)_L\times\SU(2)_R$ のもとで
+\begin{equation}
+\Sigma\to L\,\Sigma\,R^\dagger,\qquad L\in\SU(2)_L,\ R\in\SU(2)_R
+\end{equation}
+と変換する。$V$ と運動項（$g'=0$ のとき）はこの $\SU(2)_L\times\SU(2)_R\simeq\SO(4)$ で不変である。
+$\U(1)_Y$ は $\SU(2)_R$ の $\sigma^3$ 方向の部分群 $R=e^{i\theta\sigma^3/2}$ として埋め込まれている。
+\begin{note}
+$\tilde H$ と $H$ の超電荷はそれぞれ $-1$, $+1$ なので、$\U(1)_Y$ 変換 $H\to e^{i\theta/2}H$ は
+$\Sigma\to\Sigma\,\diag(e^{-i\theta/2},e^{i\theta/2})=\Sigma\,e^{-i\theta\sigma^3/2}$ と右から作用する。
+これは $R^\dagger=e^{-i\theta\sigma^3/2}$ に対応する。
+$\tr(\Sigma^\dagger\Sigma)=|\phi^0|^2+|\phi^-|^2+|\phi^+|^2+|\phi^0|^2=2H^\dagger H$。
+\end{note}
+VEV $\langle\Sigma\rangle=\frac{v}{\sqrt2}\mathbf 1$ は $L=R$ のときだけ不変なので、
+\begin{equation}
+\SU(2)_L\times\SU(2)_R\to\SU(2)_V
+\end{equation}
+と破れる。残る $\SU(2)_V$ が\term{カストディアル対称性}{custodial symmetry}であり、
+$W^1,W^2,W^3$ を3重項として回すため、$g'\to0$ の極限で3つの質量が等しくなる。
+$g'\ne0$ と Yukawa 結合（$y_t\ne y_b$）は $\SU(2)_R$ を陽に破り、$\rho$ パラメータに量子補正を与える（第12章）。
+\subsection{真空のエネルギー}
+真空でのポテンシャルの値は \eqref{eq:higgs-potential-square} より
+\begin{equation}
+V(\langle H\rangle)=-\frac{\lambda v^4}{4}=-\frac{m_h^2v^2}{8}\simeq-1.2\times10^{8}\ \mathrm{GeV}^4
+\end{equation}
+である。場の理論ではエネルギーの原点は任意だが、重力は真空のエネルギー密度にも結合し、宇宙項として働く。
+観測される宇宙項（暗黒エネルギー）のエネルギー密度は $\rho_\Lambda\simeq(2.3\times10^{-3}\ \mathrm{eV})^4\simeq3\times10^{-47}\ \mathrm{GeV}^4$ であり、
+電弱対称性の破れに伴う真空のエネルギーの変化よりも $10^{55}$ 倍ほど小さい。
+この2つが（定数項の微調整なしに）なぜ合わないのかは、\term{宇宙項問題}{cosmological constant problem}の一部である（第14章）。
+\begin{note}
+$\frac{m_h^2v^2}{8}=\frac{(125.25)^2\times(246.22)^2}{8}\simeq\frac{1.569\times10^4\times6.062\times10^4}{8}\simeq1.19\times10^8\ \mathrm{GeV}^4$。
+$\lambda v^4/4$ で $\lambda=m_h^2/(2v^2)$ を代入すると同じ式になる。
+\end{note}
+\subsection{有限温度と電弱相転移}
+初期宇宙の高温では、熱浴の粒子との相互作用によりヒッグス場の有効的な質量項が
+\begin{equation}
+V_T(H)\simeq\left(-\mu^2+cT^2\right)H^\dagger H+\lambda\left(H^\dagger H\right)^2,
+\qquad
+c=\frac{3g^2+g'^2}{16}+\frac{y_t^2}{4}+\frac\lambda2
+\label{eq:thermal-mass}
+\end{equation}
+のように持ち上がる（高温展開の主要項）。$T$ が十分高いと $H^2$ の係数が正になり、
+対称性が回復する（$\langle H\rangle=0$、$W,Z$ やフェルミオンは massless）。
+宇宙が冷えて
+\begin{equation}
+T_c\simeq\frac{\mu}{\sqrt c}
+\end{equation}
+を下回ると、ヒッグス場が VEV を持ち電弱対称性が破れる。
+数値を入れると $c\simeq0.09+0.25+0.06\simeq0.40$、$T_c\sim140\ \mathrm{GeV}$ となる。
+格子計算によれば、$m_h=125\ \mathrm{GeV}$ では相転移ではなく滑らかな\term{クロスオーバー}{crossover}であり、
+その温度は $T\simeq160\ \mathrm{GeV}$ である（宇宙年齢 $\sim10^{-11}$ 秒）。
+\begin{note}
+高温展開では、質量 $m_i(\phi)$ を持つボソン1自由度あたり $\frac{T^2}{24}m_i^2(\phi)$、
+Weyl フェルミオン1自由度あたり $\frac{T^2}{48}m_i^2(\phi)$ が有効ポテンシャルに加わる。
+$W$（6自由度）、$Z$（3自由度）、トップクォーク（12自由度）、ヒッグスと NG ボソンの寄与を足し合わせると、
+$H^\dagger H$ の係数として \eqref{eq:thermal-mass} の $c$ が得られる。
+トップクォークの寄与 $y_t^2/4\simeq0.25$ が最大である。
+\end{note}
+\begin{remark}
+電弱相転移が強い1次相転移であれば、宇宙のバリオン数非対称性を電弱スケールで生成する可能性があった
+（\term{電弱バリオン数生成}{electroweak baryogenesis}）。
+標準模型ではクロスオーバーなのでこれは働かず、新しい物理が必要になる（第14章）。
+\end{remark}
+%------------------------------------------------
+\section{真空期待値の決定}
+\label{sec:vev-determination}
+%------------------------------------------------
+\subsection{真空の選択}
+\eqref{eq:higgs-potential-square} の最小値は
+\begin{equation}
+H^\dagger H=\frac{v^2}{2},\qquad v=\frac{\mu}{\sqrt\lambda}
+\end{equation}
+すなわち $\mathbb R^4$ の中の半径 $v$ の3次元球面 $S^3$ 上にある。
+$\SU(2)_L$ は $S^3$ に推移的に作用する（$\SU(2)\simeq S^3$）ので、
+ゲージ変換によって任意の真空を
+\begin{equation}
+\boxed{\langle H\rangle=\frac{1}{\sqrt2}\begin{pmatrix}0\\ v\end{pmatrix},\qquad v\ \text{は実で正}}
+\label{eq:H-vev}
+\end{equation}
+の形にできる。
+\begin{note}
+任意の $H_0=(a,b)^T$（$|a|^2+|b|^2=v^2/2$）に対して
+\[
+U=\frac{\sqrt2}{v}\begin{pmatrix}b^*&a\\ -a^*&b\end{pmatrix}\in\SU(2)\quad(\det U=\tfrac{2}{v^2}(|a|^2+|b|^2)=1)
+\]
+とおくと $U^\dagger=\frac{\sqrt2}{v}\begin{pmatrix}b&-a\\ a^*&b^*\end{pmatrix}$ で、$U^\dagger H_0=\frac{\sqrt2}{v}(ba-ab,\ |a|^2+|b|^2)^T=(0,\ v/\sqrt2)^T$。
+したがって、どの方向に VEV が生じても、ゲージ変換により下成分の実数にそろえられる。
+\end{note}
+VEV が下成分（$Q=0$ の成分）にあることは、\textbf{選択}ではなく\textbf{電荷の定義}と考えるべきである。
+二重項が1つしかない場合、どの真空を選んでも破れずに残る $\U(1)$ が1つあり、それを電磁気の $\U(1)$ と呼ぶ。
+したがって標準模型では電荷の保存は自動的である。
+（2つ以上の二重項があると、電荷を破る真空も可能になり、パラメータに条件がつく。）
+\subsection{$v$ の数値}
+$v$ の値は Fermi 定数から決まる。第8章で導出するように、低エネルギーの荷電カレント相互作用は
+\begin{equation}
+\frac{G_F}{\sqrt2}=\frac{g^2}{8M_W^2}=\frac{1}{2v^2}
+\quad\Longrightarrow\quad
+v=\left(\sqrt2\,G_F\right)^{-1/2}\simeq246.22\ \mathrm{GeV}
+\label{eq:v-value}
+\end{equation}
+を与える（$G_F=1.16638\times10^{-5}\ \mathrm{GeV}^{-2}$、$\mu$ 粒子の寿命から決まる）。
+これが\term{電弱スケール}{electroweak scale}である。
+さらにヒッグス粒子の質量 $m_h\simeq125.25\ \mathrm{GeV}$ を用いると（\S\ref{sec:higgs-dof}）
+\begin{equation}
+\lambda=\frac{m_h^2}{2v^2}\simeq0.129,\qquad \mu=\frac{m_h}{\sqrt2}\simeq88.6\ \mathrm{GeV}
+\end{equation}
+となり、ヒッグスポテンシャルのパラメータが（ツリーレベルで）すべて決まる。
+\subsection{真空のまわりの展開}
+真空のまわりの揺らぎは、2通りのパラメータ表示で書ける。
+\begin{align}
+\text{直交座標：}&\quad
+H=\begin{pmatrix}G^+\\ \dfrac{1}{\sqrt2}\left(v+h+iG^0\right)\end{pmatrix},
+\label{eq:H-cartesian}\\
+\text{指数表示：}&\quad
+H=\exp\!\left(\frac{i\pi^a\sigma^a}{v}\right)\begin{pmatrix}0\\ \dfrac{1}{\sqrt2}(v+h)\end{pmatrix}.
+\label{eq:H-exponential}
+\end{align}
+$G^\pm$（$G^-=(G^+)^*$）と $G^0$（実）は NG ボソン、$h$ は\term{ヒッグス粒子}{Higgs boson}の場である。
+直交座標で
+\begin{equation}
+H^\dagger H-\frac{v^2}{2}=G^+G^-+vh+\frac12h^2+\frac12(G^0)^2
+\end{equation}
+なので、ポテンシャルは
+\begin{equation}
+V=\lambda v^2h^2+\lambda vh\left(h^2+(G^0)^2+2G^+G^-\right)+\frac\lambda4\left(h^2+(G^0)^2+2G^+G^-\right)^2+\text{const.}
+\label{eq:V-cartesian}
+\end{equation}
+となる。$m_h^2=2\lambda v^2=2\mu^2$ で、$G^\pm$, $G^0$ はポテンシャルの中では massless である。
+\begin{note}
+$H^\dagger H=G^-G^++\frac12\left[(v+h)^2+(G^0)^2\right]$。
+$V=\lambda X^2+\text{const.}$（$X=H^\dagger H-\frac{v^2}{2}$）に $X=\frac12\left(2vh+h^2+(G^0)^2+2G^+G^-\right)$ を代入する。
+\end{note}
+指数表示では、$\pi^a$ は $\SU(2)_L$ のゲージ変換のパラメータそのものなので、
+ゲージ変換 $H\to\exp(-i\pi^a\sigma^a/v)H$ で取り除ける（$\pi^a$ の運動項が正準になるよう $\sigma^a/v$ と規格化した）。これが\term{ユニタリーゲージ}{unitary gauge}
+\begin{equation}
+H=\frac{1}{\sqrt2}\begin{pmatrix}0\\ v+h(x)\end{pmatrix}
+\label{eq:H-unitary}
+\end{equation}
+である。以下、ゲージボソンの質量を求めるにはこのゲージを用いる。
+%------------------------------------------------
+\section{$\SU(2)_L\times\U(1)_Y\to\U(1)_{\mathrm{EM}}$}
+\label{sec:EW-breaking-pattern}
+%------------------------------------------------
+\subsection{破れない生成子}
+4つの生成子 $T^1,T^2,T^3,Y/2$ を \eqref{eq:H-vev} に作用させる（\S\ref{sec:SSB-counting}）。
+\begin{equation}
+T^{1,2}\langle H\rangle\ne0,\qquad
+T^3\langle H\rangle=-\frac12\langle H\rangle,\qquad
+\frac Y2\langle H\rangle=+\frac12\langle H\rangle .
+\end{equation}
+$T^3$ と $Y/2$ の固有値が打ち消し合うので、
+\begin{equation}
+Q\langle H\rangle=\left(T^3+\frac Y2\right)\langle H\rangle=0 .
+\end{equation}
+したがって $e^{i\alpha Q}$ は真空を変えず、\textbf{電磁気の $\U(1)_{\mathrm{EM}}$ が破れずに残る}：
+\begin{equation}
+\boxed{\SU(2)_L\times\U(1)_Y\ \longrightarrow\ \U(1)_{\mathrm{EM}},\qquad Q=T_3+\frac Y2}
+\label{eq:EW-breaking}
+\end{equation}
+破れた生成子は3つ（例えば $T^1$, $T^2$, $T^3-Y/2$）で、3つの NG ボソン $G^\pm$, $G^0$ が現れる。
+これらはそれぞれ $W^\pm$, $Z$ に食べられる。$G^\pm$ の電荷 $\pm1$ が $W^\pm$ の電荷と一致することに注意。
+\begin{note}
+$G^+=\phi^+$ は上成分なので電荷 $+1$、$G^0=\sqrt2\,\Im\phi^0$ は中性。
+破れた生成子のうち $T^\pm=T^1\pm iT^2$ は電荷 $\pm1$ を運ぶ（$[Q,T^\pm]=\pm T^\pm$）ので、対応するゲージボソンも電荷 $\pm1$ を持つ。
+\end{note}
+\subsection{$\U(1)_{\mathrm{EM}}$ は $\U(1)_Y$ ではない}
+破れずに残る $\U(1)$ は、元のゲージ群の $\U(1)_Y$ そのものではなく、
+$\SU(2)_L$ の $T_3$ と $\U(1)_Y$ を混ぜた「斜め」の部分群である。
+このため、光子は $W^3$ と $B$ の線形結合となり（\S\ref{sec:W-Z-photon}）、
+電荷 $Q$ は $T_3$ と $Y$ の両方に依存する。
+\begin{remark}
+仮に VEV が上成分（$Q=+1$）にあったとすると、$Q$ ではなく $T_3-Y/2$ が保存し、
+それを改めて「電荷」と呼べば物理は同じである。
+すなわち「どちらの成分が中性か」は、VEV の方向で決まる。
+電荷の割り当て $Q=T_3+Y/2$ は、VEV が下成分にあるという規約と表裏一体である。
+\end{remark}
+%------------------------------------------------
+\section{ゲージ場の質量行列}
+\label{sec:EW-mass-matrix}
+%------------------------------------------------
+\subsection{運動項への代入}
+ユニタリーゲージ \eqref{eq:H-unitary} を \eqref{eq:L-Higgs} の運動項に代入する。
+$\partial_\mu$ は $h$ にのみ作用し、
+\begin{align}
+\left(gW^i_\mu\sigma^i+g'B_\mu\right)\begin{pmatrix}0\\1\end{pmatrix}
+&=\begin{pmatrix}gW^3_\mu+g'B_\mu & g(W^1_\mu-iW^2_\mu)\\ g(W^1_\mu+iW^2_\mu) & -gW^3_\mu+g'B_\mu\end{pmatrix}
+\begin{pmatrix}0\\1\end{pmatrix}
+=\begin{pmatrix}g(W^1_\mu-iW^2_\mu)\\ -gW^3_\mu+g'B_\mu\end{pmatrix}
+\end{align}
+なので、
+\begin{equation}
+D_\mu H=\frac{1}{\sqrt2}\begin{pmatrix}-\dfrac{ig}{2}(W^1_\mu-iW^2_\mu)(v+h)\\[2mm] \partial_\mu h+\dfrac{i}{2}(gW^3_\mu-g'B_\mu)(v+h)\end{pmatrix}.
+\end{equation}
+したがって
+\begin{equation}
+(D_\mu H)^\dagger(D^\mu H)
+=\frac12(\partial_\mu h)^2
++\frac{(v+h)^2}{8}\Bigl[g^2\bigl((W^1_\mu)^2+(W^2_\mu)^2\bigr)+\bigl(gW^3_\mu-g'B_\mu\bigr)^2\Bigr]
+\label{eq:DH-squared}
+\end{equation}
+となる（$(W_\mu)^2\equiv W_\mu W^\mu$）。
+\begin{note}
+上成分の絶対値の2乗：$\frac12\cdot\frac{g^2}{4}|W^1-iW^2|^2(v+h)^2=\frac{g^2(v+h)^2}{8}\left[(W^1)^2+(W^2)^2\right]$。
+下成分：
+\[
+\frac12\left|\partial h+\frac i2(gW^3-g'B)(v+h)\right|^2=\frac12(\partial h)^2+\frac{(v+h)^2}{8}(gW^3-g'B)^2
+\]
+（$\partial h$ は実、第2項は純虚数なので交差項は消える）。
+\end{note}
+\subsection{質量行列}
+$h=0$ とおくと、ゲージ場の質量項は $\frac12\mathcal V_\mu^T M^2\mathcal V^\mu$（$\mathcal V=(W^1,W^2,W^3,B)^T$）の形で、
+\begin{equation}
+M^2=\frac{v^2}{4}
+\begin{pmatrix}
+g^2&0&0&0\\
+0&g^2&0&0\\
+0&0&g^2&-gg'\\
+0&0&-gg'&g'^2
+\end{pmatrix}
+\label{eq:EW-mass-matrix}
+\end{equation}
+となる。これは第5章の一般公式 $(M^2)_{ab}=g_ag_b\langle H\rangle^\dagger\{T^a,T^b\}\langle H\rangle$ からも得られる。
+\begin{note}
+$\langle H\rangle^\dagger\{T^a,T^b\}\langle H\rangle$ を計算する。$\langle H\rangle^\dagger\langle H\rangle=\frac{v^2}{2}$ で、
+$a,b\in\{1,2,3\}$ では $\{T^a,T^b\}=\frac12\delta^{ab}$ より $\frac{v^2}{4}\delta^{ab}$。
+$a=3$, $b=Y$（$T^Y=Y/2=\frac12$）では $\{T^3,\frac12\}=T^3$ で、$\langle H\rangle^\dagger T^3\langle H\rangle=-\frac12\cdot\frac{v^2}{2}=-\frac{v^2}{4}$。
+$a=b=Y$ では $2\cdot\frac14\cdot\frac{v^2}{2}=\frac{v^2}{4}$。$a=1,2$, $b=Y$ では $\langle H\rangle^\dagger T^{1,2}\langle H\rangle=0$。
+結合定数をかけると \eqref{eq:EW-mass-matrix} を得る。
+\end{note}
+\subsection{固有値}
+$W^1$, $W^2$ はすでに対角で、固有値 $g^2v^2/4$。
+$(W^3,B)$ の $2\times2$ ブロック
+\begin{equation}
+\frac{v^2}{4}\begin{pmatrix}g^2&-gg'\\ -gg'&g'^2\end{pmatrix}
+\end{equation}
+は、行列式 $g^2g'^2-g^2g'^2=0$、トレース $g^2+g'^2$ なので、固有値は
+\begin{equation}
+0\qquad\text{と}\qquad\frac{(g^2+g'^2)v^2}{4}
+\end{equation}
+である。固有値 0 の存在は、$\U(1)_{\mathrm{EM}}$ が破れていないことの直接の帰結である
+（第5章の命題 \ref{prop:gauge-mass-matrix}）。
+固有ベクトルはそれぞれ $(g',g)$ と $(g,-g')$ に比例する。
+\subsection{行列表示による導出とカストディアル対称性}
+\S\ref{sec:higgs-potential} の行列 $\Sigma=(\tilde H,H)$ を用いると、質量項の構造がより明確になる。
+指数表示 \eqref{eq:H-exponential} に対応して
+\begin{equation}
+\Sigma=\frac{v+h}{\sqrt2}\,U,\qquad U=\exp\!\left(\frac{i\pi^a\sigma^a}{v}\right)\in\SU(2)
+\end{equation}
+と書け、$\tr(\Sigma^\dagger\Sigma)=(v+h)^2$, $(D_\mu H)^\dagger(D^\mu H)=\frac12\tr\bigl[(D_\mu\Sigma)^\dagger D^\mu\Sigma\bigr]$ より
+\begin{equation}
+\Lag_H=\frac12(\partial_\mu h)^2+\frac{(v+h)^2}{4}\tr\bigl[(D_\mu U)^\dagger D^\mu U\bigr]-V(h),
+\label{eq:EW-chiral-L}
+\end{equation}
+\begin{equation}
+D_\mu U=\partial_\mu U-igW^a_\mu\frac{\sigma^a}{2}U+ig'B_\mu U\frac{\sigma^3}{2}
+\end{equation}
+となる。$\SU(2)_L$ は $U$ に左から、$\U(1)_Y$ は $\SU(2)_R$ の部分群として右から作用する。
+\begin{note}
+$\U(1)_Y$ のもとで $U\to Ue^{-i\theta\sigma^3/2}$, $B_\mu\to B_\mu+\frac{1}{g'}\partial_\mu\theta$ なので、
+$\partial_\mu U$ から出る $-iU\frac{\sigma^3}{2}\partial_\mu\theta$ を $+ig'U\frac{\sigma^3}{2}\cdot\frac{1}{g'}\partial_\mu\theta$ が打ち消す。
+$\tr[(D\Sigma)^\dagger D\Sigma]$ は $\Sigma$ の2つの列 $\tilde H$, $H$ の寄与の和で、両者は等しいので $2(DH)^\dagger DH$ になる。
+\end{note}
+ユニタリーゲージ $U=1$ では $D_\mu U=-\frac i2\left(gW^a_\mu\sigma^a-g'B_\mu\sigma^3\right)$ なので、
+$\tr(\sigma^a\sigma^b)=2\delta^{ab}$ を用いて
+\begin{equation}
+\frac{(v+h)^2}{4}\tr\bigl[(D_\mu U)^\dagger D^\mu U\bigr]
+=\frac{(v+h)^2}{8}\Bigl[g^2\bigl((W^1)^2+(W^2)^2\bigr)+\bigl(gW^3-g'B\bigr)^2\Bigr]
+\end{equation}
+となり、\eqref{eq:DH-squared} を再現する。
+この形から次のことが読み取れる。
+\begin{itemize}
+    \item $g'=0$ のとき質量項は $\frac{g^2v^2}{8}W^a_\mu W^{a\mu}$ となり、$W^a$ の3成分が同じ質量を持つ。
+    これは $W^a$ が $\SU(2)_V$（カストディアル対称性）の3重項であることの反映である。
+    \item $g'\ne0$ は $\sigma^3$ を通じて $\SU(2)_R$ を破り、$W^3$ だけが $B$ と混合する。
+    \item $v^2\tr[(D_\mu U)^\dagger D^\mu U]/4$ はヒッグス粒子がなくても書けるゲージ不変な質量項であり、
+    \term{電弱カイラルラグランジアン}{electroweak chiral Lagrangian}の最低次の項である。
+    QCD のパイ中間子の有効理論（$f_\pi^2\tr[\partial U^\dagger\partial U]/4$）と全く同じ形をしており、$v$ が $f_\pi$ の役割を果たす。
+\end{itemize}
+\begin{myex}{$W^3$--$B$ 混合の2準位系としての見方}{W3B-mixing}
+$(W^3,B)$ の質量行列を、「対角成分 $\frac{g^2v^2}{4}$, $\frac{g'^2v^2}{4}$ と非対角成分 $-\frac{gg'v^2}{4}$ を持つ2準位系」と見て、
+混合角が $\tan\theta_W=g'/g$ で与えられることを確かめよ。
+\tcblower
+実対称な $2\times2$ 行列 $\begin{pmatrix}a&c\\ c&b\end{pmatrix}$ を対角化する回転角 $\theta$ は $\tan2\theta=\frac{2c}{a-b}$ を満たす
+（$\begin{pmatrix}Z\\A\end{pmatrix}=R(\theta)\begin{pmatrix}W^3\\B\end{pmatrix}$ の向きでは $\tan2\theta=-\frac{2c}{a-b}$）。
+$a=g^2$, $b=g'^2$, $c=-gg'$（共通因子 $v^2/4$ を除く）より
+\[
+\tan2\theta=\frac{2gg'}{g^2-g'^2}=\frac{2(g'/g)}{1-(g'/g)^2},
+\]
+これは $\tan\theta=g'/g$ のときの倍角公式そのものである。
+行列式が 0 なので一方の固有値は 0 となり、これが「混合しても光子が massless のまま」である理由である。
+混合角が質量の値によらず結合定数の比だけで決まるのは、質量行列が $(g,-g')$ というベクトルの直積
+$\frac{v^2}{4}\begin{pmatrix}g\\-g'\end{pmatrix}\begin{pmatrix}g&-g'\end{pmatrix}$ の形（ランク1）をしているからである。
+\end{myex}
+%------------------------------------------------
+\section{$W^\pm$、$Z^0$、光子の導出}
+\label{sec:W-Z-photon}
+%------------------------------------------------
+\subsection{荷電ゲージボソン}
+$W^1$, $W^2$ は質量が縮退しているので、その任意の線形結合が質量固有状態である。
+電荷の固有状態として
+\begin{equation}
+W^\pm_\mu=\frac{1}{\sqrt2}\left(W^1_\mu\mp iW^2_\mu\right)
+\label{eq:Wpm}
+\end{equation}
+を選ぶ（第2章 \eqref{eq:Wmatrix}）。$(W^1)^2+(W^2)^2=2W^+_\mu W^{-\mu}$ なので、
+\begin{equation}
+\frac{g^2v^2}{8}\left[(W^1)^2+(W^2)^2\right]=\frac{g^2v^2}{4}W^+_\mu W^{-\mu}\equiv M_W^2W^+_\mu W^{-\mu},
+\end{equation}
+\begin{equation}
+\boxed{M_W=\frac{gv}{2}}
+\label{eq:MW}
+\end{equation}
+を得る。複素ベクトル場の質量項は $M^2W^+W^-$ と規格化される（実ベクトル場の $\frac12M^2V^2$ に対応）。
+\begin{note}
+$W^+W^-=\frac12(W^1-iW^2)(W^1+iW^2)=\frac12\left[(W^1)^2+(W^2)^2\right]$（$W^1W^2$ の交差項は打ち消す）。
+\end{note}
+\subsection{中性ゲージボソン}
+$(W^3,B)$ ブロックの固有ベクトルを規格化して
+\begin{equation}
+Z_\mu=\frac{gW^3_\mu-g'B_\mu}{\sqrt{g^2+g'^2}},\qquad
+A_\mu=\frac{g'W^3_\mu+gB_\mu}{\sqrt{g^2+g'^2}}
+\label{eq:Z-A-def}
+\end{equation}
+と定義する。これは直交変換なので、運動項 $-\frac14W^3_{\mu\nu}W^{3\mu\nu}-\frac14B_{\mu\nu}B^{\mu\nu}$ の
+可換な部分は $-\frac14Z_{\mu\nu}Z^{\mu\nu}-\frac14F_{\mu\nu}F^{\mu\nu}$ となり、正準規格化が保たれる。
+質量項は
+\begin{equation}
+\frac{v^2}{8}\left(gW^3_\mu-g'B_\mu\right)^2=\frac{(g^2+g'^2)v^2}{8}Z_\mu Z^\mu\equiv\frac12M_Z^2Z_\mu Z^\mu,
+\end{equation}
+\begin{equation}
+\boxed{M_Z=\frac{\sqrt{g^2+g'^2}\,v}{2},\qquad M_\gamma=0}
+\label{eq:MZ}
+\end{equation}
+となる。$A_\mu$ は質量項に現れず、massless の光子である。
+\subsection{ユニタリーゲージでのラグランジアン}
+\eqref{eq:DH-squared} を質量固有状態で書くと
+\begin{equation}
+(D_\mu H)^\dagger(D^\mu H)=\frac12(\partial_\mu h)^2
++\left(M_W^2W^+_\mu W^{-\mu}+\frac12M_Z^2Z_\mu Z^\mu\right)\left(1+\frac hv\right)^2
+\label{eq:higgs-gauge-unitary}
+\end{equation}
+となる。$h$ についての展開から、ヒッグス粒子とゲージボソンの結合
+\begin{equation}
+\begin{aligned}
+hW^+W^-&:\ \ i\frac{2M_W^2}{v}g^{\mu\nu}=igM_Wg^{\mu\nu}, &\qquad
+hZZ&:\ \ i\frac{2M_Z^2}{v}g^{\mu\nu}=i\frac{g}{\cos\theta_W}M_Zg^{\mu\nu},\\
+hhW^+W^-&:\ \ i\frac{2M_W^2}{v^2}g^{\mu\nu}, &\qquad
+hhZZ&:\ \ i\frac{2M_Z^2}{v^2}g^{\mu\nu}
+\end{aligned}
+\label{eq:hVV-couplings}
+\end{equation}
+が読み取れる。結合はゲージボソンの質量の2乗に比例し、光子との直接の結合（$h\gamma\gamma$）はツリーレベルでは存在しない
+（$h\to\gamma\gamma$ はループを通じて起こる。第12章）。
+\begin{note}
+$hW^+W^-$：$M_W^2\cdot\frac{2h}{v}W^+_\mu W^{-\mu}$ で、$W^+$ と $W^-$ は別の場なので縮約の因子は 1。頂点は $i\frac{2M_W^2}{v}g^{\mu\nu}$。
+$M_W=gv/2$ より $\frac{2M_W^2}{v}=gM_W$。
+$hZZ$：$\frac12M_Z^2\cdot\frac{2h}{v}Z^2$ で、同種の $Z$ 2つの縮約で因子 2。頂点は $i\frac{2M_Z^2}{v}g^{\mu\nu}$。
+$hhVV$：$\frac{h^2}{v^2}$ の係数に、$h$ の縮約 $2$ と（$Z$ なら）$Z$ の縮約 $2\times\frac12$ がかかる。
+\end{note}
+\subsection{ゲージボソンの自己相互作用}
+$\SU(2)_L$ は非可換なので、ゲージ場の運動項 $-\frac14W^i_{\mu\nu}W^{i\mu\nu}$ は3点・4点の自己相互作用を含む。
+$W^i_{\mu\nu}=\partial_\mu W^i_\nu-\partial_\nu W^i_\mu+g\epsilon^{ijk}W^j_\mu W^k_\nu$ を代入すると、
+\begin{equation}
+-\frac14W^i_{\mu\nu}W^{i\mu\nu}
+=-\frac14\left(\partial_\mu W^i_\nu-\partial_\nu W^i_\mu\right)^2
+\underbrace{-g\epsilon^{ijk}(\partial_\mu W^i_\nu)W^{j\mu}W^{k\nu}}_{\Lag_3}
+\underbrace{-\frac{g^2}{4}\left(\epsilon^{ijk}W^j_\mu W^k_\nu\right)^2}_{\Lag_4}
+\end{equation}
+である。これを質量固有状態で書き直す。
+\paragraph{3点結合}
+\begin{equation}
+\boxed{
+\Lag_{WWV}=ig_V\Bigl[\left(W^+_{\mu\nu}W^{-\mu}-W^-_{\mu\nu}W^{+\mu}\right)V^\nu+V_{\mu\nu}W^{+\mu}W^{-\nu}\Bigr],
+\qquad g_\gamma=e,\quad g_Z=g\cos\theta_W
+}
+\label{eq:WWV}
+\end{equation}
+ここで $W^\pm_{\mu\nu}=\partial_\mu W^\pm_\nu-\partial_\nu W^\pm_\mu$, $V_{\mu\nu}=\partial_\mu V_\nu-\partial_\nu V_\mu$（$V=\gamma,Z$）。
+\begin{note}
+$\epsilon^{ijk}a^ib^jc^k=\det(a,b,c)$（行ベクトルを並べた行列式）である。
+成分 $(1,2)$ を $(+,-)$ に変える変換 $X^1=\frac{1}{\sqrt2}(X^++X^-)$, $X^2=\frac{i}{\sqrt2}(X^+-X^-)$ の行列式は $\frac12(-i-i)=-i$ なので、
+\[
+\epsilon^{ijk}a^ib^jc^k=-i\det\begin{pmatrix}a^+&a^-&a^3\\ b^+&b^-&b^3\\ c^+&c^-&c^3\end{pmatrix}.
+\]
+$a=\partial_\mu W_\nu$, $b=W^\mu$, $c=W^\nu$ として展開し、$\mu\leftrightarrow\nu$ の反対称化で場の強さにまとめると
+\[
+\Lag_3=ig\Bigl[\left(W^+_{\mu\nu}W^{-\mu}-W^-_{\mu\nu}W^{+\mu}\right)W^{3\nu}+W^3_{\mu\nu}W^{+\mu}W^{-\nu}\Bigr].
+\]
+最後に $W^3=\cos\theta_WZ+\sin\theta_WA$ を代入し、$g\sin\theta_W=e$ を用いる。
+$\Lag_{WWV}$ が実であることは、複素共役で $W^+\leftrightarrow W^-$ と $V_{\mu\nu}$ の反対称性から確かめられる。
+\end{note}
+\paragraph{4点結合}
+同様に
+\begin{align}
+\Lag_4&=-\frac{g^2}{2}\Bigl[\left(W^+_\mu W^{-\mu}\right)^2-\left(W^+_\mu W^{+\mu}\right)\left(W^-_\nu W^{-\nu}\right)\Bigr]\notag\\
+&\quad-g^2\Bigl[\left(W^+_\mu W^{-\mu}\right)\left(W^3_\nu W^{3\nu}\right)-\left(W^+_\mu W^{3\mu}\right)\left(W^-_\nu W^{3\nu}\right)\Bigr]
+\label{eq:quartic-gauge}
+\end{align}
+となる。第2行に $W^3=\cos\theta_WZ+\sin\theta_WA$ を代入すると、
+$WW\gamma\gamma$（$e^2$）、$WWZ\gamma$（$eg\cos\theta_W$）、$WWZZ$（$g^2\cos^2\theta_W$）の4点結合が得られる。
+\begin{note}
+$\SU(2)$ 空間の内積を $X\cdot Y=X^+Y^-+X^-Y^++X^3Y^3$ と書くと、
+$\left(\epsilon^{ijk}W^j_\mu W^k_\nu\right)^2=(W_\mu\cdot W^\mu)^2-(W_\mu\cdot W_\nu)(W^\mu\cdot W^\nu)$（ベクトル積の2乗の公式）。
+$W^3=0$ の部分は $W_\mu\cdot W^\mu=2W^+\!\cdot W^-$、
+$(W_\mu\cdot W_\nu)^2=2(W^+\!\cdot W^+)(W^-\!\cdot W^-)+2(W^+\!\cdot W^-)^2$ から第1行が出る
+（ここで「$\cdot$」はローレンツ添字の縮約）。$W^3$ を1対含む項から第2行が出る。
+\end{note}
+\paragraph{物理的な意味}
+\begin{itemize}
+    \item 光子との結合 \eqref{eq:WWV} の第1項は、電荷 $+1$ の場 $W^+$ の最小結合（$\partial_\mu\to\partial_\mu-ieA_\mu$）から来る。
+    実際、$W^\pm$ を含む項は $\U(1)_{\mathrm{EM}}$ の共変微分 $\mathcal D_\mu W^\pm_\nu=(\partial_\mu\mp ieA_\mu)W^\pm_\nu$ を用いて
+    \[
+    -\frac12\left(\mathcal D_\mu W^+_\nu-\mathcal D_\nu W^+_\mu\right)^\dagger\left(\mathcal D^\mu W^{+\nu}-\mathcal D^\nu W^{+\mu}\right)
+    +ieF_{\mu\nu}W^{+\mu}W^{-\nu}+\cdots
+    \]
+    とまとめられ、残る $ieF_{\mu\nu}W^{+\mu}W^{-\nu}$ が $W$ の\textbf{異常磁気モーメント}的な項になる。
+    \item その結果、$W$ ボソンの磁気モーメントは $\mu_W=\frac{e}{M_W}$（g 因子 $g_W=2$）、
+    電気四重極モーメントは $Q_W=-\frac{e}{M_W^2}$ と予言される。これらは LEP や Tevatron の $W$ 対生成で検証されている。
+    \item 4点結合 $WW\gamma\gamma$ は、$\U(1)_{\mathrm{EM}}$ の最小結合の2次の項（スカラー QED の seagull 項に対応）である。
+    \item $e^+e^-\to W^+W^-$ では、$\nu$ の $t$ チャネル交換と、$\gamma$, $Z$ の $s$ チャネル交換（\eqref{eq:WWV} の3点結合）
+    が個別にはエネルギーとともに増大し、和をとると打ち消し合う。これは LEP2 で精密に確かめられた
+    ゲージ構造の直接の証拠である（第12章）。
+\end{itemize}
+\begin{table}[htbp]
+\centering
+\caption{電弱ボソンの相互作用（ユニタリーゲージ）}
+\label{tab:EW-boson-vertices}
+\begin{tabular}{lll}
+\toprule
+頂点 & 結合の強さ & 起源\\
+\midrule
+$W^+W^-\gamma$, $W^+W^-Z$ & $e$, $g\cos\theta_W$ & $-\frac14W^i_{\mu\nu}W^{i\mu\nu}$（非可換性）\\
+$W^+W^-W^+W^-$ & $g^2$ & 同上\\
+$W^+W^-\gamma\gamma$, $W^+W^-Z\gamma$, $W^+W^-ZZ$ & $e^2$, $eg\cos\theta_W$, $g^2\cos^2\theta_W$ & 同上\\
+$hW^+W^-$, $hZZ$ & $2M_W^2/v$, $2M_Z^2/v$ & $(D_\mu H)^\dagger D^\mu H$\\
+$hhW^+W^-$, $hhZZ$ & $2M_W^2/v^2$, $2M_Z^2/v^2$ & 同上\\
+$hhh$, $hhhh$ & $3m_h^2/v$, $3m_h^2/v^2$ & $V(H)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+$ZZZ$, $ZZ\gamma$, $Z\gamma\gamma$, $\gamma\gamma\gamma$ のような中性ボソンだけの3点結合はツリーレベルでは存在しない
+（$\epsilon^{ijk}$ により3つの $\SU(2)$ 添字が異なる必要があり、$W^3$ を2つ以上含む項がない）。
+\subsection{共変微分の質量固有状態による表示}
+フェルミオンとの結合を見るため、一般の表現（$T^a$, 超電荷 $Y$）に対する共変微分の電弱部分を
+質量固有状態で書き直す。$W^1T^1+W^2T^2=\frac{1}{\sqrt2}(W^+T^++W^-T^-)$ と、\eqref{eq:Z-A-def} の逆変換
+$W^3=\cos\theta_W Z+\sin\theta_W A$, $B=-\sin\theta_W Z+\cos\theta_W A$（$\theta_W$ は次節で定義）を用いると、
+\begin{equation}
+\boxed{
+D_\mu=\partial_\mu-\frac{ig}{\sqrt2}\left(W^+_\mu T^++W^-_\mu T^-\right)
+-\frac{ig}{\cos\theta_W}Z_\mu\left(T^3-\sin^2\theta_W\,Q\right)
+-ieA_\mu Q
+}
+\label{eq:D-mass-basis}
+\end{equation}
+となる。ここで $e=g\sin\theta_W=g'\cos\theta_W$。
+\begin{note}
+中性部分：$gW^3T^3+g'B\frac Y2=Z\left(g\cos\theta_WT^3-g'\sin\theta_W\frac Y2\right)+A\left(g\sin\theta_WT^3+g'\cos\theta_W\frac Y2\right)$。
+$A$ の係数は $e(T^3+\frac Y2)=eQ$。
+$Z$ の係数は $\frac Y2=Q-T^3$ と $g'=g\tan\theta_W$ を使って
+$g\cos\theta_WT^3-g\frac{\sin^2\theta_W}{\cos\theta_W}(Q-T^3)=\frac{g}{\cos\theta_W}\left[(\cos^2\theta_W+\sin^2\theta_W)T^3-\sin^2\theta_WQ\right]$。
+荷電部分：$T^1W^1+T^2W^2$ に $W^1=\frac{1}{\sqrt2}(W^++W^-)$, $W^2=\frac{i}{\sqrt2}(W^+-W^-)$ を代入すると
+$\frac{1}{\sqrt2}\left[W^+(T^1+iT^2)+W^-(T^1-iT^2)\right]$。
+\end{note}
+\eqref{eq:D-mass-basis} は第8章で荷電カレント・中性カレント・電磁カレントを導く出発点になる。
+光子は電荷 $Q$ に結合定数 $e$ で結合し、$Z$ は $T^3-\sin^2\theta_WQ$ に結合定数 $g/\cos\theta_W$ で結合する。
+%------------------------------------------------
+\section{Weinberg 角}
+\label{sec:weinberg-angle}
+%------------------------------------------------
+\subsection{定義}
+\eqref{eq:Z-A-def} の回転角を\term{Weinberg 角}{Weinberg angle}（\term{弱混合角}{weak mixing angle}）$\theta_W$ と呼ぶ：
+\begin{equation}
+\cos\theta_W=\frac{g}{\sqrt{g^2+g'^2}},\qquad
+\sin\theta_W=\frac{g'}{\sqrt{g^2+g'^2}},\qquad
+\tan\theta_W=\frac{g'}{g}.
+\label{eq:weinberg-angle}
+\end{equation}
+このとき
+\begin{equation}
+\begin{pmatrix}Z_\mu\\ A_\mu\end{pmatrix}
+=\begin{pmatrix}\cos\theta_W&-\sin\theta_W\\ \sin\theta_W&\cos\theta_W\end{pmatrix}
+\begin{pmatrix}W^3_\mu\\ B_\mu\end{pmatrix}
+\end{equation}
+であり、第1章 \eqref{eq:ZA-preview} と一致する。
+Weinberg 角は2つのゲージ結合定数の比で決まる量であり、ヒッグス機構によって初めて物理的な意味（$Z$ と $\gamma$ の混合角）を持つ。
+\subsection{質量の関係と $\rho$ パラメータ}
+\eqref{eq:MW}, \eqref{eq:MZ} より
+\begin{equation}
+\boxed{M_W=M_Z\cos\theta_W}
+\label{eq:MW-MZ}
+\end{equation}
+が成り立つ。これは標準模型の重要な予言であり、
+\begin{equation}
+\rho\equiv\frac{M_W^2}{M_Z^2\cos^2\theta_W}=1\qquad(\text{ツリーレベル})
+\label{eq:rho}
+\end{equation}
+と表される。$\rho=1$ はカストディアル対称性（\S\ref{sec:higgs-potential}）の帰結である。
+$g'\to0$ の極限で $W^3$ は $W^{1,2}$ と同じ質量を持ち、$g'\ne0$ による $W^3$--$B$ 混合が
+$Z$ の質量を $1/\cos\theta_W$ 倍に押し上げる。
+\begin{myex}{一般のヒッグス表現と $\rho$ パラメータ}{rho-general}
+弱アイソスピン $T_i$、超電荷 $Y_i$ のスカラー場が、中性成分（$T_{3}=-Y_i/2$）に VEV $v_i$ を持つとする。
+ツリーレベルの $\rho$ パラメータは
+\[
+\rho=\frac{\sum_i c_i\left[T_i(T_i+1)-\frac{Y_i^2}{4}\right]v_i^2}{\sum_i\frac{Y_i^2}{2}v_i^2}
+\]
+（複素場で $c_i=1$、$Y=0$ の実場で $c_i=\frac12$）で与えられる。二重項と3重項について調べよ。
+\tcblower
+\begin{itemize}
+    \item 二重項 $T=\frac12$, $Y=1$：分子 $\frac34-\frac14=\frac12$、分母 $\frac12$ で $\rho=1$。二重項を何個加えても $\rho=1$。
+    \item 複素3重項 $T=1$, $Y=2$：分子 $2-1=1$、分母 $2$ で $\rho=\frac12$。
+    \item 実3重項 $T=1$, $Y=0$：分母に寄与せず、分子だけを増やす（$\rho>1$）。
+\end{itemize}
+実験値は $\rho\simeq1$（量子補正を除いて $10^{-3}$ 程度の精度）なので、3重項の VEV は数 GeV 以下に制限される。
+二重項以外で $\rho=1$ を与える最小の表現は $T=3$, $Y=4$ の7重項である。
+\end{myex}
+\begin{note}
+一般の場合、$W^\pm$ の質量は $\frac{g^2}{4}\sum_i2c_i[T_i(T_i+1)-T_{3i}^2]v_i^2$、
+$Z$ の質量は $\frac{g^2+g'^2}{4}\sum_i4T_{3i}^2v_i^2$ から得られる（$T^\pm$ と $T^3$ の行列要素を計算する）。
+$T_{3i}=-Y_i/2$ を代入して比をとると上式になる。二重項では $M_W^2=\frac{g^2}{4}\cdot2\cdot\frac12v^2=\frac{g^2v^2}{4}$ を再現する。
+\end{note}
+\subsection{$\sin^2\theta_W$ の定義と数値}
+ツリーレベルでは \eqref{eq:weinberg-angle} と \eqref{eq:MW-MZ} は同値だが、量子補正を含めると両者は異なり、
+$\sin^2\theta_W$ にはいくつかの定義がある。
+\begin{itemize}
+    \item \term{on-shell 定義}{on-shell definition}：$\sin^2\theta_W\equiv1-M_W^2/M_Z^2\simeq0.2232$（$M_W=80.37$, $M_Z=91.19\ \mathrm{GeV}$）。
+    \item \term{$\overline{\mathrm{MS}}$ 定義}{$\overline{\mathrm{MS}}$ scheme}：$\sin^2\hat\theta_W(M_Z)\equiv\hat g'^2/(\hat g^2+\hat g'^2)\simeq0.2312$。
+    \item \term{有効混合角}{effective mixing angle}：$Z$ 共鳴でのレプトンの前後非対称性などから定義され、$\sin^2\theta_{\mathrm{eff}}^{\mathrm{lept}}\simeq0.2315$。
+\end{itemize}
+これらの差（約 $3\%$）は主にトップクォークのループによる $\rho$ の補正
+$\Delta\rho\simeq\frac{3G_Fm_t^2}{8\sqrt2\pi^2}\simeq0.0094$ から来る（第12章）。
+この量子補正からトップクォークの質量が発見前に予言された。
+\subsection{数値のまとめ}
+測定値 $G_F$, $M_W$, $M_Z$ からツリーレベルの関係で求めた電弱パラメータを表\ref{tab:EW-parameters}にまとめる。
+\begin{table}[htbp]
+\centering
+\caption{電弱パラメータ（$G_F$, $M_W$, $M_Z$ からツリーレベルで決めた値）}
+\label{tab:EW-parameters}
+\begin{tabular}{lll}
+\toprule
+量 & 定義 & 値\\
+\midrule
+$v$ & $(\sqrt2G_F)^{-1/2}$ & $246.22\ \mathrm{GeV}$\\
+$g$ & $2M_W/v$ & $0.653$\quad($\alpha_2=g^2/4\pi\simeq1/29.5$)\\
+$g'$ & $2\sqrt{M_Z^2-M_W^2}/v$ & $0.350$\quad($\alpha_Y=g'^2/4\pi\simeq1/103$)\\
+$\sin^2\theta_W$ & $1-M_W^2/M_Z^2$ & $0.223$\\
+$e$ & $g\sin\theta_W$ & $0.308$\quad($\alpha\simeq1/132$)\\
+$\lambda$ & $m_h^2/2v^2$ & $0.129$\\
+\bottomrule
+\end{tabular}
+\end{table}
+こうして求めた $\alpha\simeq1/132$ は、Thomson 極限の $\alpha(0)=1/137.036$ とも $\alpha(M_Z)\simeq1/128$ とも異なる。
+これはツリーレベルの関係に量子補正があるためで、どの量を入力に選ぶか（\term{繰り込みスキーム}{renormalization scheme}）によって
+ツリーレベルの予言が数％ずれることを示している。
+\begin{remark}
+標準模型では $\sin^2\theta_W$ は自由なパラメータである。
+これに対し $\SU(5)$ などの大統一理論では、$\U(1)_Y$ が単純群に埋め込まれるため、
+規格化 $g_1=\sqrt{5/3}\,g'$ のもとで統一スケールで $g_1=g$、すなわち
+\[
+\sin^2\theta_W=\frac{g'^2}{g^2+g'^2}=\frac{\frac35g^2}{g^2+\frac35g^2}=\frac38
+\]
+が予言される。これを繰り込み群で電弱スケールまで走らせると $\sin^2\theta_W\approx0.21$ となり、
+実測値 $0.231$ に近いが一致はしない（第14章）。
+\end{remark}
+%------------------------------------------------
+\section{電弱相互作用の結合定数}
+\label{sec:EW-couplings}
+%------------------------------------------------
+\subsection{電気素量}
+\eqref{eq:D-mass-basis} の光子の結合から、電気素量は
+\begin{equation}
+\boxed{e=g\sin\theta_W=g'\cos\theta_W=\frac{gg'}{\sqrt{g^2+g'^2}}}
+\qquad\Longleftrightarrow\qquad
+\frac{1}{e^2}=\frac{1}{g^2}+\frac{1}{g'^2}
+\label{eq:e-gg}
+\end{equation}
+で与えられる（第1章 \eqref{eq:e-preview}）。
+$e<g$, $e<g'$ であり、電磁相互作用は $\SU(2)_L$ と $\U(1)_Y$ のどちらよりも弱い。
+\subsection{3種類のカレント結合}
+\eqref{eq:D-mass-basis} をフェルミオンの運動項 $\bar\psi i\gamma^\mu D_\mu\psi$ に代入すると、相互作用は
+\begin{equation}
+\Lag_{\mathrm{int}}=\frac{g}{\sqrt2}\left(W^+_\mu J^{\mu+}_W+W^-_\mu J^{\mu-}_W\right)
++\frac{g}{\cos\theta_W}Z_\mu J^\mu_Z+eA_\mu J^\mu_{\mathrm{EM}}
+\label{eq:EW-currents}
+\end{equation}
+の形になる。それぞれ
+\begin{itemize}
+    \item \textbf{荷電カレント}\en{charged current}：結合定数 $g/\sqrt2$、左巻き二重項の上下を入れ替える。
+    \item \textbf{中性カレント}\en{neutral current}：結合定数 $g/\cos\theta_W$、カレントは $J_Z=J^3-\sin^2\theta_WJ_{\mathrm{EM}}$。
+    \item \textbf{電磁カレント}\en{electromagnetic current}：結合定数 $e$、ベクトル的（左右対称）。
+\end{itemize}
+である。カレントの具体形とその性質は第8章で詳しく調べる。
+\subsection{入力パラメータ}
+ゲージ・ヒッグス部分の4つのパラメータ $(g,g',v,\lambda)$ は、精度よく測られている4つの量
+\begin{equation}
+\alpha=\frac{e^2}{4\pi},\qquad G_F,\qquad M_Z,\qquad m_h
+\end{equation}
+で置き換えるのが標準的である（\term{入力パラメータ}{input parameters}）。
+すると $M_W$ や $\sin^2\theta_W$ は予言になる。
+\begin{myex}{$M_W$ の予言}{MW-prediction}
+$\alpha$, $G_F$, $M_Z$ から $M_W$ をツリーレベルで求めよ。
+\tcblower
+$e=g\sin\theta_W$ と $\frac{G_F}{\sqrt2}=\frac{g^2}{8M_W^2}$ から $g$ を消去すると
+\[
+M_W^2\sin^2\theta_W=\frac{\pi\alpha}{\sqrt2G_F}\equiv A^2 .
+\]
+$\sin^2\theta_W=1-M_W^2/M_Z^2$ を代入して $M_W^4-M_Z^2M_W^2+A^2M_Z^2=0$。大きい方の解をとって
+\[
+M_W^2=\frac{M_Z^2}{2}\left(1+\sqrt{1-\frac{4A^2}{M_Z^2}}\right).
+\]
+数値は、
+\begin{itemize}
+    \item $\alpha(0)=1/137.036$ を使うと $A=37.28\ \mathrm{GeV}$、$M_W\simeq80.94\ \mathrm{GeV}$、$\sin^2\theta_W\simeq0.212$。
+    \item 電弱スケールでの値 $\alpha(M_Z)\simeq1/127.95$ を使うと $A=38.58\ \mathrm{GeV}$、$M_W\simeq79.83\ \mathrm{GeV}$、$\sin^2\theta_W\simeq0.234$。
+\end{itemize}
+測定値 $M_W=80.37\ \mathrm{GeV}$ はそのどちらとも $0.5\ \mathrm{GeV}$ 程度ずれている。
+このずれは量子補正（$\alpha$ の走り、トップクォークとヒッグス粒子のループ）で説明され、
+その精密な比較が標準模型の検証になる（第12章）。
+\end{myex}
+\begin{note}
+$e^2=g^2\sin^2\theta_W$ と $g^2=8M_W^2G_F/\sqrt2=4\sqrt2G_FM_W^2$ より $4\pi\alpha=4\sqrt2G_FM_W^2\sin^2\theta_W$、
+したがって $M_W^2\sin^2\theta_W=\frac{\pi\alpha}{\sqrt2G_F}$。
+\end{note}
+測定値から求めたツリーレベルの結合定数は
+\begin{equation}
+g=\frac{2M_W}{v}\simeq0.653,\qquad
+\sqrt{g^2+g'^2}=\frac{2M_Z}{v}\simeq0.741,\qquad
+g'\simeq0.350
+\end{equation}
+であり、$e\simeq0.31$ と比べて確かに $g$ と $g'$ は電荷より大きい。
+「弱い相互作用」が弱いのは結合定数が小さいからではなく、
+$W$, $Z$ が重く、低エネルギーで $1/M_W^2$ だけ suppress されるからである（第1章、第8章）。
+%------------------------------------------------
+\section{ヒッグス粒子の物理的自由度}
+\label{sec:higgs-dof}
+%------------------------------------------------
+\subsection{自由度の数え上げ}
+ヒッグス二重項の4つの実スカラーのうち、3つ（$G^\pm$, $G^0$）は $W^\pm$, $Z$ に食べられ、
+1つ（$h$）が物理的なヒッグス粒子として残る。電弱セクター全体では
+\begin{equation}
+\underbrace{4}_{H}+\underbrace{4\times2}_{W^{1,2,3},\,B}=12
+\quad\longrightarrow\quad
+\underbrace{1}_{h}+\underbrace{3\times3}_{W^\pm,\,Z}+\underbrace{2}_{\gamma}=12
+\end{equation}
+となる（第1章、第5章）。
+\begin{table}[htbp]
+\centering
+\caption{ヒッグス二重項の成分とその行方}
+\label{tab:higgs-components}
+\begin{tabular}{cccc}
+\toprule
+成分 & 電荷 $Q$ & 実自由度 & 行方\\
+\midrule
+$G^\pm$（$=\phi^\pm$） & $\pm1$ & 2 & $W^\pm$ の縦偏極\\
+$G^0$（$=\sqrt2\,\Im\phi^0$） & $0$ & 1 & $Z$ の縦偏極\\
+$h$（$=\sqrt2\,\Re\phi^0-v$） & $0$ & 1 & ヒッグス粒子\\
+\bottomrule
+\end{tabular}
+\end{table}
+$R_\xi$ ゲージでは $G^\pm$, $G^0$ はラグランジアンに残り、それぞれ質量 $\sqrt\xi M_W$, $\sqrt\xi M_Z$ を持つ
+（ゴーストも同様）。物理的な振幅ではこれらの寄与は $\xi$ 依存性とともに打ち消し合う。
+\subsection{一般のゲージでの NG ボソンと $R_\xi$ ゲージ}
+ユニタリーゲージを使わずに直交座標 \eqref{eq:H-cartesian} で展開すると、NG ボソンがどのゲージボソンに食べられるかが2次の項に現れる。
+\eqref{eq:DH-components} で $h$ 以外の揺らぎの1次まで残すと、
+\begin{equation}
+D_\mu H\supset\begin{pmatrix}\partial_\mu G^+-iM_WW^+_\mu\\ \dfrac{1}{\sqrt2}\left[\partial_\mu h+i\left(\partial_\mu G^0+M_ZZ_\mu\right)\right]\end{pmatrix}
+\end{equation}
+なので、2次の項は
+\begin{equation}
+(D_\mu H)^\dagger D^\mu H\supset
+\left|\partial_\mu G^+-iM_WW^+_\mu\right|^2+\frac12\left(\partial_\mu G^0+M_ZZ_\mu\right)^2+\frac12(\partial_\mu h)^2
+\label{eq:SM-goldstone-mixing}
+\end{equation}
+となる。$G^\pm$ は $W^\pm$ と、$G^0$ は $Z$ と混合し、光子はどの NG ボソンとも混合しない。
+これは第5章 \eqref{eq:quadratic-mixing} の構造が、各 massive ゲージボソンごとに現れたものである。
+\begin{note}
+上成分：$\partial_\mu G^+-\frac{ig}{\sqrt2}W^+_\mu\cdot\frac{v}{\sqrt2}=\partial_\mu G^+-i\frac{gv}{2}W^+_\mu$。
+下成分：$\frac{1}{\sqrt2}(\partial_\mu h+i\partial_\mu G^0)+\frac i2(gW^3_\mu-g'B_\mu)\frac{v}{\sqrt2}$ で、
+$\frac v2(gW^3-g'B)=\frac v2\sqrt{g^2+g'^2}\,Z=M_ZZ$。
+\end{note}
+混合項を打ち消すゲージ固定項は
+\begin{equation}
+\Lag_{\mathrm{gf}}=-\frac{1}{2\xi}\left(\partial^\mu A_\mu\right)^2
+-\frac{1}{2\xi}\left(\partial^\mu Z_\mu-\xi M_ZG^0\right)^2
+-\frac1\xi\left|\partial^\mu W^+_\mu-i\xi M_WG^+\right|^2
+\label{eq:SM-Rxi}
+\end{equation}
+であり（$R_\xi$ ゲージ）、このとき
+\begin{itemize}
+    \item $W^\pm$, $Z$ の伝播関数は \eqref{eq:Rxi-propagator} で $m\to M_W,M_Z$ としたもの、光子は通常の共変ゲージの伝播関数。
+    \item $G^\pm$ の質量は $\sqrt\xi M_W$、$G^0$ の質量は $\sqrt\xi M_Z$。
+    \item ゴースト $c^\pm$, $c^Z$, $c^\gamma$ の質量はそれぞれ $\sqrt\xi M_W$, $\sqrt\xi M_Z$, $0$。
+\end{itemize}
+となる。ゴーストの相互作用を含む完全な形は付録Fで導出する。
+\begin{note}
+中性部分：$-\frac{1}{2\xi}(\partial Z-\xi M_ZG^0)^2\supset M_ZG^0\partial\cdot Z\simeq-M_ZZ^\mu\partial_\mu G^0$（部分積分）で、
+\eqref{eq:SM-goldstone-mixing} の $+M_ZZ^\mu\partial_\mu G^0$ を打ち消す。残りは $-\frac\xi2M_Z^2(G^0)^2$。
+荷電部分：$|\partial G^+-iM_WW^+|^2\supset-iM_WW^{+\mu}\partial_\mu G^-+iM_WW^{-\mu}\partial_\mu G^+$。
+ゲージ固定項からは $iM_WG^+\partial\cdot W^--iM_WG^-\partial\cdot W^+$ が出て、部分積分すると上と逆符号になる。
+第5章の Abelian Higgs model と $G$ の符号が逆なのは、$Z\propto gW^3-g'B$ と定義したためである。
+\end{note}
+\subsection{ヒッグス粒子の性質}
+\begin{itemize}
+    \item \textbf{質量}：$m_h^2=2\lambda v^2=2\mu^2$。$\lambda$ は他の観測量から決まらないため、
+    標準模型は $m_h$ を予言しない。2012年に LHC（ATLAS, CMS）で発見され、$m_h\simeq125\ \mathrm{GeV}$。
+    \item \textbf{量子数}：電荷 0、カラー一重項、スピン 0、$J^{PC}=0^{++}$（CP 偶）。
+    \item \textbf{ゲージ不変性}：ユニタリーゲージで $H^\dagger H=\frac12(v+h)^2$ なので、
+    $h=\sqrt{2H^\dagger H}-v$ はゲージ不変に定義される。
+    \item \textbf{結合}：ゲージボソンとの結合は $M_V^2/v$ \eqref{eq:hVV-couplings}、
+    フェルミオンとの結合は $m_f/v$（第7章）と、いずれも質量に比例する。
+    \item \textbf{自己結合}：\eqref{eq:V-cartesian} で $G=0$ とおくと
+    \begin{equation}
+    V\supset\lambda vh^3+\frac\lambda4h^4=\frac{m_h^2}{2v}h^3+\frac{m_h^2}{8v^2}h^4
+    \end{equation}
+    であり、第4章 \eqref{eq:Z2-couplings} と同じ形になる（第7章）。
+\end{itemize}
+\begin{remark}
+$m_h\simeq125\ \mathrm{GeV}$ は $v$ と同程度であり、$\lambda\simeq0.13$ は摂動論が使える大きさである。
+一方、ヒッグス粒子の質量の2乗は量子補正で高いエネルギースケールの2乗に比例して大きくなりうる。
+なぜ $m_h$ が電弱スケールにとどまるのかという問題（\term{階層性問題}{hierarchy problem}）は第14章で議論する。
+\end{remark}
+\subsection{等価定理とユニタリー性}
+\label{subsec:unitarity}
+食べられた NG ボソンは、高エネルギーで再び姿を現す。
+縦偏極ベクトル $\epsilon_L^\mu=k^\mu/M+O(M/E)$（第5章 \eqref{eq:epsL-highE}）のため、
+縦偏極の $W$, $Z$ を含む振幅は、$E\gg M_W$ で対応する NG ボソンの振幅に一致する：
+\begin{equation}
+\mathcal M\left(W_L^\pm,Z_L,\dots\right)=(\pm i)^n\,\mathcal M\left(G^\pm,G^0,\dots\right)\left[1+O\!\left(\frac{M_W}{E}\right)\right]
+\label{eq:equivalence-theorem}
+\end{equation}
+（$n$ は外線の縦偏極ボソンの数、位相は規約による）。
+これを\term{Goldstone ボソン等価定理}{Goldstone boson equivalence theorem}という（Cornwall--Levin--Tiktopoulos, Lee--Quigg--Thacker, Chanowitz--Gaillard）。
+NG ボソンの振幅はポテンシャル \eqref{eq:V-cartesian} から簡単に計算できるので、縦偏極ボソンの高エネルギー散乱の振る舞いがすぐに分かる。
+\begin{myex}{$W_L^+W_L^-\to W_L^+W_L^-$ とヒッグス粒子の質量の上限}{WLWL}
+等価定理を用いて $W_L^+W_L^-\to W_L^+W_L^-$ の振幅を $s,|t|\gg M_W^2$ で求め、
+(a) ヒッグス粒子がない場合と (b) ある場合について、部分波のユニタリー性 $|\Re a_0|\le\frac12$ から制限を導け。
+\tcblower
+\eqref{eq:V-cartesian} から $G^\pm$ に関係する項は $V\supset\lambda(G^+G^-)^2+2\lambda vhG^+G^-$。
+Feynman 則は4点 $-4i\lambda=-2im_h^2/v^2$、$hG^+G^-$ 頂点 $-2i\lambda v=-im_h^2/v$。
+$G^+G^-\to G^+G^-$ には4点結合と、$h$ の $s$ チャネル・$t$ チャネル交換が寄与し、
+\[
+\mathcal M=-\frac{m_h^2}{v^2}\left[2+\frac{m_h^2}{s-m_h^2}+\frac{m_h^2}{t-m_h^2}\right]
+=-\frac{m_h^2}{v^2}\left[\frac{s}{s-m_h^2}+\frac{t}{t-m_h^2}\right].
+\]
+\textbf{(a) ヒッグス粒子がない場合}（$m_h\to\infty$ の極限に相当）：
+$\mathcal M\to\frac{s+t}{v^2}$ となり、振幅はエネルギーの2乗に比例して増大する。
+$J=0$ 部分波 $a_0=\frac{1}{32\pi}\int_{-1}^1d\cos\theta\,\mathcal M$ は、$t=-\frac s2(1-\cos\theta)$ の平均が $-\frac s2$ なので
+\[
+a_0=\frac{1}{16\pi}\cdot\frac{s-s/2}{v^2}=\frac{s}{32\pi v^2}.
+\]
+$|a_0|\le\frac12$ より $\sqrt s\lesssim\sqrt{16\pi}\,v\simeq1.7\ \mathrm{TeV}$。
+すなわちヒッグス粒子がなければ、このエネルギーまでに摂動論的なユニタリー性が破れ、新しい物理が現れなければならない。
+\textbf{(b) ヒッグス粒子がある場合}：$s,|t|\gg m_h^2$ では $\mathcal M\to-\frac{2m_h^2}{v^2}$ と定数に近づき、増大は止まる。
+$a_0=-\frac{m_h^2}{8\pi v^2}$ で、$|a_0|\le\frac12$ より $m_h\lesssim\sqrt{4\pi}\,v\simeq870\ \mathrm{GeV}$。
+$W_L^+W_L^-$, $Z_LZ_L$, $hh$, $hZ_L$ の結合したチャネルを考えるとより強く、
+\[
+m_h^2\le\frac{8\pi\sqrt2}{3G_F}\simeq(1.0\ \mathrm{TeV})^2
+\]
+となる（\term{Lee--Quigg--Thacker の上限}{Lee--Quigg--Thacker bound}）。
+\end{myex}
+\begin{note}
+$s$ チャネル：$G^+G^-\to h\to G^+G^-$ で $(-im_h^2/v)^2\cdot\frac{i}{s-m_h^2}$。
+$t$ チャネル：$G^+\to G^+$ の間で $h$ を交換し、同じ形で $s\to t$。$G^+G^-$ の交換による $u$ チャネルはない（$h$ は $G^+G^+$ と結合しない）。
+4点結合：$\lambda(G^+G^-)^2$ の縮約は $2\times2=4$ 通りで $-4i\lambda$。
+和をとると $i\mathcal M=-\frac{2im_h^2}{v^2}-\frac{im_h^4}{v^2}\left[\frac{1}{s-m_h^2}+\frac{1}{t-m_h^2}\right]$。
+$2+\frac{m_h^2}{s-m_h^2}+\frac{m_h^2}{t-m_h^2}=\frac{s}{s-m_h^2}+\frac{t}{t-m_h^2}$ を用いた。
+\end{note}
+この例は、標準模型の中でヒッグス粒子が果たす役割を端的に示している。
+\begin{itemize}
+    \item ゲージボソンの質量だけを（例えば電弱カイラルラグランジアン \eqref{eq:EW-chiral-L} で $h$ を除いて）与えた理論は、
+    $\sim4\pi v\sim3\ \mathrm{TeV}$ 以下で破綻する\textbf{有効理論}にすぎない。
+    \item ヒッグス粒子の交換は、$W_LW_L$ 散乱の $E^2$ に比例する増大を\textbf{ちょうど}打ち消す。
+    そのためには $hWW$ 結合がちょうど $gM_W$（\eqref{eq:hVV-couplings}）でなければならない。
+    \item 実際、LHC 以前から「TeV スケール以下に、ヒッグス粒子か何らかの新しい物理が必ず存在する」ことが分かっていた。
+    これが LHC の重要な設計目標の1つであった。
+\end{itemize}
+%------------------------------------------------
+\section*{第6章のまとめ}
+%------------------------------------------------
+\begin{itemize}
+    \item 標準模型のヒッグス場は $(\mathbf1,\mathbf2)_1$ の複素二重項で、ポテンシャルは $V=-\mu^2H^\dagger H+\lambda(H^\dagger H)^2$ に限られる。
+    ポテンシャルはカストディアル対称性 $\SU(2)_L\times\SU(2)_R$ を持つ。
+    高温では対称性が回復し、宇宙は $T\simeq160\ \mathrm{GeV}$ で電弱対称性の破れた相に移った（クロスオーバー）。
+    \item VEV は $\langle H\rangle=(0,v/\sqrt2)^T$、$v=(\sqrt2G_F)^{-1/2}\simeq246\ \mathrm{GeV}$ にとれ、
+    $Q=T_3+Y/2$ が真空を変えないので $\SU(2)_L\times\U(1)_Y\to\U(1)_{\mathrm{EM}}$ と破れる。
+    \item ゲージボソンの質量固有状態と質量は
+    $W^\pm=(W^1\mp iW^2)/\sqrt2$（$M_W=gv/2$）、$Z=\cos\theta_WW^3-\sin\theta_WB$（$M_Z=\sqrt{g^2+g'^2}\,v/2$）、
+    $A=\sin\theta_WW^3+\cos\theta_WB$（massless）である。
+    \item Weinberg 角は $\tan\theta_W=g'/g$ で定義され、$M_W=M_Z\cos\theta_W$（$\rho=1$）、$e=g\sin\theta_W=g'\cos\theta_W$ が成り立つ。
+    \item 共変微分は $D_\mu=\partial_\mu-\frac{ig}{\sqrt2}(W^+T^++W^-T^-)-\frac{ig}{\cos\theta_W}Z(T^3-\sin^2\theta_WQ)-ieAQ$ と書ける。
+    \item ゲージ場の運動項は $WW\gamma$, $WWZ$ の3点結合と4点結合を含み、$W$ の磁気モーメント（$g_W=2$）などを予言する。
+    \item 4つの実スカラーのうち3つが $W^\pm,Z$ に食べられ、1つが CP 偶のヒッグス粒子 $h$ として残る。
+    その結合はすべて質量に比例する。
+    \item 等価定理により、縦偏極ボソンの高エネルギー散乱は NG ボソンの散乱で近似できる。
+    ヒッグス粒子の交換は $W_LW_L$ 散乱の増大を打ち消し、ユニタリー性を保つ（$m_h\lesssim1\ \mathrm{TeV}$）。
+\end{itemize}
 \end{document}
